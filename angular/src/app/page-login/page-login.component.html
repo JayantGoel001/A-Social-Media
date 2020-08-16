@@ -1,1 +1,29 @@
-<p>page-login works!</p>
+<app-form-bg></app-form-bg>
+<div class="bg-gradient-primary min-vh-100">
+    <div class="bg-2">
+        <div class="container">
+            <!-- All the content -->
+            <div class="text-white pt-6 pt-sm-16vh">
+                <h1 class="font-weight-800 text-center display-4">A Social Media</h1>
+                <p class="resp h4 w-50 mx-auto text-center" style="line-height: 150%;">
+                    A social media website for real people.  Definitely no fake users on this site. None at all.</p>
+
+                <h2 class="font-weight-300 mt-4 text-center">Login</h2>
+
+                <form class="login-form w-100 w-md-50 mx-auto user mt-5">
+                    <div class="form-group">
+                        <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" name="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name="password">
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
+                </form>
+
+                <h4 class="text-center p-5 m-0">Don't already have an account?
+                    <a routerLink="/register" class="text-white link">Register</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
