@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport = require('passport');
 
+require("./mvc/models/db");
 const indexRouter = require('./mvc/routes/index');
 const usersRouter = require('./mvc/routes/users');
 
@@ -21,6 +22,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
+app.use('/',(req,res,next)=>{
+    res.header('Access-Control-Allow-Origin','http://localhost:4200');
+    res.header('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept,Authorization');
+    next();
+})
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 

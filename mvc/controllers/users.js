@@ -4,7 +4,13 @@ const User = mongoose.model('User');
 
 
 const registerUser = function({body},res) {
-    if (!Object.values(body).every((val) => val )) {
+    if (
+        !body.first_name||
+        !body.last_name||
+        !body.email||
+        !body.password||
+        !body.password_confirm
+    ) {
         return res.send({message:"All Fields Are Required"});
     }
     if (body.password!==body.password_confirm) {
