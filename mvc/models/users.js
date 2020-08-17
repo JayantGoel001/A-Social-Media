@@ -1,15 +1,6 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-
-console.log("==========================");
-let salt = crypto.randomBytes(64).toString('hex');
-console.log(salt);
-console.log("==========================");
-console.log("==========================");
-let password = crypto.pbkdf2Sync('password1',salt,1000,64,'sha512').toString('hex');
-console.log(password);
-
-console.log("==========================");
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
     firstname:{
@@ -37,5 +28,12 @@ userSchema.methods.setPassword = function(password) {
 userSchema.methods.validatePassword = function(password) {
     const hash = crypto.pbkdf2Sync(password,this.salt,1000,64,'sha512').toString('hex');
     return hash === this.password;
+}
+
+userSchema.methods.getJwt = function() {
+    return jwt.sign({
+        _id:this._id,
+        email:this.email,
+    },process.env.JWT_TOKEN);
 }
 mongoose.model("User",userSchema);
