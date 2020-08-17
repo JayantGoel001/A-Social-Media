@@ -6,7 +6,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 })
 export class ApiService {
 
-    private baseUrl = "localhost:3000";
+    private baseUrl = "http://localhost:3000";
     private successHandler(value){
         return value;
     }
@@ -37,6 +37,5 @@ export class ApiService {
             return this.http.post(url,body,httpOptions).toPromise().then(this.successHandler).catch(this.errorHandler);
         }
         console.log("Could not make the request.Make Sure a type of GET or Post is Supplied");
-
     }
 }

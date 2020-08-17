@@ -10,7 +10,40 @@ export class PageLoginComponent implements OnInit {
 
   constructor(private api:ApiService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  /**
+   * formSubmit
+   */
+  public formError = "";
+  public credentials = {
+      email:'',
+      password:''
+  }
+  public formSubmit() {
+      this.formError = "";
+      if (
+          !this.credentials.email||
+          !this.credentials.password
+      ) {
+          return this.formError = "All Fields are Required";
+      }
+
+      if (!this.formError) {
+          this.login();
+      }
+  }
+
+  private login(){
+      let requestOption = {
+          type:"POST",
+          location:"users/login",
+          body:this.credentials
+      }
+
+      this.api.makeRequest(requestOption).then((val)=>{
+          console.log(val);
+      })
   }
 
 }
