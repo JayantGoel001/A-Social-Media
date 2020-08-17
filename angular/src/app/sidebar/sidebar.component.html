@@ -1,1 +1,90 @@
-<p>sidebar works!</p>
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-laugh-wink"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">A Social Media</div>
+</a>
+<hr class="sidebar-divider my-0">
+<li class="nav-item active">
+    <a class="nav-link" href="index.html">
+        <i class="far fa-address-card"></i>
+        <span>Profile</span>
+    </a>
+</li>
+<hr class="sidebar-divider">
+<div class="sidebar-heading">Friendships</div>
+<li class="nav-item">
+    <a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#besties">
+        <i class="fas fa-user-friends"></i>
+        <span>Besties</span>
+    </a>
+    <div id="besties" class="collapse" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded w-100">
+            <div class="m-3">
+                <img class="img-fluid rounded-circle profile-img-sm" src="/assets/images/f1.jpg">
+                <span class="h6 ml-3"><a href="#">Sarah Parker</a></span>
+            </div>
+            <div class="m-3">
+                <img class="img-fluid rounded-circle profile-img-sm" src="/assets/images/f1.jpg">
+                <span class="h6 ml-3"><a href="#">Sarah Parker</a></span>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#enemies" aria-expanded="true" aria-controls="collapseEnemies">
+        <i class="fas fa-skull-crossbones"></i>
+        <span>Enemies</span>
+    </a>
+    <div id="enemies" class="collapse" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <div class="m-3">
+                <img class="img-fluid rounded-circle profile-img-sm" src="/assets/images/f1.jpg">
+                <span class="h6 ml-3"><a class="text-danger" href="#">Sarah Parker</a></span>
+            </div>
+            <div class="m-3">
+                <img class="img-fluid rounded-circle profile-img-sm" src="/assets/images/f1.jpg">
+                <span class="h6 ml-3"><a class="text-danger" href="#">Sarah Parker</a></span>
+            </div>
+        </div>
+    </div>
+</li>
+
+<!-- Friend Finder -->
+<li class="nav-item">
+    <a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#finder">
+        <i class="fas fa-users"></i>
+        <span>Friend Finder</span>
+    </a>
+    <div id="finder" class="collapse" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <div class="m-3 d-flex align-items-center">
+                <img class="img-fluid rounded-circle profile-img-sm" src="/assets/images/f1.jpg">
+                <span class="h6 mb-0 ml-3"><a class="text-success" href="#">Sarah Parker</a></span>
+                <span class="ml-2 hov-scale"><a href><i class="h4 mb-0 text-success fas fa-window-close"></i></a></span>
+            </div>
+            <div class="m-3 d-flex align-items-center">
+                <img class="img-fluid rounded-circle profile-img-sm" src="/assets/images/f1.jpg">
+                <span class="h6 mb-0 ml-3"><a class="text-success" href="#">Sarah Parker</a></span>
+                <span class="ml-2 hov-scale"><a href><i class="h4 mb-0 text-success fas fa-window-close"></i></a></span>
+            </div>
+        </div>
+    </div>
+</li>
+<hr class="sidebar-divider">
+<li class="nav-item">
+    <a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Quick Actions</span>
+    </a>
+    <div id="collapsePages" class="quick collapse" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header"></h6>
+            <a class="collapse-item" href="#">Profile</a>
+            <a class="collapse-item" href="#">Feed</a>
+            <a class="collapse-item" href="#">Messages</a>
+            <a class="collapse-item" href="#">Help</a>
+            <a class="collapse-item mt-3" href="#">Sign Out</a>
+        </div>
+    </div>
+</li>
