@@ -51,7 +51,7 @@ const loginUser = function(req,res) {
             res.status(201).json({token});
         }
         else {
-            res.status(401).json(info);
+            res.json(info);
         }
     })(req,res);
 }
