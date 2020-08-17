@@ -2,7 +2,6 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
-
 const registerUser = function({body},res) {
     if (
         !body.first_name||
@@ -56,7 +55,12 @@ const loginUser = function(req,res) {
     })(req,res);
 }
 
+const generateFeed = function(req,res) {
+    res.status(200).json({message:"Generating posts for a users feed."});
+}
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    generateFeed
 }

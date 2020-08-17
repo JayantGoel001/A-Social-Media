@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { LocalStorageService } from "./local-storage.service";
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class ApiService {
     private errorHandler(value){
         return value;
     }
-    constructor(private http:HttpClient) { }
+    constructor(private http:HttpClient,private storage:LocalStorageService) { }
     /**
     * makeRequest
     */
@@ -29,12 +30,24 @@ export class ApiService {
         }
         let url = `${this.baseUrl}/${location}`;
         let httpOptions = {};
-        if (type == "get") {
-            return this.http.get(url,httpOptions).toPromise().then(this.successHandler).catch(this.errorHandler);
+        
+        if (requestObject.authorize) {
+            httpOptions = {
+                headers:new HttpHeaders({
+                    'Authorization':`Bearer ${this.storage.getToken()}`
+                })
+            }
         }
 
+        if (type == "get") {
+            return this.http.get(url,httpOptions).toPromise()
+            .then(this.successHandler).catch(this.errorHandler);
+        }
+
+
         if (type == "post") {
-            return this.http.post(url,body,httpOptions).toPromise().then(this.successHandler).catch(this.errorHandler);
+            return this.http.post(url,body,httpOptions).toPromise()
+            .then(this.successHandler).catch(this.errorHandler);
         }
         console.log("Could not make the request.Make Sure a type of GET or Post is Supplied");
     }
