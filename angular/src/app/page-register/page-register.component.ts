@@ -55,6 +55,10 @@ export class PageRegisterComponent implements OnInit {
         }
 
         this.api.makeRequest(requestObject).then((val)=>{
+            if (val.message) {
+                this.formError = val.message;
+            }
+
             console.log(val);
         });
     }

@@ -25,7 +25,10 @@ const registerUser = function({body},res) {
 
     user.save((err,newUser)=>{
         if (err) {
-            res.status(400).json({ message:err });
+            if (err.errmsg && err.errmsg.includes('duplicate key error')) {
+                return res.json({message:"The Provided email is already registered"});
+            }
+            return res.json({message:"Something went Wrong."});
         }
         else {
             res.status(201).json({ message:"New User",user:newUser });
