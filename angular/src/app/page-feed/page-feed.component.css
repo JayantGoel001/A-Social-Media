@@ -1,0 +1,4 @@
+.color-preview { width: 30px; height: 30px; }
+.color-preview.active { transform: scale(1.2); }
+@media (min-width: 1200px) { .w-xl-50 { width: 50% !important; } }
+@media (max-width: 768px) { .theme { width: 100% !important; text-align: center; } }
