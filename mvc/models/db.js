@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-let dbURI = 'mongodb://localhost/A_Social_Media';
+let dbURI = 'mongodb://localhost/A_Social_Media_APP';
 
 
 if (process.env.NODE_ENV === 'production') {

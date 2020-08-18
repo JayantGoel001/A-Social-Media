@@ -43,8 +43,7 @@ const postSchema = new mongoose.Schema({
 const messageSchema = new mongoose.Schema({
     from_id:{
         type:String,
-        required:true,
-        unique:true
+        required:true
     },
     content:[{
         messenger:String,
@@ -53,11 +52,7 @@ const messageSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-    firstname:{
-        type:String,
-        required:true
-    },
-    lastname:{
+    name:{
         type:String,
         required:true
     },
@@ -100,6 +95,7 @@ userSchema.methods.getJwt = function() {
     return jwt.sign({
         _id:this._id,
         email:this.email,
+        name:this.name
     },process.env.JWT_TOKEN);
 }
 
