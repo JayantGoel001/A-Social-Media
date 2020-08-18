@@ -1,1 +1,24 @@
-<p>page-searches works!</p>
+<div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content" class="min-vh-100">
+            <app-topbar></app-topbar>
+            <div class="container-fluid">
+                 <h1 class="h4 mb-4 text-gray-800 text-center text-md-left font-weight-300">Search Results for, <span class="font-weight-700">"Sarah Parker"</span></h1>
+                <div class="row mb-5">
+                    <div class="col-xl-6 col-lg-8">
+                        <app-result-request *ngFor="let number of [1,2,3,4]">
+                        </app-result-request>
+                    </div>
+                    <div class="col-xl-6 d-lg-none d-xl-block" style="margin-top: 14vh;">
+                        <h3 class="display-2 font-weight-800 text-center" style="opacity: .2;">
+                            A Social Media
+                        </h3>
+                        <h2 class="h1 font-weight-400 text-center">
+                            <a routerLink="/feed" href="" class="link text-center text-uppercase">Back to Feed</a>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
