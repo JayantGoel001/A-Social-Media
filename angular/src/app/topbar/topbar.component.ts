@@ -13,11 +13,7 @@ export class TopbarComponent implements OnInit {
     constructor(public auth:AuthService,public router:Router,public storage:LocalStorageService) { }
 
     ngOnInit(): void {
-        let token = this.storage.getToken();
-
-        let name = JSON.parse(atob(token.split(".")[1])).name;
-        this.userName = name;
-
+        this.userName = this.storage.getParsedToken().name;
     }
 
     public query:String = "";

@@ -48,6 +48,13 @@ export class LocalStorageService {
     }
 
     /**
+     * getParsedToken
+     */
+    public getParsedToken() {
+        let token = this.getToken();
+        return JSON.parse(atob(token.split(".")[1]));
+    }
+    /**
      * removeToken
      */
     public removeToken() {
