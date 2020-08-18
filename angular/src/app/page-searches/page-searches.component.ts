@@ -27,7 +27,6 @@ export class PageSearchesComponent implements OnInit {
             authorize:true
         }
         this.api.makeRequest(requestObject).then((val,err)=>{
-            console.log(val);
             this.results = val.results;
         });
 
