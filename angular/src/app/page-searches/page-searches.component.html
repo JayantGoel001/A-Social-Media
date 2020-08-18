@@ -3,10 +3,10 @@
         <div id="content" class="min-vh-100">
             <app-topbar></app-topbar>
             <div class="container-fluid">
-                 <h1 class="h4 mb-4 text-gray-800 text-center text-md-left font-weight-300">Search Results for, <span class="font-weight-700">"Sarah Parker"</span></h1>
+                 <h1 class="h4 mb-4 text-gray-800 text-center text-md-left font-weight-300">Search Results for <span class="font-weight-700">"{{ query }}"</span></h1>
                 <div class="row mb-5">
                     <div class="col-xl-6 col-lg-8">
-                        <app-result-request *ngFor="let number of [1,2,3,4]">
+                        <app-result-request *ngFor="let result of results" [resultRequest]="result">
                         </app-result-request>
                     </div>
                     <div class="col-xl-6 d-lg-none d-xl-block" style="margin-top: 14vh;">
