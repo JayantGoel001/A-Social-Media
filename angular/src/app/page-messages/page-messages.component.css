@@ -1,0 +1,22 @@
+.message { background-color: #F5F5F5 !important; }
+.message-container { max-width: 75%; }
+.message-style {
+    line-height: 300%;
+    background-color: #F5F5F5;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.message:first-of-type { margin-top: 0 !important; }
+.message:last-of-type { margin-bottom: 0 !important; }
+
+.message-window { height: 74vh; }
+
+.message-list, .message-content {
+    height: 74vh;
+    overflow-y: scroll;
+}
+
+@media (max-width: 992px) {
+    .message-list { height: 26vh; }
+}
