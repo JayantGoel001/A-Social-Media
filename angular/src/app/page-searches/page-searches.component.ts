@@ -10,15 +10,15 @@ import { ActivatedRoute } from "@angular/router";
 export class PageSearchesComponent implements OnInit {
 
     constructor(private api:ApiService,private route:ActivatedRoute) { }
-
     ngOnInit() {
         this.subscription = this.route.params.subscribe(params=>{
             this.query = params.query;
             this.getResults();
-        })
+        });
     }
     public results;
     public query = this.route.snapshot.params.query;
+    public subscription;
 
     private getResults(){
         let requestObject = {
