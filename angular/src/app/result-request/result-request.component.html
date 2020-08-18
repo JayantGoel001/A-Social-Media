@@ -6,7 +6,7 @@
         <div class="small">7 Mutual Friends</div>
     </div>
     <div class="ml-auto mr-3 mt-3 align-self-start">
-        <button class="btn btn-sm btn-primary rounded-pill">Add Friend</button>
+        <button class="btn btn-sm btn-primary rounded-pill" (click)=this.api.makeFriendRequest(resultRequest._id);>Add Friend</button>
         <button class="btn btn-sm btn-success rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">Send Message</button>
     </div>
 </div>

@@ -30,7 +30,7 @@ export class ApiService {
         }
         let url = `${this.baseUrl}/${location}`;
         let httpOptions = {};
-        
+
         if (requestObject.authorize) {
             httpOptions = {
                 headers:new HttpHeaders({
@@ -50,5 +50,24 @@ export class ApiService {
             .then(this.successHandler).catch(this.errorHandler);
         }
         console.log("Could not make the request.Make Sure a type of GET or Post is Supplied");
+    }
+
+    /**
+     * makeFriendRequest
+     */
+    public makeFriendRequest(to:String) {
+        let from = this.storage.getParsedToken()._id;
+
+        let requestObject = {
+            location:`users/make-friend-request/${from}/${to}`,
+            type:"POST",
+            authorize:true
+        }
+
+        this.makeRequest(requestObject).then((val)=>{
+            console.log(val);
+
+        })
+
     }
 }

@@ -2,6 +2,16 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
+const containsDuplicate = function(array) {
+    array.sort();
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] == array[i+1]) {
+            return true;
+        }
+    }
+    return false;
+}
+
 const registerUser = function({body},res) {
     if (
         !body.first_name||
@@ -81,6 +91,25 @@ const getSearchResults = function({query,payload},res) {
     });
 }
 
+const makeFriendRequest = function({params},res) {
+    User.findById(params.to,(err,user)=>{
+        if (err) {
+            return res.json({err:err});
+        }
+        if (containsDuplicate([params.from,...user.friend_requests])) {
+            return res.json({message:"Friend Request is already sent."});
+        }
+
+        user.friend_requests.push(params.from);
+        user.save((err,user)=>{
+            if(err){
+                return res.json({error:err});
+            }
+            return res.json({message:"Succesfully sent a Friend Request"});
+        });
+    });
+}
+
 const deleteAllUsers = function(req,res) {
     User.deleteMany({},(err,info)=>{
         if(err){
@@ -90,10 +119,12 @@ const deleteAllUsers = function(req,res) {
     });
 }
 
+
 module.exports = {
     deleteAllUsers,
     registerUser,
     loginUser,
     generateFeed,
-    getSearchResults
+    getSearchResults,
+    makeFriendRequest
 }
