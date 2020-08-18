@@ -10,4 +10,8 @@ router.post("/login",userCtrl.loginUser);
 
 router.get('/generate-feed',middleware.authorize,userCtrl.generateFeed);
 
+router.get('/get-search-results',middleware.authorize,userCtrl.getSearchResults);
+
+router.delete('/all',userCtrl.deleteAllUsers);
+
 module.exports = router;
