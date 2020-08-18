@@ -105,7 +105,7 @@ const makeFriendRequest = function({params},res) {
             if(err){
                 return res.json({error:err});
             }
-            return res.json({message:"Succesfully sent a Friend Request"});
+            return res.statusJson(201,{message:"Succesfully sent a Friend Request"});
         });
     });
 }
