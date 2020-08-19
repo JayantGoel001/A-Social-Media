@@ -140,8 +140,53 @@ const getFriendRequest = function({query},res) {
 }
 
 const resolveFriendRequest = function({query,params},res) {
-    res.json({message:"Resolve Friend request",...query,...params});
+    User.findById(params.to,(err,user)=>{
+        if(err){
+            return res.json({error:err});
+        }
 
+        for (var i = 0; i < user.friend_requests.length; i++) {
+            if (user.friend_requests[i] == params.from) {
+                user.friend_requests.splice(i,1);
+                break;
+            }
+        }
+        let promise = new Promise(function(resolve,reject) {
+            if (query.resolution == "accept") {
+                if (containsDuplicate([params.from,...user.friends])) {
+                    return res.json({message:"Duplicate Error."});
+                }
+                user.friends.push(params.from);
+
+                User.findById(params.from,(err,user)=>{
+                    if(err){
+                        return res.json({error:err});
+                    }
+                    if (containsDuplicate([params.to,...user.friends])) {
+                        return res.json({message:"Duplicate Error."});
+                    }
+                    user.friends.push(params.to);
+                    user.save((err,user)=>{
+                        if(err){
+                            return res.json({error:err});
+                        }
+                        resolve();
+                    });
+                });
+            }else {
+                resolve();
+            }
+        });
+
+        promise.then(()=>{
+            user.save((err,user)=>{
+                if(err){
+                    return res.json({error:err});
+                }
+                res.statusJson(201,{message:"Resolved Friend Request."});
+            })
+        })
+    });
 }
 
 module.exports = {
