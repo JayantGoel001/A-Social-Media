@@ -28,7 +28,7 @@ export class TopbarComponent implements OnInit {
             this.numOfFriendsRequests = data.friend_requests.length;
         });
         let requestObject = {
-            location:`users/${this.userId}`,
+            location:`users/get-user-data/${this.userId}`,
             type:"GET",
             authorize:true
         }
