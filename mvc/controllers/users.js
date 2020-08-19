@@ -119,6 +119,14 @@ const deleteAllUsers = function(req,res) {
     });
 }
 
+const getUserData = function({params},res) {
+    User.findById(params.userid,(err,user)=>{
+        if(err){
+            return res.json({error:err});
+        }
+        res.statusJson(200,{user:user});
+    });
+}
 
 module.exports = {
     deleteAllUsers,
@@ -126,5 +134,6 @@ module.exports = {
     loginUser,
     generateFeed,
     getSearchResults,
-    makeFriendRequest
+    makeFriendRequest,
+    getUserData
 }
