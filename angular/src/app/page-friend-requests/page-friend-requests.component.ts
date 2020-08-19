@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService } from "../user-data.service";
 import { ApiService } from '../api.service';
+import { Title } from "@angular/platform-browser";
+
 @Component({
     selector: 'app-page-friend-requests',
     templateUrl: './page-friend-requests.component.html',
@@ -10,13 +12,13 @@ export class PageFriendRequestsComponent implements OnInit {
 
     constructor(
         private centralUserData:UserDataService,
-        private api:ApiService
+        private api:ApiService,private title:Title
     ) { }
 
     ngOnInit() {
+        this.title.setTitle("Friend Request");
         this.centralUserData.getUserData.subscribe((data)=>{
             this.userData = data;
-            console.log(this.userData);
 
             let array = JSON.stringify(data.friend_requests);
 
