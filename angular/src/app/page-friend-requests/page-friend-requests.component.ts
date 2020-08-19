@@ -38,4 +38,15 @@ export class PageFriendRequestsComponent implements OnInit {
 
     public userData:Object = {};
     public friendRequests = [];
+
+    private updateFriendRequests(id) {
+        console.log("Remove this",id);
+        let arr = this.friendRequests;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i]._id == id) {
+                arr.splice(i,1);
+                break;
+            }
+        }
+    }
 }

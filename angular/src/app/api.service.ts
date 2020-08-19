@@ -85,6 +85,13 @@ export class ApiService {
             }
 
             this.makeRequest(requestObject).then((val)=>{
+                if (val.statusCode === 201) {
+                    let resolutioned = (resolution == "accept")? "accepted": "declined";
+                    this.alert.onAlertEvent.emit(`Succesfully ${resolutioned} friend request.`);
+                }
+                else{
+                    this.alert.onAlertEvent.emit(`Somethingwent Wrong and we could not handle your friend request.`);
+                }
                 resolve(val);
             });
         });
