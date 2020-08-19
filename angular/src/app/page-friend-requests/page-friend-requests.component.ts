@@ -27,10 +27,15 @@ export class PageFriendRequestsComponent implements OnInit {
             }
 
             this.api.makeRequest(requestObject).then((val)=>{
-                console.log(val);
+                if (val.statusCode === 200) {
+                    this.friendRequests = val.users;
+                    console.log(this.friendRequests);
+
+                }
             });
         });
      }
 
     public userData:Object = {};
+    public friendRequests = [];
 }

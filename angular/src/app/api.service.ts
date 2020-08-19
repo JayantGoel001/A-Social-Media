@@ -15,7 +15,8 @@ export class ApiService {
     private errorHandler(value){
         return value;
     }
-    constructor(private http:HttpClient,private storage:LocalStorageService,
+    constructor(private http:HttpClient,
+                private storage:LocalStorageService,
                 private alert:AlertsService) { }
 
     public makeRequest(requestObject):any {
@@ -69,6 +70,23 @@ export class ApiService {
             else{
                 this.alert.onAlertEvent.emit("Something went wrong. We could not send friend request.Perhaps you already sent a friend request to this user.");
             }
+        });
+    }
+
+    public resolveFriendRequest(resolution,id){
+        let to = this.storage.getParsedToken()._id;
+
+        return new Promise((resolve,reject)=>{
+            let requestObject = {
+                location:
+                `users/resolve-friend-request/${id}/${to}?resolution=${resolution}`,
+                type:"POST",
+                authorize:true
+            }
+
+            this.makeRequest(requestObject).then((val)=>{
+                resolve(val);
+            });
         });
     }
 }
