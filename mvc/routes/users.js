@@ -17,6 +17,8 @@ router.get('/get-friend-requests',middleware.authorize,userCtrl.getFriendRequest
 
 router.get('/get-user-data/:userid',middleware.authorize,userCtrl.getUserData);
 
+router.post('/resolve-friend-request/:from/:to',userCtrl.resolveFriendRequest);
+
 router.delete('/all',userCtrl.deleteAllUsers);
 
 module.exports = router;
