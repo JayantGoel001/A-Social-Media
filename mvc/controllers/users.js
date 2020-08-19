@@ -128,6 +128,13 @@ const getUserData = function({params},res) {
     });
 }
 
+const getFriendRequest = function({query},res) {
+    let friendRequests = JSON.parse(query.friend_requests);
+    return res.json({
+        message:"Getting friend requests.",friend_requests:friendRequests
+    });
+}
+
 module.exports = {
     deleteAllUsers,
     registerUser,
@@ -135,5 +142,6 @@ module.exports = {
     generateFeed,
     getSearchResults,
     makeFriendRequest,
-    getUserData
+    getUserData,
+    getFriendRequest
 }

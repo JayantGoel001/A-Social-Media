@@ -8,7 +8,8 @@ import { ApiService } from "../api.service";
 })
 export class ResultRequestComponent implements OnInit {
     @Input() resultRequest;
-    
+    @Input() use;
+
     constructor(public api:ApiService) { }
 
     ngOnInit(): void {
