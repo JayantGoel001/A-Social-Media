@@ -5,13 +5,19 @@
         <h6>Montreal, Canada</h6>
         <div class="small">7 Mutual Friends</div>
     </div>
-    <div *ngIf="use == 'result'" class="ml-auto mr-3 mt-3 align-self-start">
-        <button class="btn btn-sm btn-primary rounded-pill" (click)=this.api.makeFriendRequest(resultRequest._id);>Add Friend</button>
+    <div class="ml-auto mr-3 mt-3 align-self-start">
+        <button *ngIf = "use == 'result' && !haveSentFriendRequest && !haveReceivedFriendRequest && !isFriend" class="btn btn-sm btn-primary rounded-pill" (click)="this.api.makeFriendRequest(resultRequest._id); haveSentFriendRequest=true;">Add Friend</button>
+
+        <button *ngIf ="haveSentFriendRequest" class="btn btn-sm btn-warning rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">Friend Request Pending</button>
+
+        <button *ngIf ="isFriend" class="btn btn-sm btn-info rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">View Profile</button>
+
+        <button *ngIf ="use == 'request' || haveReceivedFriendRequest" class="btn btn-sm btn-primary rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)="Accept(); haveReceivedFriendRequest=false
+        ; isFriend=true"> Accept</button>
+
         <button class="btn btn-sm btn-success rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">Send Message</button>
-    </div>
-    <div *ngIf="use == 'request'" class="ml-auto mr-3 mt-3 align-self-start">
-        <button class="btn btn-sm btn-primary rounded-pill" (click)=Accept();>Accept</button>
-        <button class="btn btn-sm btn-success rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">Send Message</button>
-        <button class="btn btn-sm btn-danger rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)=Decline()>Decline</button>
+
+        <button *ngIf ="use == 'request' || haveReceivedFriendRequest" class="btn btn-sm btn-danger rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)="Decline(); haveReceivedFriendRequest=false">Decline</button>
+
     </div>
 </div>
