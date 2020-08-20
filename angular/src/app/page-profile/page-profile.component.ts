@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Title } from "@angular/platform-browser";
+import { DOCUMENT } from "@angular/common";
+
 
 @Component({
     selector: 'app-page-profile',
@@ -8,10 +10,11 @@ import { Title } from "@angular/platform-browser";
 })
 export class PageProfileComponent implements OnInit {
 
-    constructor(private title:Title) { }
+    constructor(private title:Title,@Inject(DOCUMENT) private document:Document) { }
 
     ngOnInit(): void {
         this.title.setTitle("Your Profile");
+        this.document.getElementById("sidebarToggleTop").classList.add("d-none");
     }
 
 }
