@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { LocalStorageService } from "./local-storage.service";
-import { AlertsService } from "./alerts.service";
+import { EventEmitterService } from "./event-emitter.service";
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +17,7 @@ export class ApiService {
     }
     constructor(private http:HttpClient,
                 private storage:LocalStorageService,
-                private alert:AlertsService) { }
+                private events:EventEmitterService) { }
 
     public makeRequest(requestObject):any {
         let type = requestObject.type.toLowerCase();
@@ -65,10 +65,10 @@ export class ApiService {
         this.makeRequest(requestObject).then((val)=>{
             console.log(val);
             if (val.statusCode === 201) {
-                this.alert.onAlertEvent.emit("Succesfully sent a friend request.");
+                this.events.onAlertEvent.emit("Succesfully sent a friend request.");
             }
             else{
-                this.alert.onAlertEvent.emit("Something went wrong. We could not send friend request.Perhaps you already sent a friend request to this user.");
+                this.events.onAlertEvent.emit("Something went wrong. We could not send friend request.Perhaps you already sent a friend request to this user.");
             }
         });
     }
@@ -86,11 +86,12 @@ export class ApiService {
 
             this.makeRequest(requestObject).then((val)=>{
                 if (val.statusCode === 201) {
-                    let resolutioned = (resolution == "accept")? "accepted": "declined";
-                    this.alert.onAlertEvent.emit(`Succesfully ${resolutioned} friend request.`);
+                    this.events.updateNumberOfFriendRequestsEvent.emit()
+                    let resolutioned = (resolution == "accept")? "Accepted": "Declined";
+                    this.events.onAlertEvent.emit(`Succesfully ${resolutioned} friend request.`);
                 }
                 else{
-                    this.alert.onAlertEvent.emit(`Somethingwent Wrong and we could not handle your friend request.`);
+                    this.events.onAlertEvent.emit(`Somethingwent Wrong and we could not handle your friend request.`);
                 }
                 resolve(val);
             });
