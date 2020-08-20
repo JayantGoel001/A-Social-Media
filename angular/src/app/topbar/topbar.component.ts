@@ -29,7 +29,9 @@ export class TopbarComponent implements OnInit {
         });
         this.centralUserData.getUserData.subscribe((data)=>{
             this.userData = data;
-            this.numOfFriendsRequests = data.friend_requests.length;
+            if (data) {
+                this.numOfFriendsRequests = data.friend_requests.length;
+            }
         });
         let requestObject = {
             location:`users/get-user-data/${this.userId}`,

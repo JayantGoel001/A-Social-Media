@@ -69,8 +69,50 @@ const loginUser = function(req,res) {
     })(req,res);
 }
 
-const generateFeed = function(req,res) {
-    res.status(200).json({message:"Generating posts for a users feed."});
+const generateFeed = function({payload},res) {
+    const posts = [];
+    const maxAmountOfPosts = 48;
+    function addNameToPost(array,name) {
+        for(item of array){
+            item.name = name;
+        }
+    }
+
+    let myPost = new Promise(function(resolve,reject) {
+        User.findById(payload._id,"name posts friends",{lean:true},(err,user)=>{
+            if(err){
+                return res.json({error:err});
+            }
+            addNameToPost(user.posts,user.name);
+            posts.push(...user.posts);
+            resolve(user.friends);
+        });
+    });
+
+    let myFriendPost = myPost.then((friendArray)=>{
+        return new Promise(function(resolve,reject) {
+            User.find({'_id':{$in:friendArray}},
+            "name posts",{lean:true},(err,users)=>{
+                if(err){
+                    return res.json({error:err});
+                }
+                for(user of users)
+                {
+                    addNameToPost(user.posts,user.name);
+                    posts.push(...user.posts);
+                }
+                resolve();
+            });
+        });
+    });
+
+    console.log("KO");
+    myPost.then(()=>{
+        posts.sort((a,b)=>(a.date>b.date)?-1:1);
+        posts.slice(0,maxAmountOfPosts);
+        res.status(200).json({posts:posts});
+
+    });
 }
 
 const getSearchResults = function({query,payload},res) {
@@ -185,9 +227,8 @@ const resolveFriendRequest = function({query,params},res) {
 const createPost = function({body,payload},res) {
 
     if (!body.content || !body.theme) {
-        return res.statusJson(400,
-            {message:"Insufficient data sent with the request."});
-        }
+        return res.statusJson(400,{message:"Insufficient data sent with the request."});
+    }
 
     let userId = payload._id;
     const post = new Post();
@@ -207,37 +248,37 @@ const createPost = function({body,payload},res) {
             return res.statusJson(201,{message:"Create Post"});
         });
     });
-    
+
 }
 
-    const deleteAllUsers = function(req,res) {
-        User.deleteMany({},(err,info)=>{
-            if(err){
-                return res.send({error:err});
-            }
-            return res.json({message:"Deleted All Users",info:info});
-        });
-    }
+const deleteAllUsers = function(req,res) {
+    User.deleteMany({},(err,info)=>{
+        if(err){
+            return res.send({error:err});
+        }
+        return res.json({message:"Deleted All Users",info:info});
+    });
+}
 
-    const getAllUsers = function(req,res) {
-        User.find((err,users)=>{
-            if(err){
-                return res.send({error:err});
-            }
-            return res.json({users:users});
-        });
-    }
+const getAllUsers = function(req,res) {
+    User.find((err,users)=>{
+        if(err){
+            return res.send({error:err});
+        }
+        return res.json({users:users});
+    });
+}
 
-    module.exports = {
-        deleteAllUsers,
-        getAllUsers,
-        registerUser,
-        loginUser,
-        generateFeed,
-        getSearchResults,
-        makeFriendRequest,
-        getUserData,
-        getFriendRequest,
-        resolveFriendRequest,
-        createPost
-    }
+module.exports = {
+    deleteAllUsers,
+    getAllUsers,
+    registerUser,
+    loginUser,
+    generateFeed,
+    getSearchResults,
+    makeFriendRequest,
+    getUserData,
+    getFriendRequest,
+    resolveFriendRequest,
+    createPost
+}
