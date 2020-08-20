@@ -105,13 +105,11 @@ const generateFeed = function({payload},res) {
             });
         });
     });
-
-    console.log("KO");
     myPost.then(()=>{
         posts.sort((a,b)=>(a.date>b.date)?-1:1);
         posts.slice(0,maxAmountOfPosts);
-        res.status(200).json({posts:posts});
 
+        res.status(200).json({posts:posts});
     });
 }
 
