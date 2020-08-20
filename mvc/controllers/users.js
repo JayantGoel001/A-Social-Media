@@ -1,6 +1,7 @@
 const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Post = mongoose.model('Post');
 
 const containsDuplicate = function(array) {
     array.sort();
@@ -189,6 +190,33 @@ const resolveFriendRequest = function({query,params},res) {
     });
 }
 
+const createPost = function({body,payload},res) {
+    let userid = payload._id;
+    return res.statusJson(201,{message:"Created Post"});
+    if (!body.content || !body.theme) {
+        return res.statusJson(400,{message:"Insufficient data sent with the request."});
+
+        let userid = payload._id;
+        const post = new Post();
+
+        post.theme = body.theme;
+        post.content = body.content;
+
+        User.findById(userid,(err,user)=>{
+            if(err){
+                return res.json({error:err});
+            }
+            user.posts.push(post);
+            user.save((err)=>{
+                if(err){
+                    return res.json({error:err});
+                }
+                return res.statusJson(201,{message:"Create Post"});
+            });
+        });
+    }
+}
+
 module.exports = {
     deleteAllUsers,
     registerUser,
@@ -198,5 +226,6 @@ module.exports = {
     makeFriendRequest,
     getUserData,
     getFriendRequest,
-    resolveFriendRequest
+    resolveFriendRequest,
+    createPost
 }
