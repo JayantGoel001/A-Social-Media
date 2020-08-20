@@ -27,7 +27,11 @@ export class PageFeedComponent implements OnInit {
         }
 
         this.api.makeRequest(requestObject).then((val)=>{
-            console.log(val);
+            this.posts.col1 = val.posts.filter((val,i) => i%4 == 0);
+            this.posts.col2 = val.posts.filter((val,i) => i%4 == 1);
+            this.posts.col3 = val.posts.filter((val,i) => i%4 == 2);
+            this.posts.col4 = val.posts.filter((val,i) => i%4 == 3);
+            console.log(this.posts);
         });
     }
 
@@ -36,7 +40,12 @@ export class PageFeedComponent implements OnInit {
      */
     public newPostContent:String = "";
     public newPostTheme:String = this.storage.getPostTheme() || "primary";
-
+    public posts = {
+        col1:[""],
+        col2:[""],
+        col3:[""],
+        col4:[""],
+    }
     /**
      * changeTheme
      */
