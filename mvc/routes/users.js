@@ -23,5 +23,6 @@ router.post('/resolve-friend-request/:from/:to',middleware.authorize,
 router.post('/create-post',middleware.authorize,userCtrl.createPost);
 
 router.delete('/all',userCtrl.deleteAllUsers);
+router.get('/all',userCtrl.getAllUsers);
 
 module.exports = router;

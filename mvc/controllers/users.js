@@ -111,14 +111,6 @@ const makeFriendRequest = function({params},res) {
     });
 }
 
-const deleteAllUsers = function(req,res) {
-    User.deleteMany({},(err,info)=>{
-        if(err){
-            return res.send({error:err});
-        }
-        return res.json({message:"Deleted All Users",info:info});
-    });
-}
 
 const getUserData = function({params},res) {
     User.findById(params.userid,(err,user)=>{
@@ -191,18 +183,18 @@ const resolveFriendRequest = function({query,params},res) {
 }
 
 const createPost = function({body,payload},res) {
-    let userid = payload._id;
-    return res.statusJson(201,{message:"Created Post"});
     if (!body.content || !body.theme) {
-        return res.statusJson(400,{message:"Insufficient data sent with the request."});
+        return res.statusJson(400,
+            {message:"Insufficient data sent with the request."});
+        }
 
-        let userid = payload._id;
+        let userId = payload._id;
         const post = new Post();
 
         post.theme = body.theme;
         post.content = body.content;
 
-        User.findById(userid,(err,user)=>{
+        User.findById(userId,(err,user)=>{
             if(err){
                 return res.json({error:err});
             }
@@ -214,11 +206,29 @@ const createPost = function({body,payload},res) {
                 return res.statusJson(201,{message:"Create Post"});
             });
         });
-    }
+}
+
+const deleteAllUsers = function(req,res) {
+    User.deleteMany({},(err,info)=>{
+        if(err){
+            return res.send({error:err});
+        }
+        return res.json({message:"Deleted All Users",info:info});
+    });
+}
+
+const getAllUsers = function(req,res) {
+    User.find((err,users)=>{
+        if(err){
+            return res.send({error:err});
+        }
+        return res.json({users:users});
+    });
 }
 
 module.exports = {
     deleteAllUsers,
+    getAllUsers,
     registerUser,
     loginUser,
     generateFeed,
