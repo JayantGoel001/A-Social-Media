@@ -183,59 +183,61 @@ const resolveFriendRequest = function({query,params},res) {
 }
 
 const createPost = function({body,payload},res) {
+
     if (!body.content || !body.theme) {
         return res.statusJson(400,
             {message:"Insufficient data sent with the request."});
         }
 
-        let userId = payload._id;
-        const post = new Post();
+    let userId = payload._id;
+    const post = new Post();
 
-        post.theme = body.theme;
-        post.content = body.content;
+    post.theme = body.theme;
+    post.content = body.content;
 
-        User.findById(userId,(err,user)=>{
+    User.findById(userId,(err,user)=>{
+        if(err){
+            return res.json({error:err});
+        }
+        user.posts.push(post);
+        user.save((err)=>{
             if(err){
                 return res.json({error:err});
             }
-            user.posts.push(post);
-            user.save((err)=>{
-                if(err){
-                    return res.json({error:err});
-                }
-                return res.statusJson(201,{message:"Create Post"});
-            });
+            return res.statusJson(201,{message:"Create Post"});
         });
-}
-
-const deleteAllUsers = function(req,res) {
-    User.deleteMany({},(err,info)=>{
-        if(err){
-            return res.send({error:err});
-        }
-        return res.json({message:"Deleted All Users",info:info});
     });
+    
 }
 
-const getAllUsers = function(req,res) {
-    User.find((err,users)=>{
-        if(err){
-            return res.send({error:err});
-        }
-        return res.json({users:users});
-    });
-}
+    const deleteAllUsers = function(req,res) {
+        User.deleteMany({},(err,info)=>{
+            if(err){
+                return res.send({error:err});
+            }
+            return res.json({message:"Deleted All Users",info:info});
+        });
+    }
 
-module.exports = {
-    deleteAllUsers,
-    getAllUsers,
-    registerUser,
-    loginUser,
-    generateFeed,
-    getSearchResults,
-    makeFriendRequest,
-    getUserData,
-    getFriendRequest,
-    resolveFriendRequest,
-    createPost
-}
+    const getAllUsers = function(req,res) {
+        User.find((err,users)=>{
+            if(err){
+                return res.send({error:err});
+            }
+            return res.json({users:users});
+        });
+    }
+
+    module.exports = {
+        deleteAllUsers,
+        getAllUsers,
+        registerUser,
+        loginUser,
+        generateFeed,
+        getSearchResults,
+        makeFriendRequest,
+        getUserData,
+        getFriendRequest,
+        resolveFriendRequest,
+        createPost
+    }
