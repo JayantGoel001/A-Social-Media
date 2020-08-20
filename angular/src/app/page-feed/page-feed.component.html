@@ -16,19 +16,27 @@
                     <div class="collapse mb-5" id="create-post">
                         <div class="mt-3 ml-4 d-flex align-items-center flex-wrap flex-md-nowrap justify-content-center justify-content-md-start">
                             <span class="theme h5 m-0 mr-3 d-inline-block">Color:</span>
-                            <span class="bg-primary mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block"></span>
-                            <span class="bg-success mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block"></span>
-                            <span class="bg-info mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block"></span>
-                            <span class="bg-warning mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block"></span>
-                            <span class="bg-danger mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block"></span>
-                            <span class="bg-purple active mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block"></span>
-                            <span class="bg-pink mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block"></span>
-                            <span class="bg-orange mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block"></span>
+                            <span [ngClass] = "{'active':newPostTheme=='primary'}" class="bg-primary mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('primary');"></span>
+
+                            <span [ngClass] = "{'active':newPostTheme=='success'}" class="bg-success mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('success');"></span>
+
+                            <span [ngClass] = "{'active':newPostTheme=='info'}" class="bg-info mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('info');"></span>
+
+                            <span [ngClass] = "{'active':newPostTheme=='warning'}" class="bg-warning mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('warning');"></span>
+
+                            <span [ngClass] = "{'active':newPostTheme=='danger'}" class="bg-danger mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('danger');"></span>
+
+                            <span [ngClass] = "{'active':newPostTheme=='purple'}" class="bg-purple mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('purple');"></span>
+
+                            <span [ngClass] = "{'active':newPostTheme=='pink'}" class="bg-pink mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('pink');"></span>
+
+                            <span [ngClass] = "{'active':newPostTheme=='orange'}" class="bg-orange mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('orange');"></span>
+
                         </div>
 
                         <form class="mt-3 w-100" action="" method="post">
-                            <textarea class="text-white-placeholder h5 p-3 w-100 rounded bg-purple text-white" name="content" rows="8" cols="80" placeholder="Tell us what's up." spellcheck="false" required></textarea>
-                            <input type="submit" class="w-50 mx-auto d-block mx-md-0 rounded-pill hov-scale py-1 px-3 btn btn-lg bg-purple text-white" value="Create Post">
+                            <textarea [ngClass]="'bg-'+ newPostTheme" class="text-white-placeholder h5 p-3 w-100 rounded text-white" name="content" rows="8" cols="80" placeholder="Tell us what's up." spellcheck="false" required></textarea>
+                            <input [ngClass]="'bg-'+ newPostTheme" type="submit" class="w-50 mx-auto d-block mx-md-0 rounded-pill hov-scale py-1 px-3 btn btn-lg text-white" value="Create Post">
                         </form>
                     </div>
                 </div>
