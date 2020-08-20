@@ -20,15 +20,13 @@ export class PageSearchesComponent implements OnInit {
     ngOnInit() {
         this.title.setTitle("Search Page");
         this.document.getElementById("sidebarToggleTop").classList.add("d-none");
-        this.subscription = this.route.params.subscribe(params=>{
-            this.query = params.query;
-            this.centralUserData.getUserData.subscribe((data)=>{
+        this.centralUserData.getUserData.subscribe((data)=>{
+            this.subscription = this.route.params.subscribe(params=>{
+                this.query = params.query;
                 this.user = data;
-
                 this.getResults();
             });
         });
-
     }
     public results;
     public query = this.route.snapshot.params.query;
