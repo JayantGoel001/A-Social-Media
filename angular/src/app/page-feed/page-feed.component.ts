@@ -31,7 +31,6 @@ export class PageFeedComponent implements OnInit {
             this.posts.col2 = val.posts.filter((val,i) => i%4 == 1);
             this.posts.col3 = val.posts.filter((val,i) => i%4 == 2);
             this.posts.col4 = val.posts.filter((val,i) => i%4 == 3);
-            console.log(this.posts);
         });
     }
 
@@ -61,7 +60,6 @@ export class PageFeedComponent implements OnInit {
         if (this.newPostContent.length==0) {
             return this.events.onAlertEvent.emit("No Content For Your Post was Provided.");
         }
-        console.log(this.newPostContent);
 
         let requestObject = {
             location:"users/create-post",
@@ -74,7 +72,6 @@ export class PageFeedComponent implements OnInit {
         }
 
         this.api.makeRequest(requestObject).then((val)=>{
-            console.log(val);
             this.newPostContent = "";
         })
     }
