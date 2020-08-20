@@ -53,5 +53,20 @@ export class PageFeedComponent implements OnInit {
             return this.events.onAlertEvent.emit("No Content For Your Post was Provided.");
         }
         console.log(this.newPostContent);
+
+        let requestObject = {
+            location:"users/create-post",
+            type:"POST",
+            authorize:true,
+            body:{
+                theme:this.newPostTheme,
+                content:this.newPostContent
+            }
+        }
+
+        this.api.makeRequest(requestObject).then((val)=>{
+            console.log(val);
+            this.newPostContent = "";
+        })
     }
 }
