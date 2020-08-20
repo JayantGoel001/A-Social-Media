@@ -76,7 +76,7 @@ const getSearchResults = function({query,payload},res) {
     if (!query.query) {
         return res.json({err:"Missing A Query."});
     }
-    User.find({ name: { $regex : query.query, $options: "i" }},"name",(err,results)=>{
+    User.find({ name: { $regex : query.query, $options: "i" }},"name friends friend_requests",(err,results)=>{
         if(err){ return res.json({err:err}); }
 
         results = results.slice(0,20);

@@ -16,6 +16,15 @@ export class ResultRequestComponent implements OnInit {
                 public storage:LocalStorageService) { }
 
     ngOnInit(): void {
+        if (this.resultRequest.haveSentFriendRequest) {
+            this.haveSentFriendRequest = true;
+        }
+        if (this.resultRequest.haveReceivedFriendRequest) {
+            this.haveReceivedFriendRequest = true;
+        }
+        if (this.resultRequest.isFriend) {
+            this.isFriend = true;
+        }
     }
 
     /**
@@ -41,5 +50,10 @@ export class ResultRequestComponent implements OnInit {
     private updateRequest(){
         this.resultRequestChange.emit(this.resultRequest._id);
     }
+
+    public haveSentFriendRequest:boolean = false;
+    public haveReceivedFriendRequest:boolean = false;
+    public isFriend:boolean = false;
+
 
 }
