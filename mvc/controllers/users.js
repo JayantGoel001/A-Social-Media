@@ -105,9 +105,9 @@ const generateFeed = function({payload},res) {
             });
         });
     });
-    myPost.then(()=>{
+    myFriendPost.then(()=>{
         posts.sort((a,b)=>(a.date>b.date)?-1:1);
-        posts.slice(0,maxAmountOfPosts);
+        posts.slice(maxAmountOfPosts);
 
         res.status(200).json({posts:posts});
     });
