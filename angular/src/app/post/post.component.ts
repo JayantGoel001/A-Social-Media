@@ -10,7 +10,22 @@ export class PostComponent implements OnInit {
     constructor() { }
 
     ngOnInit(): void {
+        function removeLeadingNumber(str) {
+            function isNumber(n) {
+                n = Number(n);
+                if (!isNan(n)) {
+                    return true;
+                }
+            }
 
+            if (str && isNumber(str[0])) {
+                str = removeLeadingNumber(str.substr(1));
+            }
+            return str;
+        }
+
+        this.fakeId = removeLeadingNumber(this.post._id);
     }
+    public fakeId:String = "fakeid";
 
 }
