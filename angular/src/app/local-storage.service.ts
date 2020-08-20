@@ -8,6 +8,7 @@ export class LocalStorageService {
     constructor() { }
 
     tokenName = "--token-ASM";
+    postThemeName = "--post-theme-ASM";
     /**
      * set
      */
@@ -59,5 +60,19 @@ export class LocalStorageService {
      */
     public removeToken() {
         localStorage.removeItem(this.tokenName);
+    }
+
+    /**
+     * setPostTheme
+     */
+    public setPostTheme(theme) {
+        this.set(this.postThemeName,theme);
+    }
+
+    /**
+     * getPostTheme
+     */
+    public getPostTheme() {
+        return this.get(this.postThemeName);
     }
 }
