@@ -99,6 +99,15 @@ export class PostComponent implements OnInit {
         }
         this.api.makeRequest(requestObject).then((val)=>{
             console.log(val);
+            if (val.statusCode == 201) {
+                let newComment ={
+                    ...val.comment,
+                    commenter_name:val.commenter.name,
+                    commenter_image:val.commenter.profile_image
+                }
+                this.post.comments.push(newComment);
+                this.comment = "";
+            }
         })
 
     }

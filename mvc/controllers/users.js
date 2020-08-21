@@ -267,6 +267,7 @@ const createPost = function({body,payload},res) {
         }
         let newPosts = post.toObject();
         newPosts.name = payload.name;
+        newPosts.ownerid = payload._id;
         user.posts.push(post);
         user.save((err)=>{
             if(err){
@@ -315,7 +316,15 @@ const postCommentOnPost = function({body,payload,params},res) {
             if(err){
                 return res.json({error:err});
             }
-            res.statusJson(201,{message:"POST comment",comment:comment});
+            User.findById(payload._id,"name profile_image",(err,user)=>{
+                if(err){
+                    return res.json({error:err});
+                }
+                res.statusJson(201,{
+                    message:"POST comment",
+                    comment:comment,
+                    commenter:user});
+            });
         });
     });
 }
