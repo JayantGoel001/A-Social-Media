@@ -1,4 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
+import { ApiService } from "../api.service";
+import { LocalStorageService } from "../local-storage.service";
 
 @Component({
     selector: 'app-post',
@@ -7,7 +9,7 @@ import { Component, OnInit,Input } from '@angular/core';
 })
 export class PostComponent implements OnInit {
     @Input() post;
-    constructor() { }
+    constructor(private api:ApiService,private storage:LocalStorageService) { }
 
     ngOnInit(): void {
         function removeLeadingNumber(str) {
@@ -43,6 +45,11 @@ export class PostComponent implements OnInit {
         if (this.post.content.length<5) {
             this.fontSize = 62;
         }
+
+        this.userid = this.storage.getParsedToken()._id;
+        if (this.post.likes.includes(this.userid)) {
+            this.liked = true;
+        }
     }
 
     public fakeId:String = "fakeid";
@@ -53,6 +60,24 @@ export class PostComponent implements OnInit {
      * likeButtonClicked
      */
     public likeButtonClicked(postid) {
+        let requestObject = {
+            location:`users/like-unlike/${this.post.ownerid}/${this.post._id}`,
+            type:"POST",
+            authorize:true
+        }
 
+        this.api.makeRequest(requestObject).then((val)=>{
+            if (this.post.likes.includes(this.userid)) {
+                this.post.likes.splice(this.post.likes.indexOf(this.userid),1);
+                this.liked = false;
+            }
+            else{
+                this.post.likes.push(this.userid);
+                this.liked = true;
+            }
+        })
     }
+
+    public liked :Boolean = false;
+    public userid :String = "";
 }

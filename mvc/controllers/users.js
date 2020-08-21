@@ -73,10 +73,11 @@ const loginUser = function(req,res) {
 const generateFeed = function({payload},res) {
     const posts = [];
     const maxAmountOfPosts = 48;
-    function addNameAndAgoToPost(array,name) {
+    function addNameAndAgoToPost(array,name,ownerid) {
         for(item of array){
             item.name = name;
             item.ago = timeAgo.ago(item.date);
+            item.ownerid = ownerid;
         }
     }
 
@@ -85,7 +86,7 @@ const generateFeed = function({payload},res) {
             if(err){
                 return res.json({error:err});
             }
-            addNameAndAgoToPost(user.posts,user.name);
+            addNameAndAgoToPost(user.posts,user.name,user._id);
             posts.push(...user.posts);
             resolve(user.friends);
         });
@@ -100,7 +101,7 @@ const generateFeed = function({payload},res) {
                 }
                 for(user of users)
                 {
-                    addNameAndAgoToPost(user.posts,user.name);
+                    addNameAndAgoToPost(user.posts,user.name,user._id);
                     posts.push(...user.posts);
                 }
                 resolve();
@@ -253,6 +254,27 @@ const createPost = function({body,payload},res) {
 
 }
 
+const likeUnlike = function({payload,params},res) {
+    User.findById(params.ownerid,(err,user)=>{
+        if(err){
+            return res.json({error:err});
+        }
+        const posts = user.posts.id(params.postid);
+        if (posts.likes.includes(payload._id)) {
+            posts.likes.splice(posts.likes.indexOf(payload._id),1);
+        }
+        else {
+            posts.likes.push(payload._id);
+        }
+        user.save((err,user)=>{
+            if(err){
+                return res.json({error:err});
+            }
+            res.statusJson(201,{message:"Like Or Unlike a post..."});
+        })
+    })
+}
+
 const deleteAllUsers = function(req,res) {
     User.deleteMany({},(err,info)=>{
         if(err){
@@ -282,5 +304,6 @@ module.exports = {
     getUserData,
     getFriendRequest,
     resolveFriendRequest,
-    createPost
+    createPost,
+    likeUnlike
 }
