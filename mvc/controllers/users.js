@@ -135,8 +135,7 @@ const generateFeed = function({payload},res) {
         posts.slice(maxAmountOfPosts);
 
         addCommentDetails(posts).then((posts)=>{
-            console.log(posts.comments);
-            res.statusJson(200,{posts:posts});
+            res.statusJson(200,{posts:posts.slice(0,maxAmountOfPosts)});
         });
     });
 }

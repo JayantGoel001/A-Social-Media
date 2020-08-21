@@ -449,6 +449,42 @@ let fakePosts = {
     ]
 }
 
+const createFakePosts = function(user, amountOfPosts) {
+    function generateContent() {
+        if(getRandom(0, 100) > 50) {
+            let index = getRandom(0, fakePosts.hardcodedPosts.length - 1);
+            var content = fakePosts.hardcodedPosts[index];
+        } else {
+            let index = getRandom(0, fakePosts.lorems.length - 1);
+            var content = fakePosts.lorems[index];
+        }
+
+        return content;
+    }
+
+    function minutesAgo(n) {
+        let date = new Date();
+        date.setMinutes(date.getMinutes() - n);
+        return date;
+    }
+
+
+    let themes = ["primary", "info", "success", "warning", "danger", "purple", "pink", "orange"];
+    let posts = [];
+
+    for(let i = 0; i < amountOfPosts; i++) {
+        let post = new Post();
+        post.date = minutesAgo(getRandom(1, 2500));
+        post.content = generateContent();
+        post.theme = themes[getRandom(0, themes.length - 1)];
+        posts.push(post);
+    }
+
+    user.posts.push(...posts);
+    return user;
+}
+
+
 const getRandom = function(min,max){
     return Math.floor(Math.random()*(max - min)) + min;
 }
@@ -469,10 +505,57 @@ const registerFakeUser = function(gender, email){
         user.email = email;
         user.profile_image = email;
         user.setPassword("f");
-        // user = createFakePosts(user, getRandom(8, 16));
+        user = createFakePosts(user, getRandom(8, 16));
         user.save((err, user) => {
             if(err) { reject(); return res.json({err: err}) }
             resolve(user);
+        });
+    });
+}
+const makeFriends = function(users) {
+    return new Promise(function(resolve, reject) {
+        function loopThroughUsers(users) {
+            function addEachOther(user1, user2) {
+                function addFriend(user1, user2) {
+                    return new Promise(function(resolve, reject) {
+                        User.findById(user1, (err, user) => {
+                            if(err) { return reject("Error"); }
+                            user.friends.push(user2);
+                            user.save((err) => {
+                                if(err) { return reject("Error"); }
+                                resolve();
+                            });
+                        });
+                    });
+                }
+                return new Promise(function(resolve, reject) {
+                    let p1 = addFriend(user1, user2);
+                    let p2 = addFriend(user2, user1);
+                    Promise.all([p1, p2]).then((val) => {
+                        resolve("Both friends have added each other.");
+                    });
+                });
+            }
+            return new Promise(function(resolve, reject) {
+
+                if(users.length == 0) { return resolve(); }
+
+                let recursionPromise = loopThroughUsers(users.slice(1));
+
+                let friendRequestPromises = [];
+                for(let i = 1; i < users.length; i++) {
+                    if(getRandom(0, 100) > 50) {
+                        friendRequest = addEachOther(users[0]._id, users[i]._id);
+                        friendRequestPromises.push(friendRequest);
+                    }
+                }
+                Promise.all([...friendRequestPromises, recursionPromise]).then((val) => {
+                    resolve(val);
+                });
+            });
+        }
+        loopThroughUsers(users).then(() => {
+            resolve("Resolve makeFriends() Promise");
         });
     });
 }
@@ -508,9 +591,9 @@ const createFakeUsers = function(req, res) {
     });
     deleteUsers.then((val) => {
         create70Users().then((val) => {
-            // makeFriends(val).then((val) => {
+            makeFriends(val).then((val) => {
                 res.statusJson(201, { message: "Created Fake Users" });
-            // });
+            });
         });
     });
 }
