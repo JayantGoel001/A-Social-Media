@@ -31,6 +31,7 @@ export class TopbarComponent implements OnInit {
             this.userData = data;
             if (data) {
                 this.numOfFriendsRequests = data.friend_requests.length;
+                this.profilePicture = data.profile_image;
             }
         });
         let requestObject = {
@@ -53,6 +54,7 @@ export class TopbarComponent implements OnInit {
     public query:String = "";
     public userName:String = "";
     public alertMessage:String = "";
+    public profilePicture:String = "default_avatar";
 
     /**
      * searchForFriend
