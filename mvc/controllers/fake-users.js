@@ -453,8 +453,7 @@ const getRandom = function(min,max){
     return Math.floor(Math.random()*(max - min)) + min;
 }
 
-const registerFakeUser = function(gender, email)
-{
+const registerFakeUser = function(gender, email){
     if(gender == "f")
     {
         var firstName = femaleNames[getRandom(0, femaleNames.length - 1)];
