@@ -16,6 +16,7 @@ export class PostComponent implements OnInit {
                 if (!isNan(n)) {
                     return true;
                 }
+                return false;
             }
 
             if (str && isNumber(str[0])) {
