@@ -26,7 +26,26 @@ export class PostComponent implements OnInit {
         }
 
         this.fakeId = removeLeadingNumber(this.post._id);
-    }
-    public fakeId:String = "fakeid";
 
+        if (this.post.content.length<40) {
+            this.fontSize = 22;
+        }
+        if (this.post.content.length<24) {
+            this.fontSize = 28;
+            this.align = 'center';
+        }
+        if (this.post.content.length<14) {
+            this.fontSize = 32;
+        }
+        if (this.post.content.length<8) {
+            this.fontSize = 44;
+        }
+        if (this.post.content.length<5) {
+            this.fontSize = 62;
+        }
+    }
+
+    public fakeId:String = "fakeid";
+    public fontSize:Number = 18;
+    public align:String = 'left';
 }
