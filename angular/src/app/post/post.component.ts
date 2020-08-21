@@ -13,7 +13,7 @@ export class PostComponent implements OnInit {
         function removeLeadingNumber(str) {
             function isNumber(n) {
                 n = Number(n);
-                if (!isNan(n)) {
+                if (!isNaN(n)) {
                     return true;
                 }
                 return false;
