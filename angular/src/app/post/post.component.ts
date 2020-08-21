@@ -48,4 +48,11 @@ export class PostComponent implements OnInit {
     public fakeId:String = "fakeid";
     public fontSize:Number = 18;
     public align:String = 'left';
+
+    /**
+     * likeButtonClicked
+     */
+    public likeButtonClicked(postid) {
+
+    }
 }
