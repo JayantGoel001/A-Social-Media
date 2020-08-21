@@ -95,20 +95,21 @@ const loginUser = function(req,res) {
 const generateFeed = function({payload},res) {
     const posts = [];
     const maxAmountOfPosts = 48;
-    function addNameAndAgoToPost(array,name,ownerid) {
+    function addNameAndAgoToPost(array,user) {
         for(item of array){
-            item.name = name;
+            item.name = user.name;
             item.ago = timeAgo.ago(item.date);
-            item.ownerid = ownerid;
+            item.ownerProfileImage = user.profile_image;
+            item.ownerid = user._id;
         }
     }
 
     let myPost = new Promise(function(resolve,reject) {
-        User.findById(payload._id,"name posts friends",{lean:true},(err,user)=>{
+        User.findById(payload._id,"name posts profile_image friends",{lean:true},(err,user)=>{
             if(err){
                 return res.json({error:err});
             }
-            addNameAndAgoToPost(user.posts,user.name,user._id);
+            addNameAndAgoToPost(user.posts,user);
             posts.push(...user.posts);
             resolve(user.friends);
         });
@@ -117,13 +118,13 @@ const generateFeed = function({payload},res) {
     let myFriendPost = myPost.then((friendArray)=>{
         return new Promise(function(resolve,reject) {
             User.find({'_id':{$in:friendArray}},
-            "name posts",{lean:true},(err,users)=>{
+            "name posts profile_image",{lean:true},(err,users)=>{
                 if(err){
                     return res.json({error:err});
                 }
                 for(user of users)
                 {
-                    addNameAndAgoToPost(user.posts,user.name,user._id);
+                    addNameAndAgoToPost(user.posts,user);
                     posts.push(...user.posts);
                 }
                 resolve();
@@ -144,7 +145,7 @@ const getSearchResults = function({query,payload},res) {
     if (!query.query) {
         return res.json({err:"Missing A Query."});
     }
-    User.find({ name: { $regex : query.query, $options: "i" }},"name friends friend_requests",(err,results)=>{
+    User.find({ name: { $regex : query.query, $options: "i" }},"name profile_image friends friend_requests",(err,results)=>{
         if(err){ return res.json({err:err}); }
 
         results = results.slice(0,20);
@@ -267,6 +268,7 @@ const createPost = function({body,payload},res) {
         let newPosts = post.toObject();
         newPosts.name = payload.name;
         newPosts.ownerid = payload._id;
+        newPosts.ownerProfileImage = user.profile_image;
         user.posts.push(post);
         user.save((err)=>{
             if(err){
