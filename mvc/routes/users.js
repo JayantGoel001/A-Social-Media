@@ -22,6 +22,7 @@ router.post('/resolve-friend-request/:from/:to',middleware.authorize,
             userCtrl.resolveFriendRequest);
 router.post('/create-post',middleware.authorize,userCtrl.createPost);
 router.post('/like-Unlike/:ownerid/:postid',middleware.authorize,userCtrl.likeUnlike);
+router.post('/post-comment/:ownerid/:postid',middleware.authorize,userCtrl.postCommentOnPost);
 
 router.delete('/all',userCtrl.deleteAllUsers);
 router.get('/all',userCtrl.getAllUsers);

@@ -2,7 +2,29 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Post = mongoose.model('Post');
+const Comment = mongoose.model('Comment');
 const timeAgo = require('time-ago');
+
+const addCommentDetails = function(posts) {
+    return new Promise(function(resolve,reject){
+        let promises = [];
+        for(let post of posts){
+            for(let comment of post.comments){
+                let promise = new Promise(function(resolve,reject) {
+                    User.findById(comment.commenter_id,"name profile_image",(err,user)=>{
+                        comment.commenter_name = user.name;
+                        comment.commenter_profile_image = user.profile_image;
+                        resolve(comment);
+                    });
+                });
+                promises.push(promise);
+            }
+        }
+        Promise.all(promises).then((val)=>{
+            resolve(posts);
+        });
+    });
+}
 
 const containsDuplicate = function(array) {
     array.sort();
@@ -112,7 +134,10 @@ const generateFeed = function({payload},res) {
         posts.sort((a,b)=>(a.date>b.date)?-1:1);
         posts.slice(maxAmountOfPosts);
 
-        res.statusJson(200,{posts:posts});
+        addCommentDetails(posts).then((posts)=>{
+            console.log(posts.comments);
+            res.statusJson(200,{posts:posts});
+        });
     });
 }
 
@@ -153,7 +178,6 @@ const makeFriendRequest = function({params},res) {
         });
     });
 }
-
 
 const getUserData = function({params},res) {
     User.findById(params.userid,(err,user)=>{
@@ -275,6 +299,27 @@ const likeUnlike = function({payload,params},res) {
     })
 }
 
+const postCommentOnPost = function({body,payload,params},res) {
+    User.findById(params.ownerid,(err,user)=>{
+        if(err){
+            return res.json({error:err});
+        }
+        const post = user.posts.id(params.postid);
+        let comment = new Comment();
+        comment.commenter_id = payload._id;
+        comment.commenter_content = body.content;
+
+        post.comments.push(comment);
+
+        user.save((err,user)=>{
+            if(err){
+                return res.json({error:err});
+            }
+            res.statusJson(201,{message:"POST comment",comment:comment});
+        });
+    });
+}
+
 const deleteAllUsers = function(req,res) {
     User.deleteMany({},(err,info)=>{
         if(err){
@@ -305,5 +350,6 @@ module.exports = {
     getFriendRequest,
     resolveFriendRequest,
     createPost,
-    likeUnlike
+    likeUnlike,
+    postCommentOnPost
 }

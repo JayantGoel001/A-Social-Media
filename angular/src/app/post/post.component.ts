@@ -55,6 +55,9 @@ export class PostComponent implements OnInit {
     public fakeId:String = "fakeid";
     public fontSize:Number = 18;
     public align:String = 'left';
+    public liked :Boolean = false;
+    public userid :String = "";
+    public comment:String = "";
 
     /**
      * likeButtonClicked
@@ -75,9 +78,29 @@ export class PostComponent implements OnInit {
                 this.post.likes.push(this.userid);
                 this.liked = true;
             }
-        })
+        });
     }
 
-    public liked :Boolean = false;
-    public userid :String = "";
+    /**
+     * postComment
+     */
+    public postComment() {
+        if (this.comment.length==0) {
+            return ;
+        }
+        let requestObject = {
+            location:
+            `users/post-comment/${this.post.ownerid}/${this.post._id}`,
+            type:"POST",
+            authorize:true,
+            body:{
+                content:this.comment
+            }
+        }
+        this.api.makeRequest(requestObject).then((val)=>{
+            console.log(val);
+        })
+
+    }
+
 }
