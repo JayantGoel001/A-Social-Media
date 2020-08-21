@@ -4,9 +4,9 @@
         <span class="ml-3 h5"><a class="link text-white" href="#">{{ post.name }}</a></span>
     </div>
     <div class="card-body">
-        <p class="card-text post-body h5">{{post.content}}</p>
+        <p [ngStyle] = "{'font-size':fontSize + 'px' , 'text-align':align}" class="card-text post-body h5">{{post.content}}</p>
         <div class="d-flex justify-content-between py-2">
-            <small class="text-muted">11 mins ago</small>
+            <small class="text-muted">{{ post.ago }}</small>
             <div>
                 <a href="#"><i [ngClass]="'text-'+ post.theme" class="hov-scale fas fa-thumbs-up"></i></a>
                 <span [ngClass]="'bg-'+ post.theme" class="ml-3 badge badge-pill text-white">{{post.likes}}</span>

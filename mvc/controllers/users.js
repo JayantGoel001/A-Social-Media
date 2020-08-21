@@ -2,6 +2,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Post = mongoose.model('Post');
+const timeAgo = require('time-ago');
 
 const containsDuplicate = function(array) {
     array.sort();
@@ -72,9 +73,10 @@ const loginUser = function(req,res) {
 const generateFeed = function({payload},res) {
     const posts = [];
     const maxAmountOfPosts = 48;
-    function addNameToPost(array,name) {
+    function addNameAndAgoToPost(array,name) {
         for(item of array){
             item.name = name;
+            item.ago = timeAgo.ago(item.date);
         }
     }
 
@@ -83,7 +85,7 @@ const generateFeed = function({payload},res) {
             if(err){
                 return res.json({error:err});
             }
-            addNameToPost(user.posts,user.name);
+            addNameAndAgoToPost(user.posts,user.name);
             posts.push(...user.posts);
             resolve(user.friends);
         });
@@ -98,7 +100,7 @@ const generateFeed = function({payload},res) {
                 }
                 for(user of users)
                 {
-                    addNameToPost(user.posts,user.name);
+                    addNameAndAgoToPost(user.posts,user.name);
                     posts.push(...user.posts);
                 }
                 resolve();
@@ -109,7 +111,7 @@ const generateFeed = function({payload},res) {
         posts.sort((a,b)=>(a.date>b.date)?-1:1);
         posts.slice(maxAmountOfPosts);
 
-        res.status(200).json({posts:posts});
+        res.statusJson(200,{posts:posts});
     });
 }
 
@@ -238,12 +240,14 @@ const createPost = function({body,payload},res) {
         if(err){
             return res.json({error:err});
         }
+        let newPosts = post.toObject();
+        newPosts.name = payload.name;
         user.posts.push(post);
         user.save((err)=>{
             if(err){
                 return res.json({error:err});
             }
-            return res.statusJson(201,{message:"Create Post"});
+            return res.statusJson(201,{message:"Create Post",post:newPosts});
         });
     });
 
