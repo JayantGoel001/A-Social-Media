@@ -96,7 +96,6 @@ export class PostComponent implements OnInit {
             }
         }
         this.api.makeRequest(requestObject).then((val)=>{
-            console.log(val);
             if (val.statusCode == 201) {
                 let newComment ={
                     ...val.comment,
