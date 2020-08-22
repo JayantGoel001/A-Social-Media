@@ -15,6 +15,15 @@
                                 <h3 class="text-white">{{userName}}</h3>
                                 <p class="w-50 h6 mx-auto text-white">I'm just a normal person, I like cats & {{userEmail}}. I also went skydiving once.</p>
                                 <div class="my-4">
+                                    <div class="my-4" *ngIf="haveReceivedFriendRequest">
+                                        <hr class="w-25 my-4 bg-white">
+                                        <h6 class="text-white font-weight-200">This User has sent you a friend Request.</h6>
+                                        <button (click) = "accept();" class="btn btn-sm btn-success rounded-pill m-1 px-4">Accept</button>
+                                        <button (click)="decline();" class="btn btn-sm btn-danger rounded-pill m-1 px-4">Decline</button>
+
+                                        <hr class="w-25 my-4 bg-white">
+                                    </div>
+                                    <button *ngIf="haveSentFriendRequest" class="btn btn-warning rounded-pill m-1">Friend Request Pending</button>
                                     <button *ngIf ="canAddUser" class="btn btn-light text-primary rounded-pill m-1">Add Friend</button>
                                     <button *ngIf ="canSendMessage" class="btn btn-info rounded-pill m-1">Send Message</button>
                                 </div>
