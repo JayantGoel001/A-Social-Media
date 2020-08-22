@@ -213,7 +213,7 @@ const getUserData = function({params},res) {
             });
         }
 
-        user.posts.sort((a,b)=>{a.date>b.date? -1 : 1 });
+        user.posts.sort((a,b)=>(a.date>b.date)? -1 : 1 );
         addNameAndAgoToPost(user.posts,user);
 
         let randomFriend = getRandomFriends(user.friends);

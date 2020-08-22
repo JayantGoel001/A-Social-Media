@@ -1,7 +1,7 @@
 <div class="card mt-4">
     <div [ngClass]="'bg-'+ post.theme" class="card-header rounded-0">
-        <a href="#"><img class="profile-img-sm rounded-circle" src="assets/images/{{post.ownerProfileImage}}.jpg"></a>
-        <span class="ml-3 h5"><a class="link font-weight-700 text-white" href="#">{{ post.name }}</a></span>
+        <a routerLink="/profile/{{post.ownerid}}"><img class="profile-img-sm rounded-circle" src="assets/images/{{post.ownerProfileImage}}.jpg"></a>
+        <span class="ml-3 h5"><a class="link font-weight-700 text-white" routerLink="/profile/{{post.ownerid}}">{{ post.name }}</a></span>
     </div>
     <div class="card-body">
         <p [ngStyle] = "{'font-size':fontSize + 'px' , 'text-align':align}"  class="card-text post-body h5">{{post.content}}</p>
@@ -30,8 +30,8 @@
 
                     <div *ngFor = "let comment of post.comments" class="comment p-3 my-2 rounded">
                         <div class="comment-user">
-                            <a href="#"><img src="assets/images/{{comment.commenter_profile_image}}.jpg" class="rounded-circle profile-img-sm"></a>
-                            <span class="ml-2"><a href="#" class="link"> {{comment.commenter_name}}</a></span>
+                            <a routerLink="/profile/{{comment.commenter_id}}"><img src="assets/images/{{comment.commenter_profile_image}}.jpg" class="rounded-circle profile-img-sm"></a>
+                            <span class="ml-2"><a routerLink="/profile/{{comment.commenter_id}}" class="link"> {{comment.commenter_name}}</a></span>
                         </div>
                         <div class="comment-body pl-3 mt-2">
                             {{comment.commenter_content}}
