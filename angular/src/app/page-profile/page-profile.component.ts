@@ -34,7 +34,7 @@ export class PageProfileComponent implements OnInit {
                     this.canSendMessage = true;
                     this.canAddUser = true;
                     let requestObject = {
-                        location:`users/get-user-data/${paramsId}`,
+                        location:`users/get-user-data/${params.userid}`,
                         method:"GET"
                     }
 
