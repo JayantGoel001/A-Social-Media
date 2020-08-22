@@ -24,7 +24,7 @@
                                         <hr class="w-25 my-4 bg-white">
                                     </div>
                                     <button *ngIf="haveSentFriendRequest" class="btn btn-warning rounded-pill m-1">Friend Request Pending</button>
-                                    <button *ngIf ="canAddUser" class="btn btn-light text-primary rounded-pill m-1">Add Friend</button>
+                                    <button *ngIf ="canAddUser && !haveSentFriendRequest && !haveReceivedFriendRequest" class="btn btn-light text-primary rounded-pill m-1" (click)="makeFriendRequest();">Add Friend</button>
                                     <button *ngIf ="canSendMessage" class="btn btn-info rounded-pill m-1">Send Message</button>
                                 </div>
                                 <hr class="w-25 my-4 bg-white">

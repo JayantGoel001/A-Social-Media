@@ -31,6 +31,7 @@ export class PageProfileComponent implements OnInit {
             this.route.params.subscribe((params)=>{
                 if (user._id==params.userid) {
                     this.setComponentValues(user);
+                    this.resetBoolean();
                 }
                 else{
                     this.canSendMessage = true;
@@ -42,12 +43,12 @@ export class PageProfileComponent implements OnInit {
 
                     this.api.makeRequest(requestObject).then((data)=>{
                         if (data.statusCode == 200){
-                            this.setComponentValues(data.user);
                             this.canAddUser = user.friends.includes(data.user._id)?false:true;
 
                             this.haveReceivedFriendRequest = user.friend_requests.includes(data.user._id);
 
                             this.haveSentFriendRequest = data.user.friend_requests.includes(user._id);
+                            this.setComponentValues(data.user);
                         }
                     })
                 }
@@ -95,7 +96,7 @@ export class PageProfileComponent implements OnInit {
         this.userName = user.name;
         this.userEmail = user.email;
         this.totalFriends = user.friends.length;
-        this.usersID = user.id;
+        this.usersID = user._id;
     }
 
     /**
@@ -121,6 +122,25 @@ export class PageProfileComponent implements OnInit {
             }
         });
 
+
+    }
+
+    /**
+     * makeFriendRequest
+     */
+    public makeFriendRequest() {
+        this.api.makeFriendRequest(this.usersID).then((val)=>{
+            if (val.statusCode == 201) {
+                this.haveSentFriendRequest = true;
+            }
+        })
+    }
+
+    private resetBoolean() {
+        this.canAddUser = false;
+        this.canSendMessage = false;
+        this.haveSentFriendRequest = false;
+        this.haveReceivedFriendRequest = false;
 
     }
 
