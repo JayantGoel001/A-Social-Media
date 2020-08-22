@@ -35,7 +35,7 @@ const routes: Routes = [
         }
     },
     {
-        path : "profile",
+        path : "profile/:userid",
         component : PageProfileComponent ,
         canActivate:[AuthService],
         data:{
