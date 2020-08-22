@@ -101,7 +101,7 @@ export class PostComponent implements OnInit {
                 let newComment ={
                     ...val.comment,
                     commenter_name:val.commenter.name,
-                    commenter_image:val.commenter.profile_image
+                    commenter_profile_image:val.commenter.profile_image
                 }
                 this.post.comments.push(newComment);
                 this.comment = "";
