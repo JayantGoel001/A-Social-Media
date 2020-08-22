@@ -10,7 +10,6 @@ import { Title } from "@angular/platform-browser";
     styleUrls: ['./page-login.component.css']
 })
 export class PageLoginComponent implements OnInit {
-
     constructor(
         private api:ApiService,
         private storage:LocalStorageService,
@@ -45,7 +44,7 @@ export class PageLoginComponent implements OnInit {
 
     private login(){
         let requestOption = {
-            type:"POST",
+            method:"POST",
             location:"users/login",
             body:this.credentials
         }

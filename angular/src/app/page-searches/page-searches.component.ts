@@ -11,7 +11,7 @@ import { UserDataService } from "../user-data.service";
     styleUrls: ['./page-searches.component.css']
 })
 export class PageSearchesComponent implements OnInit {
-
+method
     constructor(private api:ApiService,
                 private route:ActivatedRoute,
                 private title:Title,
@@ -37,8 +37,7 @@ export class PageSearchesComponent implements OnInit {
     private getResults(){
         let requestObject = {
             location:`users/get-search-results?query=${this.query}`,
-            type:"GET",
-            authorize:true
+            method:"GET"
         }
         this.api.makeRequest(requestObject).then((val,err)=>{
             this.results = val.results;

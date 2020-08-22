@@ -1,10 +1,21 @@
+@keyframes fade-in {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
 .card-text{
     line-height: 170%,normal;
     color: #585858;
 }
 
 .card{
-    transition: transform 0.4s;
+    transition: transform 0.6s;
+    animation-name: fade-in;
+    animation-duration: 0.8s;
 }
 .card:hover{
     transform: scale(1.05);
