@@ -173,3 +173,26 @@
 <div class="mx-4 alert alert-primary text-primary mb-4" *ngIf="alertMessage">
     {{alertMessage}}
 </div>
+
+<div class="modal fade p-0" id="staticBackdrop"
+data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog w-100 mx-auto" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Send Message to Sarah Parker</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="" action="index.html" method="post" id="send-message">
+                    <textarea name="name" placeholder="Your message..." rows="6" class="w-100" required></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                <button type="submit" class="btn btn-primary" form="send-message">Send Message</button>
+            </div>
+        </div>
+    </div>
+</div>
