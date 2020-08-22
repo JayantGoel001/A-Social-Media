@@ -7,6 +7,7 @@ import { LocalStorageService } from "../local-storage.service";
     templateUrl: './result-request.component.html',
     styleUrls: ['./result-request.component.css']
 })
+
 export class ResultRequestComponent implements OnInit {
     @Input() resultRequest;
     @Output() resultRequestChange = new EventEmitter<any>();

@@ -12,7 +12,6 @@ import { ApiService } from '../api.service';
     styleUrls: ['./topbar.component.css']
 })
 export class TopbarComponent implements OnInit {
-
     constructor(public auth:AuthService,public router:Router,
                 public storage:LocalStorageService,public events:EventEmitterService,
                 private centralUserData:UserDataService,private api:ApiService) { }
@@ -36,8 +35,7 @@ export class TopbarComponent implements OnInit {
         });
         let requestObject = {
             location:`users/get-user-data/${this.userId}`,
-            type:"GET",
-            authorize:true
+            method:"GET"
         }
 
         this.api.makeRequest(requestObject).then((val)=>{

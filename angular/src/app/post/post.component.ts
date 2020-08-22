@@ -65,8 +65,7 @@ export class PostComponent implements OnInit {
     public likeButtonClicked(postid) {
         let requestObject = {
             location:`users/like-unlike/${this.post.ownerid}/${this.post._id}`,
-            type:"POST",
-            authorize:true
+            method:"POST"
         }
 
         this.api.makeRequest(requestObject).then((val)=>{
@@ -91,8 +90,7 @@ export class PostComponent implements OnInit {
         let requestObject = {
             location:
             `users/post-comment/${this.post.ownerid}/${this.post._id}`,
-            type:"POST",
-            authorize:true,
+            method:"POST",
             body:{
                 content:this.comment
             }

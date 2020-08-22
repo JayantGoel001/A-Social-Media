@@ -21,18 +21,20 @@ export class PageFeedComponent implements OnInit {
     ngOnInit() {
         this.title.setTitle("A Social Media - Feed");
         let requestObject = {
-            type:"GET",
             location:"users/generate-feed",
-            authorize:true
+            method:"GET"
         }
 
         this.api.makeRequest(requestObject).then((val)=>{
 
             if (val.statusCode == 200) {
-                this.posts.col1 = val.posts.filter((val,i) => i%4 == 0);
-                this.posts.col2 = val.posts.filter((val,i) => i%4 == 1);
-                this.posts.col3 = val.posts.filter((val,i) => i%4 == 2);
-                this.posts.col4 = val.posts.filter((val,i) => i%4 == 3);
+                let fullCol1= val.posts.filter((val,i) => i%4 == 0);
+                let fullCol2= val.posts.filter((val,i) => i%4 == 1);
+                let fullCol3= val.posts.filter((val,i) => i%4 == 2);
+                let fullCol4= val.posts.filter((val,i) => i%4 == 3);
+
+                let cols = [fullCol1,fullCol2,fullCol3,fullCol4];
+                this.addPostToFeed(cols,0,0);
             }
             else{
                 this.events.onAlertEvent.emit("Something went wrong, your post  could not be created.");
@@ -69,8 +71,7 @@ export class PageFeedComponent implements OnInit {
 
         let requestObject = {
             location:"users/create-post",
-            type:"POST",
-            authorize:true,
+            method:"POST",
             body:{
                 theme:this.newPostTheme,
                 content:this.newPostContent
@@ -87,5 +88,15 @@ export class PageFeedComponent implements OnInit {
             }
             this.newPostContent = "";
         })
+    }
+
+    private addPostToFeed(array,colNumber,delay){
+        setTimeout(() => {
+            if (array[colNumber].length) {
+                this.posts["col"+(colNumber+1)].push(array[colNumber].splice(0,1)[0]);
+                colNumber = ++colNumber%4;
+                this.addPostToFeed(array,colNumber,100);
+            }
+        }, delay);
     }
 }

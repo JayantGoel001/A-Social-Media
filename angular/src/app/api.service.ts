@@ -20,9 +20,9 @@ export class ApiService {
                 private events:EventEmitterService) { }
 
     public makeRequest(requestObject):any {
-        let type = requestObject.type.toLowerCase();
-        if (!type) {
-            return console.log("No type Specified in the request object.");
+        let method = requestObject.method.toLowerCase();
+        if (!method) {
+            return console.log("No method Specified in the request object.");
         }
         let body = requestObject.body || {};
         let location = requestObject.location;
@@ -32,7 +32,7 @@ export class ApiService {
         let url = `${this.baseUrl}/${location}`;
         let httpOptions = {};
 
-        if (requestObject.authorize) {
+        if (this.storage.getToken()) {
             httpOptions = {
                 headers:new HttpHeaders({
                     'Authorization':`Bearer ${this.storage.getToken()}`
@@ -40,17 +40,17 @@ export class ApiService {
             }
         }
 
-        if (type == "get") {
+        if (method == "get") {
             return this.http.get(url,httpOptions).toPromise()
             .then(this.successHandler).catch(this.errorHandler);
         }
 
 
-        if (type == "post") {
+        if (method == "post") {
             return this.http.post(url,body,httpOptions).toPromise()
             .then(this.successHandler).catch(this.errorHandler);
         }
-        console.log("Could not make the request.Make Sure a type of GET or Post is Supplied");
+        console.log("Could not make the request.Make Sure a method of GET or Post is Supplied");
     }
 
     public makeFriendRequest(to:String) {
@@ -58,8 +58,7 @@ export class ApiService {
 
         let requestObject = {
             location:`users/make-friend-request/${from}/${to}`,
-            type:"POST",
-            authorize:true
+            method:"POST"
         }
 
         this.makeRequest(requestObject).then((val)=>{
@@ -80,8 +79,7 @@ export class ApiService {
             let requestObject = {
                 location:
                 `users/resolve-friend-request/${id}/${to}?resolution=${resolution}`,
-                type:"POST",
-                authorize:true
+                method:"POST"
             }
 
             this.makeRequest(requestObject).then((val)=>{
