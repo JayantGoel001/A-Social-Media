@@ -3,6 +3,7 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
 import { UserDataService } from "../user-data.service";
+import { EventEmitterService } from "../event-emitter.service";
 import { ApiService } from "../api.service";
 
 @Component({
@@ -13,6 +14,7 @@ import { ApiService } from "../api.service";
 export class PageProfileComponent implements OnInit {
 
     constructor(
+        public events:EventEmitterService,
         private title:Title,
         @Inject(DOCUMENT) private document:Document,
         private route:ActivatedRoute,
@@ -38,9 +40,14 @@ export class PageProfileComponent implements OnInit {
                         method:"GET"
                     }
 
-                    this.api.makeRequest(requestObject).then((user)=>{
-                        if (user.statusCode == 200){
-                            this.setComponentValues(user.user);
+                    this.api.makeRequest(requestObject).then((data)=>{
+                        if (data.statusCode == 200){
+                            this.setComponentValues(data.user);
+                            this.canAddUser = user.friends.includes(data.user._id)?false:true;
+
+                            this.haveReceivedFriendRequest = user.friend_requests.includes(data.user._id);
+
+                            this.haveSentFriendRequest = data.user.friend_requests.includes(user._id);
                         }
                     })
                 }
@@ -56,9 +63,13 @@ export class PageProfileComponent implements OnInit {
     public profilePicture:String = "default_avatar";
     public userName:String = "";
     public userEmail:String = "";
+    public usersID :String = "";
 
     public canAddUser:Boolean = false;
     public canSendMessage:Boolean = false;
+
+    public haveSentFriendRequest:Boolean = false;
+    public haveReceivedFriendRequest:Boolean = false;
 
     /**
      * showMorePosts
@@ -84,6 +95,32 @@ export class PageProfileComponent implements OnInit {
         this.userName = user.name;
         this.userEmail = user.email;
         this.totalFriends = user.friends.length;
+        this.usersID = user.id;
+    }
+
+    /**
+     * accept
+     */
+    public accept() {
+        this.api.resolveFriendRequest("accept",this.usersID).then((val)=>{
+            if (val.statusCode == 201) {
+                this.haveReceivedFriendRequest = false;
+                this.canAddUser = false;
+                this.totalFriends++;
+            }
+        });
+    }
+
+    /**
+     * decline
+     */
+    public decline() {
+        this.api.resolveFriendRequest("decline",this.usersID).then((val)=>{
+            if (val.statusCode == 201) {
+                this.haveReceivedFriendRequest = false;
+            }
+        });
+
 
     }
 

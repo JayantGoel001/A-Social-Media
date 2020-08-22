@@ -61,15 +61,19 @@ export class ApiService {
             method:"POST"
         }
 
-        this.makeRequest(requestObject).then((val)=>{
-            console.log(val);
-            if (val.statusCode === 201) {
-                this.events.onAlertEvent.emit("Succesfully sent a friend request.");
-            }
-            else{
-                this.events.onAlertEvent.emit("Something went wrong. We could not send friend request.Perhaps you already sent a friend request to this user.");
-            }
+        return new Promise((resolve,reject)=>{
+            this.makeRequest(requestObject).then((val)=>{
+                if (val.statusCode === 201) {
+                    this.events.onAlertEvent.emit("Succesfully sent a friend request.");
+                }
+                else{
+                    this.events.onAlertEvent.emit("Something went wrong. We could not send friend request.Perhaps you already sent a friend request to this user.");
+                }
+                resolve(val);
+            });
+
         });
+
     }
 
     public resolveFriendRequest(resolution,id){
