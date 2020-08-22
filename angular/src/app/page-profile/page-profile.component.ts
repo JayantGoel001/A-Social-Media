@@ -5,12 +5,14 @@ import { DOCUMENT } from "@angular/common";
 import { UserDataService } from "../user-data.service";
 import { EventEmitterService } from "../event-emitter.service";
 import { ApiService } from "../api.service";
+import { AutoUnsubscribe } from '../unsubscribe';
 
 @Component({
     selector: 'app-page-profile',
     templateUrl: './page-profile.component.html',
     styleUrls: ['./page-profile.component.css']
 })
+@AutoUnsubscribe
 export class PageProfileComponent implements OnInit {
 
     constructor(
@@ -27,7 +29,7 @@ export class PageProfileComponent implements OnInit {
         .add("d-none");
 
         let paramsId = this.route.snapshot.params.userid;
-        this.centralUserData.getUserData.subscribe((user)=>{
+        let userDataEvent = this.centralUserData.getUserData.subscribe((user)=>{
             this.route.params.subscribe((params)=>{
                 this.showPosts = 6;
                 if (user._id==params.userid) {
@@ -59,18 +61,19 @@ export class PageProfileComponent implements OnInit {
                 }
             })
         })
+        this.subscriptions.push(userDataEvent);
 
     }
 
     public randomFriends:String[] = [];
-    public totalFriends:Number = 0;
+    public totalFriends:number = 0;
     public posts:Object[] = [];
     public showPosts:number = 6;
     public profilePicture:String = "default_avatar";
     public userName:String = "";
     public userEmail:String = "";
     public usersID :String = "";
-
+    private subscriptions = [];
     public canAddUser:Boolean = false;
     public canSendMessage:Boolean = false;
 
@@ -108,7 +111,7 @@ export class PageProfileComponent implements OnInit {
      * accept
      */
     public accept() {
-        this.api.resolveFriendRequest("accept",this.usersID).then((val)=>{
+        this.api.resolveFriendRequest("accept",this.usersID).then((val:any)=>{
             if (val.statusCode == 201) {
                 this.haveReceivedFriendRequest = false;
                 this.canAddUser = false;
@@ -122,7 +125,8 @@ export class PageProfileComponent implements OnInit {
      * decline
      */
     public decline() {
-        this.api.resolveFriendRequest("decline",this.usersID).then((val)=>{
+        this.api.resolveFriendRequest("decline",this.usersID).then(
+            (val:any)=>{
             if (val.statusCode == 201) {
                 this.haveReceivedFriendRequest = false;
             }
@@ -135,7 +139,7 @@ export class PageProfileComponent implements OnInit {
      * makeFriendRequest
      */
     public makeFriendRequest() {
-        this.api.makeFriendRequest(this.usersID).then((val)=>{
+        this.api.makeFriendRequest(this.usersID).then((val:any)=>{
             if (val.statusCode == 201) {
                 this.haveSentFriendRequest = true;
             }

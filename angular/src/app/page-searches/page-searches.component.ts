@@ -4,12 +4,14 @@ import { ActivatedRoute } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { DOCUMENT } from "@angular/common";
 import { UserDataService } from "../user-data.service";
+import { AutoUnsubscribe } from '../unsubscribe';
 
 @Component({
     selector: 'app-page-searches',
     templateUrl: './page-searches.component.html',
     styleUrls: ['./page-searches.component.css']
 })
+@AutoUnsubscribe
 export class PageSearchesComponent implements OnInit {
 method
     constructor(private api:ApiService,
@@ -20,19 +22,19 @@ method
     ngOnInit() {
         this.title.setTitle("Search Page");
         this.document.getElementById("sidebarToggleTop").classList.add("d-none");
-        this.centralUserData.getUserData.subscribe((data)=>{
-            this.subscription = this.route.params.subscribe(params=>{
+        let userDataEvent = this.centralUserData.getUserData.subscribe((data)=>{
+            this.route.params.subscribe(params=>{
                 this.query = params.query;
                 this.user = data;
                 this.getResults();
             });
         });
+        this.subscriptions.push(userDataEvent);
     }
     public results;
     public query = this.route.snapshot.params.query;
-    public subscription;
     private user;
-
+    private subscriptions = [];
 
     private getResults(){
         let requestObject = {

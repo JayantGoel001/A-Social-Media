@@ -93,7 +93,7 @@ export class ApiService {
                     this.events.onAlertEvent.emit(`Succesfully ${resolutioned} friend request.`);
                 }
                 else{
-                    this.events.onAlertEvent.emit(`Somethingwent Wrong and we could not handle your friend request.`);
+                    this.events.onAlertEvent.emit(`Something went Wrong and we could not handle your friend request.`);
                 }
                 resolve(val);
             });

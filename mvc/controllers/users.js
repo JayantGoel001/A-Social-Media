@@ -4,7 +4,6 @@ const User = mongoose.model('User');
 const Post = mongoose.model('Post');
 const Comment = mongoose.model('Comment');
 const timeAgo = require('time-ago');
-
 const addCommentDetails = function(posts) {
     return new Promise(function(resolve,reject){
         let promises = [];
@@ -65,9 +64,6 @@ const registerUser = function({body},res) {
             if (err.errmsg && err.errmsg.includes('duplicate key error') && err.errmsg.includes("email")) {
                 return res.json({message:"The Provided email is already registered"});
             }
-            console.log("==========");
-            console.log(err);
-            console.log("==========");
             return res.json({message:"Something went Wrong."});
         }
         else {

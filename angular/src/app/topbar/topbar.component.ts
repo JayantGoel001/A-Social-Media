@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { AuthService } from "../auth.service";
 import { Router } from "@angular/router";
 import { LocalStorageService } from "../local-storage.service";
 import { EventEmitterService } from "../event-emitter.service";
 import { UserDataService } from "../user-data.service";
 import { ApiService } from '../api.service';
+import { AutoUnsubscribe } from '../unsubscribe';
 
 @Component({
     selector: 'app-topbar',
     templateUrl: './topbar.component.html',
     styleUrls: ['./topbar.component.css']
 })
+@AutoUnsubscribe
 export class TopbarComponent implements OnInit {
     constructor(public auth:AuthService,public router:Router,
                 public storage:LocalStorageService,public events:EventEmitterService,
@@ -19,14 +21,15 @@ export class TopbarComponent implements OnInit {
     ngOnInit(): void {
         this.userName = this.storage.getParsedToken().name;
         this.userId = this.storage.getParsedToken()._id;
-        this.events.onAlertEvent.subscribe((msg)=>{
+        let alertEvent = this.events.onAlertEvent.subscribe((msg)=>{
             this.alertMessage = msg;
         });
 
-        this.events.updateNumberOfFriendRequestsEvent.subscribe((msg)=>{
+        let friendRequestsEvent = this.events.updateNumberOfFriendRequestsEvent.subscribe((msg)=>{
             this.numOfFriendsRequests--;
         });
-        this.centralUserData.getUserData.subscribe((data)=>{
+
+        let userDataEvent = this.centralUserData.getUserData.subscribe((data)=>{
             this.userData = data;
             if (data) {
                 this.numOfFriendsRequests = data.friend_requests.length;
@@ -40,9 +43,11 @@ export class TopbarComponent implements OnInit {
 
         this.api.makeRequest(requestObject).then((val)=>{
             this.centralUserData.getUserData.emit(val.user);
-        })
+        });
 
+        this.subscriptions.push(alertEvent,friendRequestsEvent,userDataEvent);
     }
+
 
     public userData:object = {};
     public numOfFriendsRequests:number = 0;
@@ -52,6 +57,7 @@ export class TopbarComponent implements OnInit {
     public userName:String = "";
     public alertMessage:String = "";
     public profilePicture:String = "default_avatar";
+    private subscriptions = [];
 
     /**
      * searchForFriend
@@ -59,5 +65,6 @@ export class TopbarComponent implements OnInit {
     public searchForFriends() {
         this.router.navigate(['/search-results',{query:this.query}]);
     }
+
 
 }
