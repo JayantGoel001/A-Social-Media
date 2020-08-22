@@ -34,7 +34,6 @@ export class ResultRequestComponent implements OnInit {
     public Accept() {
         this.updateRequest();
         var id = this.resultRequest._id;
-        console.log(`Accepted Friend Request ${this.resultRequest._id}`);
         this.api.resolveFriendRequest("accept",id).then((val)=>{
             console.log(val);
         });
@@ -42,7 +41,6 @@ export class ResultRequestComponent implements OnInit {
     public Decline() {
         this.updateRequest();
         var id = this.resultRequest._id;
-        console.log(`Declined Friend Request`);
         this.api.resolveFriendRequest("decline",id).then((val)=>{
             console.log(val);
         });
