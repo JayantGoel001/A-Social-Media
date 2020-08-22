@@ -5,7 +5,10 @@ import { Injectable,EventEmitter } from '@angular/core';
 })
 export class EventEmitterService {
     onAlertEvent : EventEmitter<String> = new EventEmitter() ;
-    updateNumberOfFriendRequestsEvent : EventEmitter<String> = new EventEmitter() ;
+    updateNumberOfFriendRequestsEvent:EventEmitter<String>
+    = new EventEmitter();
+    updateSendMessageObjectEvent:EventEmitter<Object>
+    = new EventEmitter();
 
 
     constructor() { }
