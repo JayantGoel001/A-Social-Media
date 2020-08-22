@@ -13,7 +13,7 @@
         <button *ngIf ="use == 'request' || haveReceivedFriendRequest" class="btn btn-sm btn-primary rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)="Accept(); haveReceivedFriendRequest=false
         ; isFriend=true"> Accept</button>
 
-        <button class="btn btn-sm btn-success rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">Send Message</button>
+        <button class="btn btn-sm btn-success rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)="updateSendMessageObject(resultRequest._id,resultRequest.name);">Send Message</button>
 
         <button *ngIf ="use == 'request' || haveReceivedFriendRequest" class="btn btn-sm btn-danger rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)="Decline(); haveReceivedFriendRequest=false">Decline</button>
 

@@ -1,6 +1,7 @@
 import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
 import { ApiService } from "../api.service";
 import { LocalStorageService } from "../local-storage.service";
+import { EventEmitterService } from "../event-emitter.service";
 
 @Component({
     selector: 'app-result-request',
@@ -14,7 +15,8 @@ export class ResultRequestComponent implements OnInit {
     @Input() use;
 
     constructor(public api:ApiService,
-                public storage:LocalStorageService) { }
+                public storage:LocalStorageService,
+                public events:EventEmitterService) { }
 
     ngOnInit(): void {
         if (this.resultRequest.haveSentFriendRequest) {
@@ -53,6 +55,10 @@ export class ResultRequestComponent implements OnInit {
     public haveSentFriendRequest:boolean = false;
     public haveReceivedFriendRequest:boolean = false;
     public isFriend:boolean = false;
+
+    public updateSendMessageObject(id,name) {
+        this.events.updateSendMessageObjectEvent.emit({id,name});
+    }
 
 
 }

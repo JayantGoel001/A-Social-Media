@@ -15,7 +15,8 @@ import { AutoUnsubscribe } from '../unsubscribe';
 @AutoUnsubscribe
 export class TopbarComponent implements OnInit {
     constructor(public auth:AuthService,public router:Router,
-                public storage:LocalStorageService,public events:EventEmitterService,
+                public storage:LocalStorageService,
+                public events:EventEmitterService,
                 private centralUserData:UserDataService,private api:ApiService) { }
 
     ngOnInit(): void {
@@ -36,6 +37,13 @@ export class TopbarComponent implements OnInit {
                 this.profilePicture = data.profile_image;
             }
         });
+
+        let updateMessageEvent = this.events.updateSendMessageObjectEvent.subscribe((data)=>{
+            this.sendMessageObject.id = data._id;
+            this.sendMessageObject.name = data.name;
+
+        })
+
         let requestObject = {
             location:`users/get-user-data/${this.userId}`,
             method:"GET"
@@ -45,7 +53,7 @@ export class TopbarComponent implements OnInit {
             this.centralUserData.getUserData.emit(val.user);
         });
 
-        this.subscriptions.push(alertEvent,friendRequestsEvent,userDataEvent);
+        this.subscriptions.push(alertEvent,friendRequestsEvent,userDataEvent,updateMessageEvent);
     }
 
 
@@ -58,7 +66,10 @@ export class TopbarComponent implements OnInit {
     public alertMessage:String = "";
     public profilePicture:String = "default_avatar";
     private subscriptions = [];
-
+    private sendMessageObject = {
+        id:"",
+        name:""
+    };
     /**
      * searchForFriend
      */
