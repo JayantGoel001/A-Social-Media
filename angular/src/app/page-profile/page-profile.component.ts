@@ -21,16 +21,30 @@ export class PageProfileComponent implements OnInit {
 
     ngOnInit(): void {
         this.title.setTitle("Your Profile");
-        this.document.getElementById("sidebarToggleTop").classList.add("d-none");
+        this.document.getElementById("sidebarToggleTop").classList
+        .add("d-none");
 
         let paramsId = this.route.snapshot.params.userid;
         this.centralUserData.getUserData.subscribe((user)=>{
-            if (user._id==paramsId) {
-                this.setComponentValues(user);
-            }
-            else{
+            this.route.params.subscribe((params)=>{
+                if (user._id==params.userid) {
+                    this.setComponentValues(user);
+                }
+                else{
+                    this.canSendMessage = true;
+                    this.canAddUser = true;
+                    let requestObject = {
+                        location:`users/get-user-data/${paramsId}`,
+                        method:"GET"
+                    }
 
-            }
+                    this.api.makeRequest(requestObject).then((user)=>{
+                        if (user.statusCode == 200){
+                            this.setComponentValues(user.user);
+                        }
+                    })
+                }
+            })
         })
 
     }

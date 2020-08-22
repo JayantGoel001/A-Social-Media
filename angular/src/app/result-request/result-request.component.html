@@ -1,14 +1,14 @@
 <div class="result-request d-flex my-3 align-items-center bg-white shadow">
-    <a href="#" class="p-4 w-max"><img src="assets/images/{{resultRequest.profile_image}}.jpg" class="profile-img-md rounded"></a>
+    <a routerLink="/profile/{{resultRequest._id}}" class="p-4 w-max"><img src="assets/images/{{resultRequest.profile_image}}.jpg" class="profile-img-md rounded"></a>
     <div class="">
-        <h5><a href="#" class="link">{{ resultRequest.name }}</a></h5>
+        <h5><a routerLink="/profile/{{resultRequest._id}}"class="link">{{ resultRequest.name }}</a></h5>
     </div>
     <div class="ml-auto mr-3 mt-3 align-self-start">
         <button *ngIf = "use == 'result' && !haveSentFriendRequest && !haveReceivedFriendRequest && !isFriend" class="btn btn-sm btn-primary rounded-pill" (click)="this.api.makeFriendRequest(resultRequest._id); haveSentFriendRequest=true;">Add Friend</button>
 
         <button *ngIf ="haveSentFriendRequest" class="btn btn-sm btn-warning rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">Friend Request Pending</button>
 
-        <button *ngIf ="isFriend" class="btn btn-sm btn-info rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">View Profile</button>
+        <button routerLink="/profile/{{resultRequest._id}}" *ngIf ="isFriend" class="btn btn-sm btn-info rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">View Profile</button>
 
         <button *ngIf ="use == 'request' || haveReceivedFriendRequest" class="btn btn-sm btn-primary rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)="Accept(); haveReceivedFriendRequest=false
         ; isFriend=true"> Accept</button>
