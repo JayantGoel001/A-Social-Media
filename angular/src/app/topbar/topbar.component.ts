@@ -39,7 +39,6 @@ export class TopbarComponent implements OnInit {
         }
 
         this.api.makeRequest(requestObject).then((val)=>{
-            console.log(val);
             this.centralUserData.getUserData.emit(val.user);
         })
 

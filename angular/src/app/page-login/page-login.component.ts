@@ -53,7 +53,6 @@ export class PageLoginComponent implements OnInit {
             if (val.token) {
                 this.storage.setToken(val.token);
                 this.router.navigate(['/']);
-                console.log("loggedIn");
                 return ;
             }
             if(val.message) { this.formError = val.message }

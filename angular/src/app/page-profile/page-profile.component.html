@@ -52,7 +52,9 @@
                         <h3 class="text-success shadow py-3 text-center bg-white rounded-pill">Recent Posts</h3>
                         <app-post *ngFor="let post of posts.slice(0,showPosts)" [post]="post"></app-post>
 
-                        <a class="bg-success d-block mt-4 py-3 text-center rounded-pill text-white link h5" (click)="showMorePosts();" *ngIf="posts.length && showPosts<posts.length">Load More</a>
+                        <a class="bg-success d-block mt-4 py-3 text-center rounded-pill text-white link h5" (click)="showMorePosts();" *ngIf="posts.length && showPosts && showPosts<posts.length">Load More</a>
+
+                        <h3 *ngIf ="!showPosts" class="text-center w-75 mx-auto mt-5 text-purple">Add This user as a friend to see their latest posts.</h3>
 
                         <div *ngIf="posts.length && showPosts>=posts.length">
                             <h2 class="mt-5 text-primary text-center">No More Posts, you've stalked this user completely.</h2>
