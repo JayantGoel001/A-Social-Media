@@ -26,6 +26,10 @@ const addCommentDetails = function(posts) {
     });
 }
 
+const getRandom = function(min,max){
+    return Math.floor(Math.random()*(max - min)) + min;
+}
+
 const containsDuplicate = function(array) {
     array.sort();
     for (var i = 0; i < array.length; i++) {
@@ -92,17 +96,17 @@ const loginUser = function(req,res) {
     })(req,res);
 }
 
+const addNameAndAgoToPost = function(array,user) {
+    for(item of array){
+        item.name = user.name;
+        item.ago = timeAgo.ago(item.date);
+        item.ownerProfileImage = user.profile_image;
+        item.ownerid = user._id;
+    }
+}
 const generateFeed = function({payload},res) {
     const posts = [];
     const maxAmountOfPosts = 48;
-    function addNameAndAgoToPost(array,user) {
-        for(item of array){
-            item.name = user.name;
-            item.ago = timeAgo.ago(item.date);
-            item.ownerProfileImage = user.profile_image;
-            item.ownerid = user._id;
-        }
-    }
 
     let myPost = new Promise(function(resolve,reject) {
         User.findById(payload._id,"name posts profile_image friends",{lean:true},(err,user)=>{
@@ -180,11 +184,45 @@ const makeFriendRequest = function({params},res) {
 }
 
 const getUserData = function({params},res) {
-    User.findById(params.userid,(err,user)=>{
+    User.findById(params.userid,"-salt -password",{lean:true},(err,user)=>{
         if(err){
             return res.json({error:err});
         }
-        res.statusJson(200,{user:user});
+
+        function getRandomFriends(friendsList) {
+            let copyOfFriendList = Array.from(friendsList);
+            let randomIds = [];
+            for(let i=0;i<6;i++){
+                if (friendsList<=6) {
+                    randomId = copyOfFriendList;
+                    break;
+                }
+                else{
+                    let randomIdIndex = getRandom(0,copyOfFriendList.length-1);
+                    randomIds.push(copyOfFriendList[randomIdIndex]);
+                    copyOfFriendList.splice(randomIdIndex,1);
+                }
+            }
+            return new Promise(function(resolve,reject) {
+                User.find({'_id':{$in:randomIds}},"name profile_image",(err,friends)=>{
+                    if(err){
+                        return res.json({error:err});
+                    }
+                    resolve(friends);
+                })
+            });
+        }
+
+        user.posts.sort((a,b)=>{a.date>b.date? -1 : 1 });
+        addNameAndAgoToPost(user.posts,user);
+
+        let randomFriend = getRandomFriends(user.friends);
+        let commentDetails = addCommentDetails(user.posts);
+
+        Promise.all([randomFriend,commentDetails]).then((val)=>{
+            user.random_friend = val[0];
+            res.statusJson(200,{user:user});
+        })
     });
 }
 
