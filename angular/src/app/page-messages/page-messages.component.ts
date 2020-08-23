@@ -68,7 +68,5 @@ export class PageMessagesComponent implements OnInit {
               this.activeMessage.fromId = message.content;
           }
       }
-      console.log(this.activeMessage);
-
    }
 }
