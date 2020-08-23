@@ -56,6 +56,10 @@ export class TopbarComponent implements OnInit {
         });
 
         this.subscriptions.push(alertEvent,friendRequestsEvent,userDataEvent,updateMessageEvent);
+
+        let resetMessageEvent = this.events.resetMessageNotificationEvent.subscribe(()=>{
+            this.notifications.messages = 0;
+        })
     }
 
     public query:String = "";
@@ -95,5 +99,12 @@ export class TopbarComponent implements OnInit {
         }
         this.api.sendMessage(this.sendMessageObject);
         this.sendMessageObject.content = "";
+    }
+
+    /**
+     * resetMessageNotifications
+     */
+    public resetMessageNotifications() {
+        this.api.resetMessageNotifications();
     }
 }

@@ -57,7 +57,7 @@
                         <h3 *ngIf ="!showPosts" class="text-center w-75 mx-auto mt-5 text-purple">Add {{userName}} as a friend to see their latest posts.</h3>
 
                         <div *ngIf="posts.length && showPosts>=posts.length">
-                            <h2 class="mt-5 text-primary text-center">No More Posts, you've stalked this user completely.</h2>
+                            <h2 class="mt-5 text-primary text-center">No More Posts, you've stalked {{userName}} completely.</h2>
                             <a (click)="backToTop();" class="link h4 text-center d-block max mx-auto my-3">Back To Top</a>
                         </div>
                     </div>

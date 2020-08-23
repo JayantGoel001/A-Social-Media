@@ -9,6 +9,8 @@ export class EventEmitterService {
     = new EventEmitter();
     updateSendMessageObjectEvent:EventEmitter<Object>
     = new EventEmitter();
+    resetMessageNotificationEvent:EventEmitter<String>
+    = new EventEmitter();
 
 
     constructor() { }
