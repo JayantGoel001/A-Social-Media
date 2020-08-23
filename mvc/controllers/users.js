@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Post = mongoose.model('Post');
 const Comment = mongoose.model('Comment');
+const Message = mongoose.model('Message');
+
 const timeAgo = require('time-ago');
 const addCommentDetails = function(posts) {
     return new Promise(function(resolve,reject){
@@ -364,6 +366,37 @@ const postCommentOnPost = function({body,payload,params},res) {
     });
 }
 
+const sendMessage = function({body,payload,params},res) {
+    let from = payload._id;
+    let to = payload.to;
+    let fromPromise = new Promise(function(resolve,reject) {
+        User.findById(from,"messages",(err,user)=>{
+            if(err){
+                reject({err:err});
+                return res.json({error:err});
+            }
+
+            from = user;
+            resolve(user);
+        });
+    });
+    let toPromise = new Promise(function(resolve,reject) {
+        User.findById(to,"messages",(err,user)=>{
+            if(err){
+                reject({err:err});
+                return res.json({error:err});
+            }
+
+            to = user;
+            resolve(user);
+        });
+    });
+
+    let sendMessagePromise = Promise.all([fromPromise,toPromise]).then(()=>{
+        return res.statusJson(201,{message:"Sending Message"});
+    });
+}
+
 const deleteAllUsers = function(req,res) {
     User.deleteMany({},(err,info)=>{
         if(err){
@@ -395,5 +428,6 @@ module.exports = {
     resolveFriendRequest,
     createPost,
     likeUnlike,
-    postCommentOnPost
+    postCommentOnPost,
+    sendMessage
 }

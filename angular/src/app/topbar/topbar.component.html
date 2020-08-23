@@ -1,8 +1,5 @@
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-    <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
-    </button>
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" (ngSubmit)="searchForFriends();">
         <div class="input-group">
             <input name="query" [(ngModel)]="query" type="text" class="form-control bg-light border-0 small" placeholder="Find Friends for..." aria-label="Search" aria-describedby="basic-addon2">
@@ -13,42 +10,29 @@
             </div>
         </div>
     </form>
-
-    <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-
-        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
-            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-            </a>
-            <!-- Dropdown - Messages -->
+            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-search fa-fw"></i></a>
             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                 <form class="form-inline mr-auto w-100 navbar-search" (ngSubmit)="searchForFriends();">
                     <div class="input-group">
                         <input type="text" class="form-control bg-light border-0 small" placeholder="Find Friends..." aria-label="Search" aria-describedby="basic-addon2" name="query" [(ngModel)]="query">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
+                            <button class="btn btn-primary" type="submit"> <i class="fas fa-search fa-sm"></i></button>
                         </div>
                     </div>
                 </form>
             </div>
         </li>
-
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="" routerLink="/friend-requests">
                 <i class="fas fa-users"></i>
                 <span class="badge badge-danger badge-counter"  *ngIf="numOfFriendsRequests">{{numOfFriendsRequests}}</span>
             </a>
         </li>
-
-        <!-- Nav Item - Alerts -->
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
                 <!-- <span class="badge badge-danger badge-counter" *ngIf="userData.new_notifications">{{ userData.new_notifications }}</span> -->
             </a>
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
@@ -170,9 +154,7 @@
     </ul>
 </nav>
 
-<div class="mx-4 alert alert-primary text-primary mb-4" *ngIf="alertMessage">
-    {{alertMessage}}
-</div>
+<div class="mx-4 alert alert-primary text-primary mb-4" *ngIf="alertMessage">{{alertMessage}}</div>
 
 <div class="modal fade p-0" id="staticBackdrop"
 data-backdrop="static" tabindex="-1" role="dialog">
@@ -186,12 +168,12 @@ data-backdrop="static" tabindex="-1" role="dialog">
             </div>
             <div class="modal-body">
                 <form class="" action="index.html" method="post" id="send-message">
-                    <textarea name="name" placeholder="Your message..." rows="6" class="w-100" required></textarea>
+                    <textarea name="name" placeholder="Your message..." rows="6" class="w-100" required [(ngModel)]="sendMessageObject.content"></textarea>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
-                <button type="submit" class="btn btn-primary" form="send-message">Send Message</button>
+                <button type="submit" class="btn btn-primary" form="send-message" (click)="sendMessage();" >Send Message</button>
             </div>
         </div>
     </div>

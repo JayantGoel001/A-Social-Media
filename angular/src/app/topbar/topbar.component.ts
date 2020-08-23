@@ -12,12 +12,17 @@ import { AutoUnsubscribe } from '../unsubscribe';
     templateUrl: './topbar.component.html',
     styleUrls: ['./topbar.component.css']
 })
+
 @AutoUnsubscribe
 export class TopbarComponent implements OnInit {
-    constructor(public auth:AuthService,public router:Router,
-                public storage:LocalStorageService,
-                public events:EventEmitterService,
-                private centralUserData:UserDataService,private api:ApiService) { }
+
+    constructor(
+        public auth:AuthService,public router:Router,
+        public storage:LocalStorageService,
+        public events:EventEmitterService,
+        private centralUserData:UserDataService,
+        private api:ApiService
+        ) { }
 
     ngOnInit(): void {
         this.userName = this.storage.getParsedToken().name;
@@ -39,10 +44,9 @@ export class TopbarComponent implements OnInit {
         });
 
         let updateMessageEvent = this.events.updateSendMessageObjectEvent.subscribe((data)=>{
-            this.sendMessageObject.id = data._id;
+            this.sendMessageObject.id = data.id;
             this.sendMessageObject.name = data.name;
-
-        })
+        });
 
         let requestObject = {
             location:`users/get-user-data/${this.userId}`,
@@ -66,10 +70,12 @@ export class TopbarComponent implements OnInit {
     public alertMessage:String = "";
     public profilePicture:String = "default_avatar";
     private subscriptions = [];
-    private sendMessageObject = {
+    public sendMessageObject = {
         id:"",
-        name:""
+        name:"",
+        content:""
     };
+
     /**
      * searchForFriend
      */
@@ -77,5 +83,15 @@ export class TopbarComponent implements OnInit {
         this.router.navigate(['/search-results',{query:this.query}]);
     }
 
-
+    /**
+     * sendMessage
+     */
+    public sendMessage() {
+        if (!this.sendMessageObject.content) {
+            this.events.onAlertEvent.emit("Message Not Sent. You must provide Some content.");
+            return ;
+        }
+        this.api.sendMessage(this.sendMessageObject);
+        this.sendMessageObject.content = "";
+    }
 }
