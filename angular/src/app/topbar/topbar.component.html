@@ -76,7 +76,7 @@
             </div>
         </li>
         <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="resetMessageNotifications();">
                 <i class="fas fa-envelope fa-fw"></i>
                 <span class="badge badge-danger badge-counter" *ngIf="notifications.messages">{{ notifications.messages }}</span>
             </a>
