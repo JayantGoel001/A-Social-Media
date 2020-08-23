@@ -32,15 +32,13 @@ export class TopbarComponent implements OnInit {
         });
 
         let friendRequestsEvent = this.events.updateNumberOfFriendRequestsEvent.subscribe((msg)=>{
-            this.numOfFriendsRequests--;
+            this.notifications.friendRequests--;
         });
 
         let userDataEvent = this.centralUserData.getUserData.subscribe((data)=>{
-            this.userData = data;
-            if (data) {
-                this.numOfFriendsRequests = data.friend_requests.length;
-                this.profilePicture = data.profile_image;
-            }
+            this.notifications.friendRequests = data.friend_requests.length;
+            this.notifications.messages = data.new_message_notifications.length;
+            this.profilePicture = data.profile_image;
         });
 
         let updateMessageEvent = this.events.updateSendMessageObjectEvent.subscribe((data)=>{
@@ -60,21 +58,25 @@ export class TopbarComponent implements OnInit {
         this.subscriptions.push(alertEvent,friendRequestsEvent,userDataEvent,updateMessageEvent);
     }
 
-
-    public userData:object = {};
-    public numOfFriendsRequests:number = 0;
-    public userId :String = "";
-
     public query:String = "";
-    public userName:String = "";
-    public alertMessage:String = "";
-    public profilePicture:String = "default_avatar";
     private subscriptions = [];
     public sendMessageObject = {
         id:"",
         name:"",
         content:""
     };
+
+    public alertMessage:String = "";
+
+    public userName:String = "";
+    public userId :String = "";
+    public profilePicture:String = "default_avatar";
+    public messagePreview = [];
+    public notifications = {
+        alert:0,
+        friendRequests:0,
+        messages:0
+    }
 
     /**
      * searchForFriend
