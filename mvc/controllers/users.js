@@ -368,7 +368,7 @@ const postCommentOnPost = function({body,payload,params},res) {
 
 const sendMessage = function({body,payload,params},res) {
     let from = payload._id;
-    let to = payload.to;
+    let to = params.to;
     let fromPromise = new Promise(function(resolve,reject) {
         User.findById(from,"messages",(err,user)=>{
             if(err){
@@ -393,6 +393,60 @@ const sendMessage = function({body,payload,params},res) {
     });
 
     let sendMessagePromise = Promise.all([fromPromise,toPromise]).then(()=>{
+
+        function hasMessageFrom(messages,id) {
+            for(let message of messages){
+                if(message.from_id == id){
+                    return message;
+                }
+            }
+        }
+
+        function sendMessageTo(to,from) {
+            return new Promise(function(resolve,reject) {
+                if (foundMessage = hasMessageFrom(to.messages,from._id)) {
+                    foundMessage.content.push(message);
+                    to.save((err,user)=>{
+                        if(err){
+                            reject({err:err});
+                            return res.json({error:err});
+                        }
+                        resolve(user);
+                    });
+                }
+                else{
+                    let newMessage = new Message();
+                    newMessage.from_id = from._id;
+                    newMessage.content = [message];
+                    to.messages.push(newMessage);
+
+                    to.save((err,user)=>{
+                        if(err){
+                            reject({err:err});
+                            return res.json({error:err});
+                        }
+                        resolve(user);
+                    });
+                }
+            });
+        }
+        let message = {
+            messenger:from._id,
+            message:body.content
+        }
+
+        let sendMessageToRecipient = sendMessageTo(to,from);
+        let sendMessageToAuthor = sendMessageTo(from,to);
+
+        return new Promise(function(resolve,reject) {
+            Promise.all([sendMessageToRecipient,sendMessageToAuthor])
+            .then(()=>{
+                resolve();
+            });
+        });
+    });
+
+    sendMessagePromise.then(()=>{
         return res.statusJson(201,{message:"Sending Message"});
     });
 }
