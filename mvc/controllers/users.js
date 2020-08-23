@@ -224,8 +224,18 @@ const getUserData = function({params},res) {
                     if(err){
                         return res.json({error:err});
                     }
-                    
-                })
+                    for(message of messages){
+                        for(let i=0;i<users.length;i++){
+                            if (message.from_id == users[i]._id) {
+                                message.messengerName = users[i].name;
+                                message.messengerProfileImage = users[i].profile_image;
+                                users.splice(i,1);
+                                break;
+                            }
+                        }
+                    }
+                    resolve(messages);
+                });
             });
         }
         user.posts.sort((a,b)=>(a.date>b.date)? -1 : 1 );
@@ -233,9 +243,11 @@ const getUserData = function({params},res) {
 
         let randomFriend = getRandomFriends(user.friends);
         let commentDetails = addCommentDetails(user.posts);
+        let messageDetails = addMessengersDetails(user.messages);
 
-        Promise.all([randomFriend,commentDetails]).then((val)=>{
+        Promise.all([randomFriend,commentDetails,messageDetails]).then((val)=>{
             user.random_friend = val[0];
+            user.messages = val[2];
             res.statusJson(200,{user:user});
         })
     });

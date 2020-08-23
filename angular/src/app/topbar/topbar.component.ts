@@ -31,17 +31,20 @@ export class TopbarComponent implements OnInit {
             this.alertMessage = msg;
         });
 
-        let friendRequestsEvent = this.events.updateNumberOfFriendRequestsEvent.subscribe((msg)=>{
+        let friendRequestsEvent =
+        this.events.updateNumberOfFriendRequestsEvent.subscribe((msg)=>{
             this.notifications.friendRequests--;
         });
 
         let userDataEvent = this.centralUserData.getUserData.subscribe((data)=>{
+
             this.notifications.friendRequests = data.friend_requests.length;
             this.notifications.messages = data.new_message_notifications.length;
             this.profilePicture = data.profile_image;
         });
 
-        let updateMessageEvent = this.events.updateSendMessageObjectEvent.subscribe((data)=>{
+        let updateMessageEvent =
+        this.events.updateSendMessageObjectEvent.subscribe((data)=>{
             this.sendMessageObject.id = data.id;
             this.sendMessageObject.name = data.name;
         });
@@ -55,11 +58,19 @@ export class TopbarComponent implements OnInit {
             this.centralUserData.getUserData.emit(val.user);
         });
 
-        this.subscriptions.push(alertEvent,friendRequestsEvent,userDataEvent,updateMessageEvent);
-
-        let resetMessageEvent = this.events.resetMessageNotificationEvent.subscribe(()=>{
+        let resetMessageEvent =
+        this.events.resetMessageNotificationEvent.subscribe(()=>{
             this.notifications.messages = 0;
-        })
+        });
+
+        this.subscriptions.push(
+            alertEvent,
+            friendRequestsEvent,
+            userDataEvent,
+            updateMessageEvent,
+            resetMessageEvent
+        );
+
     }
 
     public query:String = "";
@@ -94,7 +105,8 @@ export class TopbarComponent implements OnInit {
      */
     public sendMessage() {
         if (!this.sendMessageObject.content) {
-            this.events.onAlertEvent.emit("Message Not Sent. You must provide Some content.");
+            this.events.onAlertEvent
+            .emit("Message Not Sent. You must provide Some content.");
             return ;
         }
         this.api.sendMessage(this.sendMessageObject);
