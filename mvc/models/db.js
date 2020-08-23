@@ -1,15 +1,11 @@
 const mongoose = require('mongoose');
 let dbURI = 'mongodb://localhost/A_Social_Media_APP';
 
-
 if (process.env.NODE_ENV === 'production') {
     dbURI = process.env.MONGODB_URI;
 }
 
-
 mongoose.connect(dbURI, { useNewUrlParser: true });
-
-
 
 mongoose.connection.on('connected', () => {
     console.log(`Mongoose connected to ${dbURI}`);
@@ -31,14 +27,12 @@ const gracefulShutdown = (msg, callback) => {
     });
 };
 
-
 // For nodemon restarts
 process.once('SIGUSR2', () => {
     gracefulShutdown('nodemon restart', () => {
         process.kill(process.pid, 'SIGUSR2');
     });
 });
-
 
 // For app termination
 process.on('SIGINT', () => {
@@ -47,15 +41,12 @@ process.on('SIGINT', () => {
     });
 });
 
-
 // For Heroku app termination
 process.on('SIGTERM', () => {
     gracefulShutdown('Heroku app shutdown', () => {
         process.exit(0);
     });
 });
-
-
 
 require('./users');
 require('./passport');
