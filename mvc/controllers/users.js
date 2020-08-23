@@ -210,7 +210,24 @@ const getUserData = function({params},res) {
                 })
             });
         }
+        function addMessengersDetails(messages) {
+            return new Promise(function(resolve,reject) {
+                if (!messages.length) {
+                    resolve(messages);
+                }
 
+                let usersArray = [];
+                for(let message of messages){
+                    usersArray.push(message.from_id);
+                }
+                User.find({'_id':{$in :usersArray}},"name profile_image",(err,users)=>{
+                    if(err){
+                        return res.json({error:err});
+                    }
+                    
+                })
+            });
+        }
         user.posts.sort((a,b)=>(a.date>b.date)? -1 : 1 );
         addNameAndAgoToPost(user.posts,user);
 
