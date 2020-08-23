@@ -65,7 +65,7 @@
                     Message Center
                 </h6>
                 <div class="custom-scroll limit-h">
-                    <a *ngFor="let preview of messagePreview" class="dropdown-item d-flex align-items-center" href="#">
+                    <a *ngFor="let preview of messagePreview" (click)="messageLink(preview.messengeID);" class="link dropdown-item d-flex align-items-center" >
                         <div class="dropdown-list-image mr-3">
                             <img class="rounded-circle" src="/assets/images/{{preview.messengerImage}}.jpg" alt="">
                             <div *ngIf="preview.isNew" class="new badge badge-success badge-counter">NEW</div>

@@ -85,9 +85,9 @@ export class TopbarComponent implements OnInit {
 
     public alertMessage:String = "";
 
-    public userName:String = "";
-    public userId :String = "";
-    public profilePicture:String = "default_avatar";
+    public userName:string = "";
+    public userId :string = "";
+    public profilePicture:string = "default_avatar";
     public messagePreview = [];
     public notifications = {
         alert:0,
@@ -128,7 +128,7 @@ export class TopbarComponent implements OnInit {
             let preview = {
                 messengerName:messages[i].messengerName,
                 messageContent:lastMessage.message,
-                messengerImage:"",
+                messengerImage: "",
                 messengerID:messages[i].from_id,
                 isNew:false
             }
@@ -148,5 +148,19 @@ export class TopbarComponent implements OnInit {
                 this.messagePreview.push(preview);
             }
         }
+    }
+
+    /**
+     * messageLink
+     */
+    public messageLink(messengeID) {
+        this.router.navigate(['/messages'],
+        {
+            state:{
+                data:{
+                    msgId:messengeID
+                }
+            }
+        });
     }
 }
