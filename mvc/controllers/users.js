@@ -517,6 +517,37 @@ const deleteMessage = function({payload,params},res) {
     });
 }
 
+const bestieEnemyToggle = function({payload,params,query},res) {
+    let toggle = query.toggle;
+    if (toggle!="besties" && toggle!="enemies") {
+        return res.json({message:"Incorrect query supplied."});
+    }
+    let myId = payload._id;
+    let friendId = params.userid;
+
+    User.findById(myId,(err,user)=>{
+        if(err){
+            return res.json({error:err});
+        }
+        if (!user.friends.includes(friendId)) {
+            return res.json({message:"You are not friends with this user."});
+        }
+        let arr = user[toggle];
+        if (arr.includes(friendId)) {
+            arr.splice(arr.indexOf(friendId),1);
+        }
+        else {
+            arr.push(friendId);
+        }
+        user.save((err)=>{
+            if(err){
+                return res.json({error:err});
+            }
+            return res.statusJson(201,{message:"Bestie/Enemy Toggle"});
+        })
+    });
+}
+
 const deleteAllUsers = function(req,res) {
     User.deleteMany({},(err,info)=>{
         if(err){
@@ -535,5 +566,5 @@ const getAllUsers = function(req,res) {
     });
 }
 
-module.exports = {deleteAllUsers,getAllUsers,registerUser,loginUser,generateFeed,getSearchResults,makeFriendRequest,getUserData,getFriendRequest,resolveFriendRequest,createPost,likeUnlike,postCommentOnPost,sendMessage,resetMessageNotification,deleteMessage
+module.exports ={deleteAllUsers,getAllUsers,registerUser,loginUser,generateFeed,getSearchResults,makeFriendRequest,getUserData,getFriendRequest,resolveFriendRequest,createPost,likeUnlike,postCommentOnPost,sendMessage,resetMessageNotification,deleteMessage,bestieEnemyToggle
 }
