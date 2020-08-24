@@ -3,7 +3,6 @@ import { AuthService } from "../auth.service";
 import { Router } from "@angular/router";
 import { LocalStorageService } from "../local-storage.service";
 import { EventEmitterService } from "../event-emitter.service";
-import { UserDataService } from "../user-data.service";
 import { ApiService } from '../api.service';
 import { AutoUnsubscribe } from '../unsubscribe';
 
@@ -20,7 +19,6 @@ export class TopbarComponent implements OnInit {
         public auth:AuthService,public router:Router,
         public storage:LocalStorageService,
         public events:EventEmitterService,
-        private centralUserData:UserDataService,
         private api:ApiService
         ) { }
 
@@ -36,7 +34,7 @@ export class TopbarComponent implements OnInit {
             this.notifications.friendRequests--;
         });
 
-        let userDataEvent = this.centralUserData.getUserData.subscribe((data)=>{
+        let userDataEvent = this.events.getUserData.subscribe((data)=>{
 
             this.notifications.friendRequests = data.friend_requests.length;
             this.notifications.messages = data.new_message_notifications.length;
@@ -57,7 +55,7 @@ export class TopbarComponent implements OnInit {
         }
 
         this.api.makeRequest(requestObject).then((val)=>{
-            this.centralUserData.getUserData.emit(val.user);
+            this.events.getUserData.emit(val.user);
         });
 
         let resetMessageEvent =

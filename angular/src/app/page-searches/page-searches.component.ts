@@ -3,7 +3,7 @@ import { ApiService } from '../api.service';
 import { ActivatedRoute } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { DOCUMENT } from "@angular/common";
-import { UserDataService } from "../user-data.service";
+import { EventEmitterService } from "../event-emitter.service";
 import { AutoUnsubscribe } from '../unsubscribe';
 
 @Component({
@@ -17,12 +17,12 @@ method
     constructor(private api:ApiService,
                 private route:ActivatedRoute,
                 private title:Title,
-                private centralUserData:UserDataService,
+                public events:EventEmitterService,
                 @Inject(DOCUMENT) private document:Document) { }
     ngOnInit() {
         this.title.setTitle("Search Page");
         this.document.getElementById("sidebarToggleTop").classList.add("d-none");
-        let userDataEvent = this.centralUserData.getUserData.subscribe((data)=>{
+        let userDataEvent = this.events.getUserData.subscribe((data)=>{
             this.route.params.subscribe(params=>{
                 this.query = params.query;
                 this.user = data;
