@@ -28,14 +28,12 @@ export class PageProfileComponent implements OnInit {
 
         let paramsId = this.route.snapshot.params.userid;
         let userDataEvent = this.events.getUserData.subscribe((user)=>{
+            this.besties = user.besties;
+            this.enemies = user.enemies;
             this.route.params.subscribe((params)=>{
                 this.showPosts = 6;
-                if (user.besties.includes(params.userid)) {
-                    this.isBestie = true;
-                }
-                if (user.enemies.includes(params.userid)) {
-                    this.isEnemy = true;
-                }
+                this.isBestie = user.besties.some((val)=> val._id==params.userid);
+                this.isEnemy = user.enemies.some((val)=> val._id==params.userid);
 
                 this.maxAmountOfBesties =  user.besties.length>=2;
 
@@ -90,6 +88,9 @@ export class PageProfileComponent implements OnInit {
     public isBestie:boolean = false;
     public isEnemy:boolean = false;
     public maxAmountOfBesties:boolean = false;
+
+    private besties = [];
+    private enemies = [];
 
     /**
      * showMorePosts
