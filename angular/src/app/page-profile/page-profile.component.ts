@@ -30,6 +30,12 @@ export class PageProfileComponent implements OnInit {
         let userDataEvent = this.events.getUserData.subscribe((user)=>{
             this.route.params.subscribe((params)=>{
                 this.showPosts = 6;
+                if (user.besties.includes(params.userid)) {
+                    this.isBestie = true;
+                }
+                if (user.enemies.includes(params.userid)) {
+                    this.isEnemy = true;
+                }
                 if (user._id==params.userid) {
                     this.setComponentValues(user);
                     this.resetBoolean();
@@ -77,6 +83,9 @@ export class PageProfileComponent implements OnInit {
 
     public haveSentFriendRequest:Boolean = false;
     public haveReceivedFriendRequest:Boolean = false;
+
+    public isBestie:boolean = false;
+    public isEnemy:boolean = false;
 
     /**
      * showMorePosts
@@ -149,6 +158,8 @@ export class PageProfileComponent implements OnInit {
         this.canSendMessage = false;
         this.haveSentFriendRequest = false;
         this.haveReceivedFriendRequest = false;
+        this.isBestie = false;
+        this.isEnemy = false;
     }
 
     /**
