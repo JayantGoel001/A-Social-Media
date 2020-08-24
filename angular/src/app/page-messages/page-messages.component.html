@@ -27,25 +27,25 @@
                     <div class="col-xl-7 col-lg-7">
                         <div class="message-window shadow bg-white d-flex flex-column justify-content-between">
                         <!--  -->
-    <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="message-content p-3 grow-1 custom-scroll">
-        <div *ngFor="let group of activeMessage.messageGroups" class="messenger mb-5">
-            <div class="mb-2" [ngClass]="{'ml-auto w-max':group.isMe}">
-                <span *ngIf="group.isMe" class="mr-3"><a routerLink="/profile/{{group.id}}" class="link">{{group.name}}</a></span>
+                            <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="message-content p-3 grow-1 custom-scroll">
+                                <div *ngFor="let group of activeMessage.messageGroups" class="messenger mb-5">
+                                    <div class="mb-2" [ngClass]="{'ml-auto w-max':group.isMe}">
+                                        <span *ngIf="group.isMe" class="mr-3"><a routerLink="/profile/{{group.id}}" class="link">{{group.name}}</a></span>
 
-                <a href="#"><img src="assets/images/{{group.image}}.jpg" class="rounded-circle profile-img-sm"></a>
+                                        <a href="#"><img src="assets/images/{{group.image}}.jpg" class="rounded-circle profile-img-sm"></a>
 
-                <span *ngIf="!group.isMe" class="ml-3"><a routerLink="/profile/{{group.id}}" class="link">{{group.name}}</a></span>
+                                        <span *ngIf="!group.isMe" class="ml-3"><a routerLink="/profile/{{group.id}}" class="link">{{group.name}}</a></span>
 
-            </div>
-            <div *ngFor = "let message of group.messages" class="mb-2" [ngClass]="(group.isMe)?'w-max ml-auto mr-5':'w-75 ml-5'">
-                <p class="text-white p-2 px-4 d-inline rounded-pill message-style" [ngClass]="(group.isMe)?'w-max ml-auto bg-success':'bg-primary'">{{ message }}</p>
-            </div>
-        </div>
-    </div>
+                                    </div>
+                                    <div *ngFor = "let message of group.messages" class="mb-2" [ngClass]="(group.isMe)?'w-max ml-auto mr-5':'w-75 ml-5'">
+                                        <p class="text-white p-2 px-4 d-inline rounded-pill message-style" [ngClass]="(group.isMe)?'w-max ml-auto bg-success':'bg-primary'">{{ message }}</p>
+                                    </div>
+                                </div>
+                            </div>
                             <!--  -->
                             <div>
-                                <form class="" action="index.html" method="post">
-                                    <textarea class="w-100 border-top p-3 custom-scroll" placeholder="Your message..." name="name" rows="4" required></textarea>
+                                <form (submit)="sendMessage();" action="index.html" method="post">
+                                    <textarea [(ngModel)]="newMessages" class="w-100 border-top p-3 custom-scroll" placeholder="Your message..." name="name" rows="4" required></textarea>
                                     <input type="submit" class="w-100 p-2 border-0 btn-primary" value="Send Message">
                                 </form>
                             </div>

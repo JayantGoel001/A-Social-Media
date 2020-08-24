@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef,AfterContentChecked } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { ApiService } from '../api.service';
 import { UserDataService } from "../user-data.service";
@@ -16,7 +16,8 @@ export class PageMessagesComponent implements OnInit {
   constructor(
           private title:Title,
           private centralUserData:UserDataService,
-          private api:ApiService
+          private api:ApiService,
+          private cdRef:ChangeDetectorRef
         ) { }
 
   ngOnInit(): void {
@@ -30,13 +31,15 @@ export class PageMessagesComponent implements OnInit {
 
       let userDataEvent =
       this.centralUserData.getUserData.subscribe((user)=>{
-            this.activeMessage.fromId =
-            this.activeMessage.fromId || user.messages[0].from_id;
-            this.messages = user.messages;
-            this.userName = user.name;
-            this.userId = user._id;
-            this.usersProfileImage = user.profile_image;
-            this.setActiveMessage(this.activeMessage.fromId);
+          setTimeout(() => {
+              this.activeMessage.fromId =
+              this.activeMessage.fromId || user.messages[0].from_id;
+              this.messages = user.messages;
+              this.userName = user.name;
+              this.userId = user._id;
+              this.usersProfileImage = user.profile_image;
+              this.setActiveMessage(this.activeMessage.fromId);
+          }, 0);
       });
       this.subscriptions.push(userDataEvent);
   }
@@ -53,6 +56,7 @@ export class PageMessagesComponent implements OnInit {
   public userName = "";
   public userId = "";
   public subscriptions = [];
+  public newMessages = "";
 
   /**
    * setActiveMessage
@@ -90,5 +94,55 @@ export class PageMessagesComponent implements OnInit {
               }
           }
       }
+      this.cdRef.detectChanges();
    }
+
+  /**
+   * sendMessage
+   */
+  public sendMessage() {
+      if (!this.newMessages) {
+          return;
+      }
+
+      let obj ={
+          content:this.newMessages,
+          id:this.activeMessage.fromId
+      }
+      this.api.sendMessage(obj,false).then((val:any)=>{
+          if (val.statusCode == 201) {
+              let groups = this.activeMessage.messageGroups;
+              if (groups[groups.length-1].isMe) {
+                  groups[groups.length-1].messages.push(this.newMessages);
+              }
+              else{
+                  let newGroup = {
+                      image:this.usersProfileImage,
+                      name:this.userName,
+                      id:this.userId,
+                      messages:[this.newMessages],
+                      isMe:true
+                  }
+                  groups.push(newGroup);
+              }
+          }
+          for(let message of this.messages){
+              if (message.from_id == this.activeMessage.fromId) {
+                  let newContent = {
+                      message:this.newMessages,
+                      messenger:this.userId
+                  }
+                  message.content.push(newContent);
+              }
+          }
+          this.newMessages = "";
+      });
+
+
+  }
+  ngAfterContentChecked() {
+
+    this.cdRef.detectChanges();
+
+  }
 }
