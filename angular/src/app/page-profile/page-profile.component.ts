@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
-import { UserDataService } from "../user-data.service";
 import { EventEmitterService } from "../event-emitter.service";
 import { ApiService } from "../api.service";
 import { AutoUnsubscribe } from '../unsubscribe';
@@ -20,7 +19,6 @@ export class PageProfileComponent implements OnInit {
         private title:Title,
         @Inject(DOCUMENT) private document:Document,
         private route:ActivatedRoute,
-        private centralUserData:UserDataService,
         private api:ApiService) { }
 
     ngOnInit(): void {
@@ -29,7 +27,7 @@ export class PageProfileComponent implements OnInit {
         .add("d-none");
 
         let paramsId = this.route.snapshot.params.userid;
-        let userDataEvent = this.centralUserData.getUserData.subscribe((user)=>{
+        let userDataEvent = this.events.getUserData.subscribe((user)=>{
             this.route.params.subscribe((params)=>{
                 this.showPosts = 6;
                 if (user._id==params.userid) {

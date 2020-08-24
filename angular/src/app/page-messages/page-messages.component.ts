@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef,AfterContentChecked } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { ApiService } from '../api.service';
-import { UserDataService } from "../user-data.service";
+import { EventEmitterService } from "../event-emitter.service";
 import { AutoUnsubscribe } from '../unsubscribe';
 
 @Component({
@@ -15,9 +15,9 @@ export class PageMessagesComponent implements OnInit {
 
     constructor(
         private title:Title,
-        private centralUserData:UserDataService,
         private api:ApiService,
-        private cdRef:ChangeDetectorRef
+        private cdRef:ChangeDetectorRef,
+        public events:EventEmitterService,
     ) { }
 
     ngOnInit(): void {
@@ -30,7 +30,7 @@ export class PageMessagesComponent implements OnInit {
         }
 
         let userDataEvent =
-        this.centralUserData.getUserData.subscribe((user)=>{
+        this.events.getUserData.subscribe((user)=>{
             setTimeout(() => {
                 if (!user.messages) {
                     return ;

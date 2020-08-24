@@ -11,7 +11,8 @@ export class EventEmitterService {
     = new EventEmitter();
     resetMessageNotificationEvent:EventEmitter<String>
     = new EventEmitter();
-
+    getUserData : EventEmitter<any> = new EventEmitter() ;
+    
 
     constructor() { }
 
