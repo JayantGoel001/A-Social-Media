@@ -168,4 +168,18 @@ export class PageProfileComponent implements OnInit {
     public updateSendMessageObject(id,name) {
         this.events.updateSendMessageObjectEvent.emit({id,name});
     }
+
+    /**
+     * toggleRequest
+     */
+    public toggleRequest(toggle) {
+        let requestObject = {
+            location:`users/bestie-enemy-toggle/${this.usersID}?toggle=${toggle}`,
+            method:"POST"
+        }
+        this.api.makeRequest(requestObject).then((val)=>{
+            console.log(val);
+
+        })
+    }
 }

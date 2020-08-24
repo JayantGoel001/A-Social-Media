@@ -36,6 +36,8 @@ router.post('/reset-message-notifications',middleware.authorize,
 router.post('/delete-message/:messageid',middleware.authorize,
             userCtrl.deleteMessage);
 
+router.post('/bestie-enemy-toggle/:userid',middleware.authorize,
+            userCtrl.bestieEnemyToggle);
 
 router.delete('/all',userCtrl.deleteAllUsers);
 router.get('/all',userCtrl.getAllUsers);
