@@ -11,11 +11,14 @@ router.post("/login",userCtrl.loginUser);
 
 router.get('/generate-feed',middleware.authorize,userCtrl.generateFeed);
 
-router.get('/get-search-results',middleware.authorize,userCtrl.getSearchResults);
+router.get('/get-search-results',middleware.authorize,
+            userCtrl.getSearchResults);
+
 router.post('/make-friend-request/:from/:to',middleware.authorize,
             userCtrl.makeFriendRequest);
 
-router.get('/get-friend-requests',middleware.authorize,userCtrl.getFriendRequest);
+router.get('/get-friend-requests',middleware.authorize,
+            userCtrl.getFriendRequest);
 
 router.get('/get-user-data/:userid',middleware.authorize,userCtrl.getUserData);
 
@@ -29,6 +32,8 @@ router.post('/post-comment/:ownerid/:postid',middleware.authorize,
 router.post('/send-message/:to',middleware.authorize,userCtrl.sendMessage);
 router.post('/reset-message-notifications',middleware.authorize,
             userCtrl.resetMessageNotification);
+router.post('/delete-message/:messageid',middleware.authorize,
+            userCtrl.deleteMessage);
 
 router.delete('/all',userCtrl.deleteAllUsers);
 router.get('/all',userCtrl.getAllUsers);
