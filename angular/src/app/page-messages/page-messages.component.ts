@@ -45,7 +45,7 @@ export class PageMessagesComponent implements OnInit {
       fromId:"",
       fromName:"",
       fromProfilePicture:"",
-      messages:[]
+      messageGroups:[]
   }
 
   public messages = [];
@@ -65,7 +65,29 @@ export class PageMessagesComponent implements OnInit {
               this.activeMessage.fromName = message.messengerName;
               this.activeMessage.fromProfilePicture =
               message.messengerProfileImage;
-              this.activeMessage.fromId = message.content;
+              let groups = (this.activeMessage.messageGroups = []);
+              for(let content of message.content){
+                  let me = (content.messenger == this.userId);
+                  if (groups.length) {
+                      var lastMessengerId = groups[groups.length-1].id;
+
+                      if (content.messenger == lastMessengerId) {
+                          groups[groups.length-1].messages.
+                          push(content.message);
+                          continue;
+                      }
+                  }
+
+                  let group = {
+                      image:me?
+                      this.usersProfileImage:message.messengerProfileImage,
+                      name:me?"Me":message.messengerName,
+                      id:content.messenger,
+                      messages:[content.message],
+                      isMe:me
+                  }
+                  groups.push(group);
+              }
           }
       }
    }
