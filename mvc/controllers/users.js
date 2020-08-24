@@ -501,6 +501,22 @@ const resetMessageNotification = function({payload},res) {
     });
 }
 
+const deleteMessage = function({payload,params},res) {
+    User.findById(payload._id,(err,user)=>{
+        if(err){
+            return res.json({error:err});
+        }
+        const message = user.messages.id(params.messageid).remove();
+
+        user.save((err)=>{
+            if(err){
+                return res.json({error:err});
+            }
+            return res.statusJson(201,{message:"Deleted Message."});
+        });
+    });
+}
+
 const deleteAllUsers = function(req,res) {
     User.deleteMany({},(err,info)=>{
         if(err){
@@ -519,20 +535,5 @@ const getAllUsers = function(req,res) {
     });
 }
 
-module.exports = {
-    deleteAllUsers,
-    getAllUsers,
-    registerUser,
-    loginUser,
-    generateFeed,
-    getSearchResults,
-    makeFriendRequest,
-    getUserData,
-    getFriendRequest,
-    resolveFriendRequest,
-    createPost,
-    likeUnlike,
-    postCommentOnPost,
-    sendMessage,
-    resetMessageNotification
+module.exports = {deleteAllUsers,getAllUsers,registerUser,loginUser,generateFeed,getSearchResults,makeFriendRequest,getUserData,getFriendRequest,resolveFriendRequest,createPost,likeUnlike,postCommentOnPost,sendMessage,resetMessageNotification,deleteMessage
 }
