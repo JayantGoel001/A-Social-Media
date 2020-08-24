@@ -36,6 +36,9 @@ export class PageProfileComponent implements OnInit {
                 if (user.enemies.includes(params.userid)) {
                     this.isEnemy = true;
                 }
+
+                this.maxAmountOfBesties =  user.besties.length>=2;
+
                 if (user._id==params.userid) {
                     this.setComponentValues(user);
                     this.resetBoolean();
@@ -86,6 +89,7 @@ export class PageProfileComponent implements OnInit {
 
     public isBestie:boolean = false;
     public isEnemy:boolean = false;
+    public maxAmountOfBesties:boolean = false;
 
     /**
      * showMorePosts
@@ -160,6 +164,7 @@ export class PageProfileComponent implements OnInit {
         this.haveReceivedFriendRequest = false;
         this.isBestie = false;
         this.isEnemy = false;
+        this.maxAmountOfBesties = false;
     }
 
     /**
@@ -178,8 +183,14 @@ export class PageProfileComponent implements OnInit {
             method:"POST"
         }
         this.api.makeRequest(requestObject).then((val)=>{
-            console.log(val);
-
+            if (val.statusCode==201) {
+                if (toggle=="besties") {
+                    this.isBestie = !this.isBestie;
+                }
+                else{
+                    this.isEnemy = !this.isEnemy;
+                }
+            }
         })
     }
 }

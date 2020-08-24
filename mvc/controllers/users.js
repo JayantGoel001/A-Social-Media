@@ -529,6 +529,8 @@ const bestieEnemyToggle = function({payload,params,query},res) {
         if(err){
             return res.json({error:err});
         }
+
+
         if (!user.friends.includes(friendId)) {
             return res.json({message:"You are not friends with this user."});
         }
@@ -537,6 +539,9 @@ const bestieEnemyToggle = function({payload,params,query},res) {
             arr.splice(arr.indexOf(friendId),1);
         }
         else {
+            if (toggle=="besties" && user.besties.length>=2) {
+                return res.json({message:"You have equal amount of besties."});
+            }
             arr.push(friendId);
         }
         user.save((err)=>{
