@@ -245,7 +245,20 @@ const getUserData = function({params},res) {
         let commentDetails = addCommentDetails(user.posts);
         let messageDetails = addMessengersDetails(user.messages);
 
-        Promise.all([randomFriend,commentDetails,messageDetails]).then((val)=>{
+        let besties = new Promise(function(resolve,reject) {
+            User.find({'_id':{$in:user.besties}},"name profile_image",(err,users)=>{
+                user.besties = users;
+                resolve();
+            })
+        })
+        let enemies = new Promise(function(resolve,reject) {
+            User.find({'_id':{$in:user.enemies}},"name profile_image",(err,users)=>{
+                user.enemies = users;
+                resolve();
+            })
+        })
+        const waitFor = [randomFriend,commentDetails,messageDetails,besties,enemies];
+        Promise.all(waitFor).then((val)=>{
             user.random_friend = val[0];
             user.messages = val[2];
             res.statusJson(200,{user:user});
