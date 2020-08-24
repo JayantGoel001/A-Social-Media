@@ -179,6 +179,16 @@ export class PageProfileComponent implements OnInit {
      * toggleRequest
      */
     public toggleRequest(toggle) {
+
+        function toggleValue(array) {
+            for (let i = 0; i < array.length; i++) {
+                if (array[i]._id == this.usersID) {
+                    return array.splice(i,1);
+                }
+            }
+            array.push({_id:this.usersID});
+        }
+
         let requestObject = {
             location:`users/bestie-enemy-toggle/${this.usersID}?toggle=${toggle}`,
             method:"POST"
@@ -186,9 +196,12 @@ export class PageProfileComponent implements OnInit {
         this.api.makeRequest(requestObject).then((val)=>{
             if (val.statusCode==201) {
                 if (toggle=="besties") {
+                    toggleValue.call(this,this.besties);
+                    this.maxAmountOfBesties = this.besties.length>=2;
                     this.isBestie = !this.isBestie;
                 }
                 else{
+                    toggleValue.call(this,this.enemies);
                     this.isEnemy = !this.isEnemy;
                 }
             }
