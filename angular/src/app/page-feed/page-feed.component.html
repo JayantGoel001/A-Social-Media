@@ -40,6 +40,24 @@
                         </form>
                     </div>
                 </div>
+                <div *ngIf="bestiePosts.length">
+                    <h1 class="text-center text-x1-left text-uppercase text-primary h4 font-weight-900 mt-5 mb-0">My Besties</h1>
+                    <div class="row mb-5 pb-5">
+                        <div class="col-xl-3 col-lg-6">
+                            <app-post *ngIf="bestiePosts[0]" [post]="bestiePosts[0]"></app-post>
+                        </div>
+                        <div class="col-xl-3 col-lg-6">
+                            <app-post *ngIf="bestiePosts[1]" [post]="bestiePosts[1]"></app-post>
+                        </div>
+                        <div class="col-xl-3 col-lg-6">
+                            <app-post *ngIf="bestiePosts[2]" [post]="bestiePosts[2]"></app-post>
+                        </div>
+                        <div class="col-xl-3 col-lg-6">
+                            <app-post *ngIf="bestiePosts[3]" [post]="bestiePosts[3]"></app-post>
+                        </div>
+                    </div>
+                    <hr class="divider w-40">
+                </div>
                 <div class="row mb-5 pb-5">
                     <div class="col-xl-3 col-lg-6"><app-post *ngFor="let post of posts.col1" [post]="post"></app-post></div>
                     <div class="col-xl-3 col-lg-6"><app-post *ngFor="let post of posts.col2" [post]="post"></app-post></div>

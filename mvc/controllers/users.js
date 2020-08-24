@@ -104,42 +104,54 @@ const addNameAndAgoToPost = function(array,user) {
 }
 const generateFeed = function({payload},res) {
     const posts = [];
-    const maxAmountOfPosts = 48;
+    let bestiePosts = [];
 
     let myPost = new Promise(function(resolve,reject) {
-        User.findById(payload._id,"name posts profile_image friends",{lean:true},(err,user)=>{
+        User.findById(payload._id,"",{lean:true},(err,user)=>{
             if(err){
                 return res.json({error:err});
             }
             addNameAndAgoToPost(user.posts,user);
             posts.push(...user.posts);
-            resolve(user.friends);
+
+            user.friends = user.friends.filter((val)=>{
+                return !user.besties.includes(val);
+            });
+            resolve(user);
         });
     });
 
-    let myFriendPost = myPost.then((friendArray)=>{
+    function getPostFrom(arrayOfUsers,maxAmountOfPosts,postArray) {
         return new Promise(function(resolve,reject) {
-            User.find({'_id':{$in:friendArray}},
-            "name posts profile_image",{lean:true},(err,users)=>{
+            User.find({"_id":{$in:arrayOfUsers}},"name posts profile_image",{lean:true},(err,users)=>{
                 if(err){
                     return res.json({error:err});
                 }
                 for(user of users)
                 {
                     addNameAndAgoToPost(user.posts,user);
-                    posts.push(...user.posts);
+                    postArray.push(...user.posts);
                 }
-                resolve();
-            });
-        });
-    });
-    myFriendPost.then(()=>{
-        posts.sort((a,b)=>(a.date>b.date)?-1:1);
-        posts.slice(maxAmountOfPosts);
+                postArray.sort((a,b)=>(a.date>b.date)?-1:1);
+                postArray.slice(maxAmountOfPosts);
 
-        addCommentDetails(posts).then((posts)=>{
-            res.statusJson(200,{posts:posts.slice(0,maxAmountOfPosts)});
+                addCommentDetails(postArray).then(()=>{
+                    resolve();
+                })
+
+            })
         });
+    }
+
+    let myBestiePost = myPost.then(({besties})=>{
+        return getPostFrom(besties,4,bestiePosts);
+    });
+
+    let myFriendPost = myPost.then(({friends})=>{
+        return getPostFrom(friends,48,posts);
+    });
+    Promise.all([myBestiePost,myFriendPost]).then(()=>{
+        res.statusJson(200,{posts,bestiePosts})
     });
 }
 
