@@ -103,8 +103,8 @@ export class ApiService {
     /**
      * sendMessage
      */
-    public sendMessage(sendMessageObject) {
-        if (!sendMessageObject.content) {
+    public sendMessage(sendMessageObject,showAlerts=true) {
+        if (!sendMessageObject.content && showAlerts) {
             this.events.onAlertEvent.emit("Message Not Sent. You must provide Some content.");
             return ;
         }
@@ -119,7 +119,7 @@ export class ApiService {
         return new Promise((resolve,reject)=>{
             this.makeRequest(requestObject).then((val)=>{
                 console.log(val);
-                if (val.statusCode==201) {
+                if (val.statusCode==201 && showAlerts) {
                     this.events.onAlertEvent.emit("Succesfully sent a message.")
                 }
                 resolve(val);
