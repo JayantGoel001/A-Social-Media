@@ -21,12 +21,11 @@ export class SidebarComponent implements OnInit {
             this.userId = user._id;
             this.besties = user.besties;
             this.enemies = user.enemies;
-        })
+        });
         this.subscriptions.push(userDataEvent);
     }
 
-    public userData = { };
-    public userId:String = "";
+    public userId:string = "";
     private subscriptions = [];
 
     public besties = [];

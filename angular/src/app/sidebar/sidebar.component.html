@@ -6,7 +6,7 @@
 </a>
 <hr class="sidebar-divider my-0">
 <li class="nav-item active">
-    <a class="nav-link" href="" routerLink="/profile/{{userId}}">
+    <a class="nav-link" routerLink="/profile/{{userId}}">
         <i class="far fa-address-card"></i>
         <span>Profile</span>
     </a>
@@ -54,7 +54,7 @@
     <div id="collapsePages" class="quick collapse" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
-            <a class="collapse-item" href="/profile/{{userId}}">Profile</a>
+            <a class="collapse-item" routerLink="/profile/{{userId}}">Profile</a>
             <a class="collapse-item" href="/feed">Feed</a>
             <a class="collapse-item" href="/messages">Messages</a>
             <a (click)="this.auth.logout()" class="collapse-item mt-3" data-toggle="modal" data-target="#logoutModal" >Sign Out</a>

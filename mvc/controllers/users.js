@@ -157,7 +157,10 @@ const generateFeed = function({payload},res) {
     let myPost = new Promise(function(resolve,reject) {
         User.findById(payload._id,"",{lean:true},(err,user)=>{
             if(err){
-                return res.json({error:err});
+                return res.statusJson(400,{error:err});
+            }
+            if (!user) {
+                return res.json(404,{message:"User Not Found"});
             }
             addNameAndAgoToPost(user.posts,user);
             posts.push(...user.posts);
@@ -171,9 +174,10 @@ const generateFeed = function({payload},res) {
 
     function getPostFrom(arrayOfUsers,maxAmountOfPosts,postArray) {
         return new Promise(function(resolve,reject) {
-            User.find({"_id":{$in:arrayOfUsers}},"name posts profile_image",{lean:true},(err,users)=>{
-                if(err){
-                    return res.json({error:err});
+            User.find({'_id':{$in:arrayOfUsers}},"name posts profile_image",{lean:true},(err,users)=>{
+                if(err) {
+                    reject("Error", err);
+                    return res.json({ err: err });
                 }
                 for(user of users)
                 {
@@ -199,7 +203,7 @@ const generateFeed = function({payload},res) {
         return getPostFrom(friends,48,posts);
     });
     Promise.all([myBestiePost,myFriendPost]).then(()=>{
-        res.statusJson(200,{posts,bestiePosts})
+        res.statusJson(200,{posts,bestiePosts});
     });
 }
 
@@ -244,7 +248,10 @@ const makeFriendRequest = function({params},res) {
 const getUserData = function({params},res) {
     User.findById(params.userid,"-salt -password",{lean:true},(err,user)=>{
         if(err){
-            return res.json({error:err});
+            return res.statusJson(400,{error:err});
+        }
+        if (!user) {
+            return res.json(404,{message:"User Not Found"});
         }
 
         function getRandomFriends(friendsList) {
@@ -310,13 +317,13 @@ const getUserData = function({params},res) {
                 user.besties = users;
                 resolve();
             })
-        })
+        });
         let enemies = new Promise(function(resolve,reject) {
             User.find({'_id':{$in:user.enemies}},"name profile_image",(err,users)=>{
                 user.enemies = users;
                 resolve();
             })
-        })
+        });
         const waitFor = [randomFriend,commentDetails,messageDetails,besties,enemies];
         Promise.all(waitFor).then((val)=>{
             user.random_friend = val[0];
@@ -696,5 +703,20 @@ const getAllUsers = function(req,res) {
     });
 }
 
-module.exports ={deleteAllUsers,getAllUsers,registerUser,loginUser,generateFeed,getSearchResults,makeFriendRequest,getUserData,getFriendRequest,resolveFriendRequest,createPost,likeUnlike,postCommentOnPost,sendMessage,resetMessageNotification,deleteMessage,bestieEnemyToggle,resetAlertNotifications
+module.exports ={
+    deleteAllUsers,
+    getAllUsers,
+    registerUser,
+    loginUser,
+    generateFeed,
+    getSearchResults,
+    makeFriendRequest,
+    getUserData,
+    getFriendRequest,
+    resolveFriendRequest,
+    createPost,
+    likeUnlike,
+    postCommentOnPost,
+    sendMessage,
+    resetMessageNotification,deleteMessage,bestieEnemyToggle,resetAlertNotifications
 }
