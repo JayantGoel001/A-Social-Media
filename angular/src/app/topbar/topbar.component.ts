@@ -189,6 +189,11 @@ export class TopbarComponent implements OnInit {
                     newAlert.bgColor = "bg-purple";
                     newAlert.href = `/profile/${this.userId}`;
                     break;
+                case "commented_post":
+                    newAlert.icon = "fa-comment";
+                    newAlert.bgColor = "bg-primary";
+                    newAlert.href = `/profile/${this.userId}`;
+                    break;
             }
             this.alerts.push(newAlert);
         }
