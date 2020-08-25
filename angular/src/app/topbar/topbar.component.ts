@@ -40,7 +40,7 @@ export class TopbarComponent implements OnInit {
             this.notifications.messages = data.new_message_notifications.length;
             this.notifications.alerts=data.new_notifications;
             this.profilePicture = data.profile_image;
-
+            this.setAlerts(data.notifications);
             this.setMessagePreview(data.messages,data.new_message_notifications);
         });
 
@@ -88,6 +88,7 @@ export class TopbarComponent implements OnInit {
     public userId :string = "";
     public profilePicture:string = "default_avatar";
     public messagePreview = [];
+    public alerts = [];
     public notifications = {
         alerts:0,
         friendRequests:0,
@@ -161,5 +162,35 @@ export class TopbarComponent implements OnInit {
                 }
             }
         });
+    }
+
+    /**
+     * setAlerts
+     */
+    public setAlerts(notificationsData) {
+        for(let alert of notificationsData){
+            let alertObj = JSON.parse(alert);
+
+            let newAlert = {
+                text:alertObj.alert_text,
+                icon:"",
+                bgColor:"",
+                href:""
+            }
+
+            switch (alertObj.alert_type) {
+                case "new_friend":
+                    newAlert.icon = "fa-user-check";
+                    newAlert.bgColor = "bg-success";
+                    newAlert.href = `/profile/${alertObj.from_id}`;
+                    break;
+                case "liked_post":
+                    newAlert.icon = "fa-thumbs-up";
+                    newAlert.bgColor = "bg-purple";
+                    newAlert.href = `/profile/${this.userId}`;
+                    break;
+            }
+            this.alerts.push(newAlert);
+        }
     }
 }

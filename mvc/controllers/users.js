@@ -110,11 +110,21 @@ const alertUser = function(fromUser,toId,type,postContent) {
             from_id:fromUser._id,
             from_name:fromUser.name
         }
+
+        if (postContent && postContent.length>28) {
+            postContent = postContent.substring(0,28)+"...";
+        }
         switch (type) {
             case "new_friend":
                 alert.alert_text =
                  `${alert.from_name} has accepted your friend request`;
                 break;
+            case "liked_post":
+                alert.alert_text =
+                `${alert.from_name} has liked your post ${postContent}`;
+                break;
+            default:
+                return reject("No valid type found");
         }
 
         User.findById(toId,(err,user)=>{
@@ -411,17 +421,38 @@ const likeUnlike = function({payload,params},res) {
             return res.json({error:err});
         }
         const posts = user.posts.id(params.postid);
-        if (posts.likes.includes(payload._id)) {
-            posts.likes.splice(posts.likes.indexOf(payload._id),1);
-        }
-        else {
-            posts.likes.push(payload._id);
-        }
-        user.save((err,user)=>{
+        let promise = new Promise(function(resolve,reject) {
+            if (posts.likes.includes(payload._id)) {
+                posts.likes.splice(posts.likes.indexOf(payload._id),1);
+                resolve();
+            }
+            else {
+                posts.likes.push(payload._id);
+                if (params.ownerid!=payload._id) {
+                    User.findById(payload._id,(err,user)=>{
+                        if(err){
+                            reject("Error:",err);
+                            return res.json({error:err});
+                        }
+                        alertUser(user,params.ownerid,"liked_post",
+                        posts.content).then(()=>{
+                            resolve();
+                        });
+                    })
+                }
+                else{
+                    resolve();
+                }
+            }
+        });
+
+        promise.then(()=>{
+            user.save((err,user)=>{
             if(err){
                 return res.json({error:err});
             }
             res.statusJson(201,{message:"Like Or Unlike a post..."});
+        });
         })
     })
 }
