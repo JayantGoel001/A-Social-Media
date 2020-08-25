@@ -49,6 +49,10 @@ export class TopbarComponent implements OnInit {
             this.sendMessageObject.id = data.id;
             this.sendMessageObject.name = data.name;
         });
+        let resetMessageEvent =
+        this.events.resetMessageNotificationEvent.subscribe(()=>{
+            this.notifications.messages = 0;
+        });
 
         let requestObject = {
             location:`users/get-user-data/${this.userId}`,
@@ -56,12 +60,12 @@ export class TopbarComponent implements OnInit {
         }
 
         this.api.makeRequest(requestObject).then((val)=>{
-            this.events.getUserData.emit(val.user);
-        });
-
-        let resetMessageEvent =
-        this.events.resetMessageNotificationEvent.subscribe(()=>{
-            this.notifications.messages = 0;
+            if (val.status == 404) {
+                return this.auth.logout();
+            }
+            if (val.statusCode==200) {
+                this.events.getUserData.emit(val.user);
+            }
         });
 
         this.subscriptions.push(
@@ -71,7 +75,6 @@ export class TopbarComponent implements OnInit {
             updateMessageEvent,
             resetMessageEvent
         );
-
     }
 
     public query:String = "";
