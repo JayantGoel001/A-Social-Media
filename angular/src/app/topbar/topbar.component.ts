@@ -115,13 +115,6 @@ export class TopbarComponent implements OnInit {
         this.sendMessageObject.content = "";
     }
 
-    /**
-     * resetMessageNotifications
-     */
-    public resetMessageNotifications() {
-        this.api.resetMessageNotifications();
-    }
-
     private setMessagePreview(messages,messageNotification){
         for (let i = messages.length-1; i >=0 ; i--) {
             let lastMessage = messages[i].content[messages[i].content.length-1];
@@ -197,5 +190,32 @@ export class TopbarComponent implements OnInit {
             }
             this.alerts.push(newAlert);
         }
+    }
+
+    /**
+    * resetMessageNotifications
+    */
+    public resetMessageNotifications() {
+        if (this.notifications.messages == 0) {
+            return ;
+        }
+        this.api.resetMessageNotifications();
+    }
+
+    public resetAlertNotifications(){
+        if (this.notifications.alerts == 0) {
+            return ;
+        }
+        let requestObject = {
+            location:`users/reset-alert-notifications`,
+            method:"POST"
+        }
+
+        this.api.makeRequest(requestObject).then((val)=>{
+            if (val.statusCode == 201) {
+                this.notifications.alerts =0;
+            }
+
+        })
     }
 }
