@@ -102,6 +102,39 @@ const addNameAndAgoToPost = function(array,user) {
         item.ownerid = user._id;
     }
 }
+
+const alertUser = function(fromUser,toId,type,postContent) {
+    return new Promise(function(resolve,reject) {
+        let alert = {
+            alert_type:type,
+            from_id:fromUser._id,
+            from_name:fromUser.name
+        }
+        switch (type) {
+            case "new_friend":
+                alert.alert_text =
+                 `${alert.from_name} has accepted your friend request`;
+                break;
+        }
+
+        User.findById(toId,(err,user)=>{
+            if(err){
+                reject("error:",err);
+                return res.json({error:err});
+            }
+            user.new_notifications++;
+            user.notifications.push(JSON.stringify(alert));
+            user.save((err)=>{
+                if(err){
+                    reject("error:",err);
+                    return res.json({error:err});
+                }
+                resolve();
+            });
+        });
+    });
+}
+
 const generateFeed = function({payload},res) {
     const posts = [];
     let bestiePosts = [];
@@ -133,7 +166,7 @@ const generateFeed = function({payload},res) {
                     postArray.push(...user.posts);
                 }
                 postArray.sort((a,b)=>(a.date>b.date)?-1:1);
-                postArray.slice(maxAmountOfPosts);
+                postArray.splice(maxAmountOfPosts);
 
                 addCommentDetails(postArray).then(()=>{
                     resolve();
@@ -333,7 +366,9 @@ const resolveFriendRequest = function({query,params},res) {
                 if(err){
                     return res.json({error:err});
                 }
-                res.statusJson(201,{message:"Resolved Friend Request."});
+                alertUser(user,params.from,"new_friend").then(()=>{
+                    res.statusJson(201,{message:"Resolved Friend Request."});
+                })
             })
         })
     });
