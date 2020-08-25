@@ -137,7 +137,8 @@ const alertUser = function(fromUser,toId,type,postContent) {
                 return res.json({error:err});
             }
             user.new_notifications++;
-            user.notifications.push(JSON.stringify(alert));
+            user.notifications.splice(15);
+            user.notifications.unshift(JSON.stringify(alert));
             user.save((err)=>{
                 if(err){
                     reject("error:",err);
@@ -610,6 +611,21 @@ const resetMessageNotification = function({payload},res) {
     });
 }
 
+const resetAlertNotifications = function({payload},res) {
+    User.findById(payload._id,(err,user)=>{
+        if(err){
+            return res.json({error:err});
+        }
+        user.new_notifications = 0;
+        user.save((err)=>{
+            if(err){
+                return res.json({error:err});
+            }
+            return res.statusJson(201,{message:"Reset ALert notifications"});
+        });
+    });
+}
+
 const deleteMessage = function({payload,params},res) {
     User.findById(payload._id,(err,user)=>{
         if(err){
@@ -680,5 +696,5 @@ const getAllUsers = function(req,res) {
     });
 }
 
-module.exports ={deleteAllUsers,getAllUsers,registerUser,loginUser,generateFeed,getSearchResults,makeFriendRequest,getUserData,getFriendRequest,resolveFriendRequest,createPost,likeUnlike,postCommentOnPost,sendMessage,resetMessageNotification,deleteMessage,bestieEnemyToggle
+module.exports ={deleteAllUsers,getAllUsers,registerUser,loginUser,generateFeed,getSearchResults,makeFriendRequest,getUserData,getFriendRequest,resolveFriendRequest,createPost,likeUnlike,postCommentOnPost,sendMessage,resetMessageNotification,deleteMessage,bestieEnemyToggle,resetAlertNotifications
 }

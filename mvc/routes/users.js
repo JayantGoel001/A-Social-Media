@@ -38,6 +38,8 @@ router.post('/delete-message/:messageid',middleware.authorize,
 
 router.post('/bestie-enemy-toggle/:userid',middleware.authorize,
             userCtrl.bestieEnemyToggle);
+router.post('/reset-alert-notifications',middleware.authorize,
+            userCtrl.resetAlertNotifications);
 
 router.delete('/all',userCtrl.deleteAllUsers);
 router.get('/all',userCtrl.getAllUsers);
