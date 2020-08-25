@@ -121,7 +121,11 @@ const alertUser = function(fromUser,toId,type,postContent) {
                 break;
             case "liked_post":
                 alert.alert_text =
-                `${alert.from_name} has liked your post ${postContent}`;
+                `${alert.from_name} has liked your post '${postContent}'`;
+                break;
+            case "commented_post":
+                alert.alert_text =
+                `${alert.from_name} has commented on your post '${postContent}'`;
                 break;
             default:
                 return reject("No valid type found");
@@ -477,10 +481,24 @@ const postCommentOnPost = function({body,payload,params},res) {
                 if(err){
                     return res.json({error:err});
                 }
-                res.statusJson(201,{
+
+                let promise = new Promise(function(resolve,reject) {
+                    if (payload._id!=params.ownerid) {
+                        alertUser(user,params.ownerid,"commented_post",
+                        post.content).then(()=>{
+                            resolve();
+                        });
+                    }
+                    else{
+                        resolve();
+                    }
+                });
+                promise.then(()=>{
+                    res.statusJson(201,{
                     message:"POST comment",
                     comment:comment,
                     commenter:user});
+                })
             });
         });
     });
