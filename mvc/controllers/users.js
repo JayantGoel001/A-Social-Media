@@ -23,25 +23,30 @@ const registerUser = ({body},res) =>{
     user.setPassword(body.password);
 
     user.save().then(r =>{
-        res.status(201).json({message: "New User", user: r});
+        res.statusJson(201,{message: "New User", user: r});
     }).catch((err)=>{
-        res.status(400).json({message: err});
+        err = err.toString();
+        if (err && err.includes("duplicate key error")){
+            return res.json({ message : "Provided Email is already registered." });
+        }else {
+            return res.statusJson(400, {message: "Something went wrong."});
+        }
     });
 }
 
 const loginUser = (req,res) =>{
     let body = req.body;
     if (!body.email || !body.password) {
-        return res.status(400).json({message:"All Fields are Required."});
+        return res.statusJson(400,{message:"All Fields are Required."});
     }
     passport.authenticate("local",(err,user,info)=>{
         if (err) {
-            return res.status(400).json({message:err});
+            return res.statusJson(400,{ message : err });
         }
         if (user) {
-            res.status(201).json({message:"Logged In"});
+            res.statusJson(201,{ message : "Logged In" });
         }  else {
-            res.status(401).json(info);
+            res.statusJson(401,info);
         }
     })(req,res);
 }
