@@ -1,1 +1,37 @@
-<p>page-register works!</p>
+<app-form-bg></app-form-bg>
+<div class="bg-gradient-primary min-vh-100">
+	<div class="bg-2">
+		<div class="container">
+			<div class="text-white pt-6 pt-sm-16vh">
+				<h1 class="font-weight-800 text-center display-4">A Social Media</h1>
+				<p class="resp h4 w-50 mx-auto text-center" style="line-height: 150%;">A social media website for real people.  Definitely no fake users on this site. None at all.</p>
+				<h2 class="font-weight-300 mt-4 text-center">Register an account.</h2>
+				<form class="register-form user mt-5">
+					<div class="form-group row">
+						<div class="col-sm-6 mb-3 mb-sm-0">
+							<input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name" name="firstName">
+						</div>
+						<div class="col-sm-6">
+							<input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name" name="lastName">
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address" name="email">
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-6 mb-3 mb-sm-0">
+							<input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name="password" autocomplete="on">
+						</div>
+						<div class="col-sm-6">
+							<input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Confirm Password" name="confirmPassword" autocomplete="on">
+						</div>
+					</div>
+					<input type="submit" class="btn btn-primary btn-user btn-block" value="Register an account">
+				</form>
+				<h4 class="text-center p-5 m-0">Already have an account?
+					<a routerLink="/login" class="text-white link">Login</a>
+				</h4>
+			</div>
+		</div>
+	</div>
+</div>
