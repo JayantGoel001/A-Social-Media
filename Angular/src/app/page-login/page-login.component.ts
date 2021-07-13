@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from "../api.service";
+import {LocalStorageService} from "../local-storage.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-page-login',
@@ -14,9 +16,7 @@ export class PageLoginComponent implements OnInit {
 	}
 	public formError = "";
 
-	constructor(private api:ApiService) {
-
-	}
+	constructor(private api:ApiService, public storage:LocalStorageService,private router:Router) {  }
 
 	ngOnInit(): void {  }
 
@@ -45,7 +45,11 @@ export class PageLoginComponent implements OnInit {
 			body : this.credentials
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{
-			console.log(val);
+			if (val.token){
+				this.storage.setToken(val.token);
+				this.router.navigate(['/']).then(_ => {  });
+				return;
+			}
 		}).catch((err:any)=>{
 			console.log(err);
 		});

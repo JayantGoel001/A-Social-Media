@@ -23,7 +23,8 @@ const registerUser = ({body},res) =>{
     user.setPassword(body.password);
 
     user.save().then(r =>{
-        res.statusJson(201,{message: "New User", user: r});
+        const token = r.getJWT();
+        res.statusJson(201,{ token : token });
     }).catch((err)=>{
         err = err.toString();
         if (err && err.includes("duplicate key error")){
@@ -44,7 +45,8 @@ const loginUser = (req,res) =>{
             return res.statusJson(400,{ message : err });
         }
         if (user) {
-            res.statusJson(201,{ message : "Logged In" });
+            const token = user.getJWT();
+            res.statusJson(201,{ token : token });
         }  else {
             res.statusJson(401,info);
         }

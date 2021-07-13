@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from '@angular/router';
+import {LocalStorageService} from "./local-storage.service";
+
 
 @Injectable({
 	providedIn: 'root'
@@ -7,9 +9,7 @@ import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from '@angular/rout
 
 export class AuthService {
 
-	constructor(private router : Router) {
-
-	}
+	constructor(private router : Router,private localStorage : LocalStorageService) {  }
 	public canActivate(route :ActivatedRouteSnapshot, state : RouterStateSnapshot ) : boolean{
 		let activate = this.isLoggedIn();
 		let redirect = "/feed";
@@ -20,11 +20,11 @@ export class AuthService {
 		if (!activate){
 			return true;
 		}else {
-			this.router.navigate([redirect]).then(r => {  });
+			this.router.navigate([redirect]).then(_ => {  });
 			return false;
 		}
 	}
 	public isLoggedIn(){
-		return false;
+		return !!this.localStorage.getToken();
 	}
 }
