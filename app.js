@@ -3,10 +3,12 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
+let passport = require("passport");
+
+require("./mvc/models/db");
 
 let indexRouter = require('./mvc/routes/index');
 let usersRouter = require('./mvc/routes/users');
-
 let app = express();
 
 // view engine setup
@@ -18,6 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
