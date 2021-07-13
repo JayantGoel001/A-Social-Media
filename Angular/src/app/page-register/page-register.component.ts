@@ -55,10 +55,13 @@ export class PageRegisterComponent implements OnInit {
 			body : this.credentials
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{
+			if (val.message){
+				this.formError = val.message;
+			}
 			console.log(val);
+
 		}).catch((err:any)=>{
-			console.log(err);
+			this.formError = err;
 		})
-		console.log(this.credentials);
 	}
 }
