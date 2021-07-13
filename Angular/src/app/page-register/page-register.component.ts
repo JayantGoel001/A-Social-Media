@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from "../api.service";
 
 @Component({
   selector: 'app-page-register',
@@ -7,9 +8,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageRegisterComponent implements OnInit {
 
-  constructor() { }
+	public formError:String = "";
+	public credentials = {
+		firstName : '',
+		lastName : '',
+		email : '',
+		password : '',
+		confirmPassword : ''
+	}
+	constructor(private api:ApiService) {
 
-  ngOnInit(): void {
-  }
+	}
 
+	ngOnInit(): void {  }
+
+	public formSubmit():any{
+		this.formError = "";
+		if (
+			!this.credentials.firstName ||
+			!this.credentials.lastName ||
+			!this.credentials.email ||
+			!this.credentials.password ||
+			!this.credentials.confirmPassword
+		){
+			this.formError = "All Fields are required.";
+			return this.formError;
+		}
+		let pattern = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+		let re = new RegExp(pattern);
+		if (!re.test(this.credentials.email)){
+			this.formError = "Please Enter a valid Email Address.";
+			return this.formError;
+		}
+
+		if (this.credentials.password !== this.credentials.confirmPassword){
+			this.formError = "The Password entered doesn't match. Please Try Again.";
+			return this.formError;
+		}
+
+		this.register();
+	}
+	private register(){
+		console.log(this.credentials);
+	}
 }
