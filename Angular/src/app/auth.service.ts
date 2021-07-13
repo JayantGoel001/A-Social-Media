@@ -25,6 +25,6 @@ export class AuthService {
 		}
 	}
 	public isLoggedIn(){
-		return true;
+		return false;
 	}
 }
