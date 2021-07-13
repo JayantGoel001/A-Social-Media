@@ -34,12 +34,12 @@ export class PageRegisterComponent implements OnInit {
 			this.formError = "All Fields are required.";
 			return this.formError;
 		}
-		let pattern = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-		let re = new RegExp(pattern);
-		if (!re.test(this.credentials.email)){
-			this.formError = "Please Enter a valid Email Address.";
-			return this.formError;
-		}
+		// let pattern = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+		// let re = new RegExp(pattern);
+		// if (!re.test(this.credentials.email)){
+		// 	this.formError = "Please Enter a valid Email Address.";
+		// 	return this.formError;
+		// }
 
 		if (this.credentials.password !== this.credentials.confirmPassword){
 			this.formError = "The Password entered doesn't match. Please Try Again.";
@@ -49,6 +49,16 @@ export class PageRegisterComponent implements OnInit {
 		this.register();
 	}
 	private register(){
+		let requestObject = {
+			type:"POST",
+			location : "users/register",
+			body : this.credentials
+		}
+		this.api.makeRequest(requestObject).then((val:any)=>{
+			console.log(val);
+		}).catch((err:any)=>{
+			console.log(err);
+		})
 		console.log(this.credentials);
 	}
 }

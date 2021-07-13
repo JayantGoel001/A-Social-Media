@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
-    firstname:{
+    firstName:{
         type:String,
         required:true
     },
-    lastname:{
+    lastName:{
         type:String,
         required:true
     },
