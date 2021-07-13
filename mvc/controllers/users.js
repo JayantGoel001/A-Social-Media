@@ -3,11 +3,17 @@ const mongoose = require('mongoose');
 const User = mongoose.model("User");
 
 const registerUser = ({body},res) =>{
-    if (!Object.values(body).every((val) => val )) {
-        return res.send({message:"All Fields Are Required"});
+    if (
+        !body.firstName ||
+        !body.lastName ||
+        !body.email ||
+        !body.password ||
+        !body.confirmPassword
+    ) {
+        return res.send({message : "All Fields Are Required"});
     }
-    if (body.password!==body.confirmPassword) {
-        return res.send({message:"Password Does not match"});
+    if (body.password !== body.confirmPassword) {
+        return res.send({message : "Password Does not match"});
     }
 
     const user = new User();

@@ -5,7 +5,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 	providedIn: 'root'
 })
 export class ApiService {
-	private readonly baseURL:String  = "https://localhost:3000/";
+	private readonly baseURL:String  = "http://localhost:3000/";
 
 	private successHandler = (value : any)=>{
 		return value;
@@ -31,7 +31,7 @@ export class ApiService {
 			console.log("No Location specified in the Request Object.");
 			return;
 		}
-		let url = `${this.baseURL}/${location}`;
+		let url = `${this.baseURL}${location}`;
 
 		let httpOption = {};
 		if (type==="get"){
