@@ -14,9 +14,9 @@ export class ApiService {
 		return value;
 	}
 	constructor(private http : HttpClient) {
-		if (process.env.NODE_ENV=="PRODUCTION"){
-			this.baseURL = ``;
-		}
+		// if (process.env.NODE_ENV=="PRODUCTION"){
+		// 	this.baseURL = ``;
+		// }
 	}
 	public makeRequest(requestObject:any) : any{
 		let type = requestObject.type.toLowerCase();
