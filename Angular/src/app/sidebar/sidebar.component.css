@@ -1,0 +1,1 @@
+.sidebar{width:16rem!important;flex-shrink: 0;}@media(max-width:768px){.sidebar{width:6.5rem!important;}.sidebar[class~="auto-toggle"]{display: none;}#besties,#enemies,#finder,.quick{width:56vw!important;}}
