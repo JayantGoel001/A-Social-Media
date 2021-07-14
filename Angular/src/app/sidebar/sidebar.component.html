@@ -1,4 +1,4 @@
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="" routerLink="/">
 	<div class="sidebar-brand-icon rotate-n-15">
 		<i class="fas fa-laugh-wink"></i>
 	</div>
@@ -8,7 +8,7 @@
 <hr class="sidebar-divider my-0">
 
 <li class="nav-item active">
-	<a class="nav-link" href="index.html">
+	<a class="nav-link" href="" routerLink="/profile">
 		<i class="far fa-address-card"></i>
 		<span>Profile</span>
 	</a>
@@ -54,26 +54,6 @@
 	</div>
 </li>
 
-<li class="nav-item">
-	<a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#finder">
-		<i class="fas fa-users"></i>
-		<span>Friend Finder</span>
-	</a>
-	<div id="finder" class="collapse" data-parent="#accordionSidebar">
-		<div class="bg-white py-2 collapse-inner rounded">
-			<div class="m-3 d-flex align-items-center">
-				<img alt="image" class="img-fluid rounded-circle profile-img-sm" src="assets/images/f1.jpg">
-				<span class="h6 mb-0 ml-3"><a class="text-success" href="#">Sarah Parker</a></span>
-				<span class="ml-2 hov-scale"><a href><i class="h4 mb-0 text-success fas fa-window-close"></i></a></span>
-			</div>
-			<div class="m-3 d-flex align-items-center">
-				<img alt="image" class="img-fluid rounded-circle profile-img-sm" src="assets/images/f1.jpg">
-				<span class="h6 mb-0 ml-3"><a class="text-success" href="#">Sarah Parker</a></span>
-				<span class="ml-2 hov-scale"><a href><i class="h4 mb-0 text-success fas fa-window-close"></i></a></span>
-			</div>
-		</div>
-	</div>
-</li>
 <hr class="sidebar-divider">
 <li class="nav-item">
 	<a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
@@ -83,11 +63,10 @@
 	<div id="collapsePages" class="quick collapse" data-parent="#accordionSidebar">
 		<div class="bg-white py-2 collapse-inner rounded">
 			<h6 class="collapse-header"></h6>
-			<a class="collapse-item" href="#">Profile</a>
-			<a class="collapse-item" href="#">Feed</a>
-			<a class="collapse-item" href="#">Messages</a>
-			<a class="collapse-item" href="#">Help</a>
-			<a class="collapse-item mt-3" href="#">Sign Out</a>
+			<a class="collapse-item" href="" routerLink="/profile">Profile</a>
+			<a class="collapse-item" href="" routerLink="/feed">Feed</a>
+			<a class="collapse-item" href="" routerLink="/message">Messages</a>
+			<a (click)="this.auth.logOut();" class="collapse-item mt-3" data-toggle="modal" data-target="#logoutModal" href="">Sign Out</a>
 		</div>
 	</div>
 </li>
