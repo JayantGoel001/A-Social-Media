@@ -2,6 +2,53 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const jwt = require("jsonwebtoken");
 
+const commentSchema = new mongoose.Schema({
+    name : {
+        type : String,
+        required : true
+    },id : {
+        type : String,
+        required : true
+    },content : {
+        type : String,
+        required : true
+    }
+});
+
+const postSchema = new mongoose.Schema({
+    content : {
+        type : String,
+        required : true
+    },
+    date : {
+        type : Date,
+        default : Date.now
+    },
+    theme : {
+        type : String,
+        default : "primary"
+    },
+    likes : {
+        type : Number,
+        default : 0
+    },
+    comments : {
+        type : [commentSchema],
+        default : []
+    }
+});
+
+const messageSchema = new mongoose.Schema({
+    fromID : {
+        type : String,
+        required : true,
+        unique : true
+    },
+    content : [{
+        messenger : String,
+        message : String
+    }]
+});
 
 const userSchema = new mongoose.Schema({
     firstName:{
@@ -16,6 +63,25 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         unique:true
+    },
+    friends : [String],
+    friendRequests : [String],
+    besties : [String],
+    enemies : [String],
+    posts : [postSchema],
+    messages : [messageSchema],
+    notifications : [String],
+    profileImage : {
+        type : String,
+        default : "https://jayantgoel001.github.io/images/Profile-pic.webp/"
+    },
+    latestMessageNotifications : {
+        type : Number,
+        default : 0
+    },
+    latestNotifications : {
+        type : Number,
+        default : 0
     },
     password:String,
     salt:String
@@ -38,4 +104,7 @@ userSchema.methods.getJWT = function () {
     },process.env.JWT_TOKEN);
 }
 
+mongoose.model("Comment",commentSchema);
+mongoose.model("Post",postSchema);
+mongoose.model("Message",messageSchema);
 mongoose.model("User",userSchema);
