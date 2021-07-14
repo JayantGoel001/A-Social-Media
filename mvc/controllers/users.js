@@ -30,7 +30,7 @@ const registerUser = ({body},res) =>{
         if (err && err.includes("duplicate key error")){
             return res.json({ message : "Provided Email is already registered." });
         }else {
-            return res.statusJson(400, {message: "Something went wrong."});
+            return res.json({message: "Something went wrong."});
         }
     });
 }
@@ -44,16 +44,23 @@ const loginUser = (req,res) =>{
         if (err) {
             return res.statusJson(400,{ message : err });
         }
+
+
         if (user) {
             const token = user.getJWT();
             res.statusJson(201,{ token : token });
         }  else {
-            res.statusJson(401,info);
+            res.json(info);
         }
     })(req,res);
 }
 
+const generateFeed = (req,res)=>{
+    res.statusJson(200,{ message : "Generating posts for a users feed." });
+}
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    generateFeed
 }

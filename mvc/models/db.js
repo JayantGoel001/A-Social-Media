@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 let uri = 'mongodb://localhost/A-Social-Media';
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'PRODUCTION') {
     uri = ``;
 }
 
@@ -10,10 +10,6 @@ mongoose.connect(uri, { useNewUrlParser: true , useCreateIndex : true, useUnifie
     }
 ).catch((err)=>{
     console.log(`Mongoose connection error: ${err}`);
-});
-
-mongoose.connection.on('disconnected', () => {
-    console.log('Mongoose disconnected');
 });
 
 const gracefulShutdown = (msg, callback) => {

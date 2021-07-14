@@ -45,6 +45,9 @@ export class PageLoginComponent implements OnInit {
 			body : this.credentials
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{
+			if (val.message){
+				this.formError = val.message;
+			}
 			if (val.token){
 				this.storage.setToken(val.token);
 				this.router.navigate(['/']).then(_ => {  });

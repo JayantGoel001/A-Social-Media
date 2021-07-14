@@ -17,6 +17,7 @@ export class LocalStorageService {
 			alert("Browser does not support the LocalStorage API");
 		}
 	}
+
 	private get(key:string) : any{
 		if (this.localStorage){
 			if (key in this.localStorage) {
