@@ -4,6 +4,7 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let passport = require("passport");
+require("dotenv").config();
 
 require("./mvc/models/db");
 

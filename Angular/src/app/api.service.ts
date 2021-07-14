@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
+import {LocalStorageService} from "./local-storage.service";
 
 @Injectable({
 	providedIn: 'root'
@@ -13,7 +14,7 @@ export class ApiService {
 	private errorHandler = (value : any)=>{
 		return value;
 	}
-	constructor(private http : HttpClient) {
+	constructor(private http : HttpClient,private localStorage:LocalStorageService) {
 		// if (process.env.NODE_ENV=="PRODUCTION"){
 		// 	this.baseURL = ``;
 		// }
@@ -34,6 +35,15 @@ export class ApiService {
 		let url = `${this.baseURL}${location}`;
 
 		let httpOption = {};
+
+		if (requestObject.authorize){
+			httpOption = {
+				headers : new HttpHeaders({
+					'Authorization' :`Bearer ${this.localStorage.getToken()}`
+				})
+			}
+		}
+
 		if (type==="get"){
 			return this.http.get(url,httpOption).toPromise().then(this.successHandler).catch(this.errorHandler);
 		}else if (type==="post"){

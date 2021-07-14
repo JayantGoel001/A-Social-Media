@@ -27,4 +27,8 @@ export class AuthService {
 	public isLoggedIn(){
 		return !!this.localStorage.getToken();
 	}
+	public logOut(){
+		this.localStorage.removeToken();
+		this.router.navigate(["/login"]).then(_ => {  });
+	}
 }
