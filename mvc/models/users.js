@@ -51,11 +51,7 @@ const messageSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-    firstName:{
-        type:String,
-        required:true
-    },
-    lastName:{
+    name:{
         type:String,
         required:true
     },
@@ -72,8 +68,7 @@ const userSchema = new mongoose.Schema({
     messages : [messageSchema],
     notifications : [String],
     profileImage : {
-        type : String,
-        default : "https://jayantgoel001.github.io/images/Profile-pic.webp/"
+        type : String
     },
     latestMessageNotifications : {
         type : Number,

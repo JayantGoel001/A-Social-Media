@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {ApiService} from "../api.service";
+import {ActivatedRoute} from "@angular/router";
+import {query} from "@angular/animations";
 
 @Component({
   selector: 'app-page-searches',
@@ -7,9 +10,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageSearchesComponent implements OnInit {
 
-  constructor() { }
+	public results:Array<any> = [];
+	public searchQuery = this.route.snapshot.params.query;
+	private subscription: any;
 
-  ngOnInit(): void {
-  }
+	constructor(private api:ApiService,private route:ActivatedRoute) {  }
 
+	ngOnInit(): void {
+		this.subscription = this.route.params.subscribe(params=>{
+			this.searchQuery = params.query;
+			this.getResults();
+		})
+	}
+
+	private getResults(){
+		let requestObject = {
+			type:"GET",
+			location:`users/search-results?query=${this.searchQuery}`,
+			authorize: true
+		}
+		this.api.makeRequest(requestObject).then((results:any)=>{
+			this.results = results.results;
+		});
+	}
 }

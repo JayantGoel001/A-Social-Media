@@ -17,8 +17,8 @@ const registerUser = ({body},res) =>{
     }
 
     const user = new User();
-    user.firstName = body.firstName.trim();
-    user.lastName = body.lastName.trim();
+
+    user.name = body.firstName.trim() + " " + body.lastName.trim();
     user.email = body.email.trim();
     user.setPassword(body.password);
 
@@ -59,8 +59,40 @@ const generateFeed = (req,res)=>{
     res.statusJson(200,{ message : "Generating posts for a users feed." });
 }
 
+const getSearchResult = (req,res)=>{
+    let query = req.query;
+    let payload = req.payload;
+    if (!query.query){
+        return res.json({ error : "Missing a query." });
+    }
+    User.find({ name : { $regex : query.query , $options : "i"} },null,{},(err,results)=>{
+        if (err){
+            return res.json({ error :err });
+        }
+        results = results.slice(0,20);
+        for (let i = 0; i < results.length; i++) {
+            if (results[i]._id.toString() === payload._id){
+                results.splice(i,1);
+                break;
+            }
+        }
+        return res.statusJson(200,{ message : "Getting Search results", results : results });
+    });
+}
+
+const deleteAllUsers = (req,res)=>{
+    User.deleteMany({},(err,info)=>{
+        if(err){
+            return res.send({ error : err });
+        }
+        return res.json({ message : info });
+    });
+}
+
 module.exports = {
     registerUser,
     loginUser,
-    generateFeed
+    generateFeed,
+    getSearchResult,
+    deleteAllUsers
 }
