@@ -9,7 +9,7 @@ const strategy = new LocalStrategy({ usernameField:"email" },(username,password,
             return done(err);
         }
         if (!user) {
-            return done(null, false, { message:"Incorrect Email." });
+            return done(null, false, { message:"We couldn't find any account with these credentials." });
         }
         if (!user.validatePassword(password)) {
             return done(null, false, { message:"Incorrect Password" });
