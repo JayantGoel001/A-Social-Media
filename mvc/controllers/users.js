@@ -110,12 +110,11 @@ const sendFriendRequest = (req,res)=>{
         }else {
             user.friendRequests.push(params.from);
             user.save().then(()=>{
-                return res.json({ message : "Successfully sent a friend request." });
+                return res.statusJson(201,{ message : "Successfully sent a Friend request." });
             }).catch( err => {
                 return res.json({ error:err });
             })
         }
-
     })
 
 }
