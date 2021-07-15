@@ -39,4 +39,8 @@ export class LocalStorageService {
 	public removeToken(){
 		localStorage.removeItem(this.tokenName);
 	}
+
+	public getParsedToken():any{
+		return JSON.parse(atob(this.getToken().split(".")[1]));
+	}
 }

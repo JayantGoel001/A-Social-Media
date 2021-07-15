@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from "../api.service";
 import {ActivatedRoute} from "@angular/router";
-import {query} from "@angular/animations";
 
 @Component({
-  selector: 'app-page-searches',
-  templateUrl: './page-searches.component.html',
-  styleUrls: ['./page-searches.component.css']
+	selector: 'app-page-searches',
+	templateUrl: './page-searches.component.html',
+	styleUrls: ['./page-searches.component.css']
 })
 export class PageSearchesComponent implements OnInit {
 
@@ -20,7 +19,7 @@ export class PageSearchesComponent implements OnInit {
 		this.subscription = this.route.params.subscribe(params=>{
 			this.searchQuery = params.query;
 			this.getResults();
-		})
+		});
 	}
 
 	private getResults(){

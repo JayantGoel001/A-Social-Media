@@ -51,4 +51,16 @@ export class ApiService {
 		}
 		console.log("Could not make the request. Make sure a type of GET  or POST is supplied.");
 	}
+
+	public makFriendRequest(to:string){
+		let from = this.localStorage.getParsedToken()._id;
+		let requestObject = {
+			type : "POST",
+			location : `users/send-friend-request/${from}/${to}`,
+			authorize : true
+		}
+		this.makeRequest(requestObject).then((val:any)=>{
+			console.log(val)
+		})
+	}
 }
