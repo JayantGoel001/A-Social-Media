@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import {LocalStorageService} from "./local-storage.service";
+import {AlertsService} from "./alerts.service";
 
 @Injectable({
 	providedIn: 'root'
@@ -14,7 +15,7 @@ export class ApiService {
 	private errorHandler = (value : any)=>{
 		return value;
 	}
-	constructor(private http : HttpClient,private localStorage:LocalStorageService) {
+	constructor(private http : HttpClient,private localStorage:LocalStorageService,private alerts:AlertsService) {
 		// if (process.env.NODE_ENV=="PRODUCTION"){
 		// 	this.baseURL = ``;
 		// }
@@ -60,7 +61,11 @@ export class ApiService {
 			authorize : true
 		}
 		this.makeRequest(requestObject).then((val:any)=>{
-			console.log(val)
+			if (val.message){
+				this.alerts.onAlertEvent.emit(val.message);
+			}else {
+				this.alerts.onAlertEvent.emit(val.error);
+			}
 		})
 	}
 }
