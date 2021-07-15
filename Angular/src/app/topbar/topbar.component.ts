@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
+import {LocalStorageService} from "../local-storage.service";
 
 @Component({
 	selector: 'app-topbar',
@@ -10,10 +11,12 @@ import {Router} from "@angular/router";
 export class TopbarComponent implements OnInit {
 
 	public query:string="";
+	public userName:string = "";
+	constructor(public auth: AuthService,private router:Router,private localStorage:LocalStorageService){  }
 
-	constructor(public auth: AuthService,private router:Router){  }
-
-	ngOnInit(): void { }
+	ngOnInit(): void {
+		this.userName = this.localStorage.getParsedToken().name;
+	}
 
 	public searchForFriends(){
 		this.router.navigate(['/search-results',{ query : this.query }]).then(_ =>{ });

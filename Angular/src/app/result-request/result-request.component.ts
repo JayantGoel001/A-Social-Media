@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
+import {ApiService} from "../api.service";
 
 @Component({
   selector: 'app-result-request',
@@ -9,7 +9,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ResultRequestComponent implements OnInit {
 	@Input() resultRequest:any;
 
-	constructor() { }
+	constructor(public api:ApiService) { }
 
 	ngOnInit(): void {
 		console.log(this.resultRequest);
