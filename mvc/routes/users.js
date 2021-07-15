@@ -12,6 +12,8 @@ router.get("/generate-feed",middleware.authorize,userCtrl.generateFeed);
 router.get("/search-results",middleware.authorize,userCtrl.getSearchResult);
 router.post("/send-friend-request/:from/:to",middleware.authorize,userCtrl.sendFriendRequest);
 
+router.get("/:userid",middleware.authorize,userCtrl.getUserData);
+
 router.delete("/all",userCtrl.deleteAllUsers);
 
 module.exports = router;

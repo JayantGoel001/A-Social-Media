@@ -55,7 +55,6 @@ const loginUser = (req,res) =>{
             return res.statusJson(400,{ message : err });
         }
 
-
         if (user) {
             const token = user.getJWT();
             res.statusJson(201,{ token : token });
@@ -105,7 +104,7 @@ const sendFriendRequest = (req,res)=>{
         if(err){
             return res.json({ error : err });
         }
-        if (containsDuplicate([params.to,...user.friendRequests])){
+        if (containsDuplicate([params.from,...user.friendRequests])){
             return res.json({ message : "Friend Request is already sent." })
         }else {
             user.friendRequests.push(params.from);
@@ -115,8 +114,16 @@ const sendFriendRequest = (req,res)=>{
                 return res.json({ error:err });
             })
         }
-    })
+    });
+}
 
+const getUserData = (req,res)=>{
+    User.findById(req.params.userid,null,{},(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        res.statusJson(200,{ user : user });
+    });
 }
 
 module.exports = {
@@ -125,5 +132,6 @@ module.exports = {
     generateFeed,
     getSearchResult,
     deleteAllUsers,
-    sendFriendRequest
+    sendFriendRequest,
+    getUserData
 }

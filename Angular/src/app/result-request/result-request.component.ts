@@ -8,6 +8,7 @@ import {ApiService} from "../api.service";
 })
 export class ResultRequestComponent implements OnInit {
 	@Input() resultRequest:any;
+	@Input() use:any;
 
 	constructor(public api:ApiService) { }
 

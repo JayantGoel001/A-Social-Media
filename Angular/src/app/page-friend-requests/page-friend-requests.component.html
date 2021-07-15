@@ -8,7 +8,7 @@
 
 				<div class="row mb-5">
 					<div class="col-xl-6 col-lg-8">
-						<app-result-request *ngFor="let number of [1,2,3,4,5]"></app-result-request>
+						<app-result-request *ngFor="let friendRequest in this.data.friendRequests" [resultRequest]="friendRequest" use=""></app-result-request>
 					</div>
 					<div class="col-xl-6 d-lg-none d-xl-block" style="margin-top: 14vh;">
 						<h3 class="display-2 font-weight-800 text-center" style="opacity: .2;">
