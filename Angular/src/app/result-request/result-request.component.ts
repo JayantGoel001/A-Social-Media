@@ -7,12 +7,22 @@ import {ApiService} from "../api.service";
   styleUrls: ['./result-request.component.css']
 })
 export class ResultRequestComponent implements OnInit {
-	@Input() resultRequest:any;
-	@Input() use:any;
+	@Input() resultRequest: any;
+	@Input() use: any;
 
-	constructor(public api:ApiService) { }
+	constructor(public api: ApiService) {  }
 
 	ngOnInit(): void {
+
+	}
+
+	public accept(){
+
+	}
+	public decline(){
+
+	}
+	public sendMessage(){
 
 	}
 
