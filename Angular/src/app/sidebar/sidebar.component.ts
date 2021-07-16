@@ -8,9 +8,12 @@ import {AuthService} from "../auth.service";
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(public auth:AuthService) { }
+  constructor(public auth:AuthService) {
+
+  }
 
   ngOnInit(): void {
+
   }
 
 }

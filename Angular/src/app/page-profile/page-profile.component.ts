@@ -9,7 +9,12 @@ import { DOCUMENT } from "@angular/common";
 })
 export class PageProfileComponent implements OnInit {
 
-	constructor(private title: Title,@Inject(DOCUMENT) private document : Document) {  }
+	constructor(
+		private title: Title,
+		@Inject(DOCUMENT) private document : Document
+	) {
+
+	}
 
 	ngOnInit(): void {
 		this.title.setTitle("A Social Media - Profile");

@@ -8,7 +8,9 @@ import { Title } from "@angular/platform-browser";
 })
 export class PageMessagesComponent implements OnInit {
 
-	constructor(private title: Title) { }
+	constructor(private title: Title) {
+
+	}
 
 	ngOnInit(): void {
 		this.title.setTitle("Your Messages");

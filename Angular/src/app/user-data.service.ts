@@ -6,6 +6,8 @@ import {EventEmitter, Injectable} from '@angular/core';
 export class UserDataService {
 	public getUserData : EventEmitter<any> = new EventEmitter<any>();
 
-	constructor() {  }
+	constructor() {
+
+	}
 
 }

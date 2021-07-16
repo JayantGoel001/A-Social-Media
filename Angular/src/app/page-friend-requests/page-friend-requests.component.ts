@@ -13,7 +13,14 @@ export class PageFriendRequestsComponent implements OnInit {
 
 	public friendRequests:any
 
-	constructor(private userData :UserDataService,private api:ApiService,private title:Title,@Inject(DOCUMENT) private document : Document) {  }
+	constructor(
+		private userData :UserDataService,
+		private api:ApiService,
+		private title:Title,
+		@Inject(DOCUMENT) private document : Document
+	) {
+
+	}
 
 	ngOnInit(): void {
 		this.title.setTitle("Friend Requests");

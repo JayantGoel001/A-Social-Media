@@ -9,7 +9,11 @@ import {LocalStorageService} from "./local-storage.service";
 
 export class AuthService {
 
-	constructor(private router : Router,private localStorage : LocalStorageService) {  }
+	constructor(
+		private router : Router,
+		private localStorage : LocalStorageService
+	) {  }
+
 	public canActivate(route :ActivatedRouteSnapshot, state : RouterStateSnapshot ) : boolean{
 		let activate = this.isLoggedIn();
 		let redirect = "/feed";

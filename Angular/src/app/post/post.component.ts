@@ -11,7 +11,9 @@ export class PostComponent implements OnInit {
 
 	public fakeID : string = "fakeID";
 
-	constructor() {  }
+	constructor() {
+
+	}
 
 	ngOnInit(): void {
 		let removeLeadingNumber = (id:string)=>{

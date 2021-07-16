@@ -1,15 +1,9 @@
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-	<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-		<i class="fa fa-bars"></i>
-	</button>
+	<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
 	<form (ngSubmit)="searchForFriends()" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 		<div class="input-group">
 			<input name="query" [(ngModel)]="this.query" type="text" class="form-control bg-light border-0 small" placeholder="Find Friends for..." aria-label="Search" aria-describedby="basic-addon2">
-			<div class="input-group-append">
-				<button class="btn btn-primary" type="submit">
-					<i class="fas fa-search fa-sm"></i>
-				</button>
-			</div>
+			<div class="input-group-append"><button class="btn btn-primary" type="submit"><i class="fas fa-search fa-sm"></i></button></div>
 		</div>
 	</form>
 	<ul class="navbar-nav ml-auto">
@@ -21,42 +15,21 @@
 				<form (ngSubmit)="searchForFriends();"  class="form-inline mr-auto w-100 navbar-search">
 					<div class="input-group">
 						<input name="query" [(ngModel)]="this.query" type="text" class="form-control bg-light border-0 small" placeholder="Find Friends" aria-label="Search" aria-describedby="basic-addon2">
-						<div class="input-group-append">
-							<button class="btn btn-primary" type="button">
-								<i class="fas fa-search fa-sm"></i>
-							</button>
-						</div>
+						<div class="input-group-append"><button class="btn btn-primary" type="button"><i class="fas fa-search fa-sm"></i></button></div>
 					</div>
 				</form>
 			</div>
 		</li>
-
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="" routerLink="/friend-requests" >
-				<i class="fas fa-users"></i>
-				<span class="badge badge-danger badge-counter" *ngIf="this.friendRequests">{{ this.friendRequests }}</span>
-			</a>
+			<a class="nav-link dropdown-toggle" href="" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.friendRequests">{{ this.friendRequests }}</span></a>
 		</li>
-
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<i class="fas fa-bell fa-fw"></i>
-				<span class="badge badge-danger badge-counter" *ngIf="this.data && this.data.latestNotifications">{{ this.data.latestNotifications }}</span>
-			</a>
+			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.data && this.data.latestNotifications">{{ this.data.latestNotifications }}</span></a>
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-				<h6 class="dropdown-header">
-					Alerts Center
-				</h6>
+				<h6 class="dropdown-header">Alerts Center</h6>
 				<a class="dropdown-item d-flex align-items-center" href="#">
-					<div class="mr-3">
-						<div class="icon-circle bg-primary">
-							<i class="fas fa-file-alt text-white"></i>
-						</div>
-					</div>
-					<div>
-						<div class="small text-gray-500">December 12, 2019</div>
-						<span class="font-weight-bold">A new monthly report is ready to download!</span>
-					</div>
+					<div class="mr-3"><div class="icon-circle bg-primary"><i class="fas fa-file-alt text-white"></i></div></div>
+					<div><div class="small text-gray-500">December 12, 2019</div><span class="font-weight-bold">A new monthly report is ready to download!</span></div>
 				</a>
 				<a class="dropdown-item d-flex align-items-center" href="#">
 					<div class="mr-3">
@@ -135,7 +108,6 @@
 				<a class="dropdown-item text-center small text-gray-500" href="" routerLink="/message">Read More Messages</a>
 			</div>
 		</li>
-
 		<div class="topbar-divider d-none d-sm-block"></div>
 		<li class="nav-item dropdown no-arrow">
 			<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -143,19 +115,10 @@
 				<img *ngIf="this.data" class="img-profile rounded-circle" src="assets/images/{{ this.data.profileImage }}" alt="image">
 			</a>
 			<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-				<a class="dropdown-item" href="" routerLink="/profile">
-					<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-					Profile
-				</a>
-				<a class="dropdown-item" href="" routerLink="/feed">
-					<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-					Feed
-				</a>
+				<a class="dropdown-item" href="" routerLink="/profile"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+				<a class="dropdown-item" href="" routerLink="/feed"><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>Feed</a>
 				<div class="dropdown-divider"></div>
-				<a (click)="this.auth.logOut();" class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="">
-					<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-					Sign Out
-				</a>
+				<a (click)="this.auth.logOut();" class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href=""><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Sign Out</a>
 			</div>
 		</li>
 	</ul>

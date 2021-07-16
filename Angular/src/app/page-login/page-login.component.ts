@@ -17,7 +17,14 @@ export class PageLoginComponent implements OnInit {
 	}
 	public formError = "";
 
-	constructor(private api:ApiService, public storage:LocalStorageService,private router:Router,private title:Title) {  }
+	constructor(
+		private api:ApiService,
+		public storage:LocalStorageService,
+		private router:Router,
+		private title:Title
+	) {
+
+	}
 
 	ngOnInit(): void {
 		this.title.setTitle("A Social Media - Login");

@@ -18,7 +18,13 @@ export class PageSearchesComponent implements OnInit {
 
 	public user:any;
 
-	constructor(private api:ApiService,private route:ActivatedRoute,private title:Title,@Inject(DOCUMENT) private document : Document,private userData:UserDataService) {  }
+	constructor(
+		private api:ApiService,
+		private route:ActivatedRoute,
+		private title:Title,
+		@Inject(DOCUMENT) private document : Document,
+		private userData:UserDataService
+	) {  }
 
 	ngOnInit(): void {
 		this.title.setTitle("Search Results");
