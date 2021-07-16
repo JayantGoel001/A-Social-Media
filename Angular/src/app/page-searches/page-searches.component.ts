@@ -22,9 +22,9 @@ export class PageSearchesComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.title.setTitle("Search Results");
-		this.subscription = this.route.params.subscribe(params=>{
-			this.searchQuery = params.query;
-			this.userData.getUserData.subscribe((data)=>{
+		this.userData.getUserData.subscribe((data)=>{
+			this.subscription = this.route.params.subscribe(params=>{
+				this.searchQuery = params.query;
 				this.user = data;
 				this.getResults();
 			});
