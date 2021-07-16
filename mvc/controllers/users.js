@@ -128,7 +128,6 @@ const getUserData = (req,res)=>{
 
 const getFriendsRequests = (req,res)=>{
     let friendRequests = JSON.parse(req.query.friend_requests);
-
     User.find({'_id' : { $in: friendRequests }},"name profileImage",(err,users)=>{
         if(err){
             return res.json({ error : err });

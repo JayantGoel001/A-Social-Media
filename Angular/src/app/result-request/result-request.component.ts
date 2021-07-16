@@ -12,9 +12,17 @@ export class ResultRequestComponent implements OnInit {
 	@Input() use: any;
 	@Output() resultRequestChange = new EventEmitter<any>();
 
+	public haveSentFriendRequest:boolean = false;
+	public haveReceivedFriendRequest:boolean = false;
+	public isFriend:boolean = false;
+
 	constructor(public api: ApiService,public localStorage:LocalStorageService) {  }
 
-	ngOnInit(): void {  }
+	ngOnInit(): void {
+		this.haveSentFriendRequest = this.resultRequest.haveSentFriendRequest || false;
+		this.haveReceivedFriendRequest = this.resultRequest.haveReceivedFriendRequest || false;
+		this.isFriend = this.resultRequest.isFriend || false;
+	}
 
 	public accept(){
 		this.updateRequest();
@@ -36,7 +44,4 @@ export class ResultRequestComponent implements OnInit {
 		this.resultRequestChange.emit(this.resultRequest._id);
 	}
 
-	public haveSentFriendRequest:boolean = false;
-	public haveReceivedFriendRequest:boolean = false;
-	public isFriend:boolean = false;
 }
