@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
 import { Title } from "@angular/platform-browser";
 import {LocalStorageService} from "../local-storage.service";
+import {EventEmitterService} from "../event-emitter.service";
 
 @Component({
 	selector: 'app-page-feed',
@@ -13,7 +14,7 @@ export class PageFeedComponent implements OnInit {
 	public newPostContent : string = "";
 	public newPostTheme : string =  "primary";
 
-	constructor(private api:ApiService,private title:Title,private localStorage:LocalStorageService) {  }
+	constructor(private api:ApiService,private title:Title,private localStorage:LocalStorageService,private events:EventEmitterService) {  }
 
 	ngOnInit(): void {
 		this.title.setTitle("A Social Media - Feed");
@@ -22,9 +23,8 @@ export class PageFeedComponent implements OnInit {
 			location : "users/generate-feed",
 			authorize : true
 		}
-		this.api.makeRequest(requestObject).then((val:any)=>{
+		this.api.makeRequest(requestObject).then((val:any)=>{  });
 
-		});
 		if (this.localStorage.getPostTheme()){
 			this.newPostTheme = this.localStorage.getPostTheme();
 		}
@@ -33,5 +33,29 @@ export class PageFeedComponent implements OnInit {
 	public changeTheme(theme:string){
 		this.newPostTheme = theme;
 		this.localStorage.setPostTheme(this.newPostTheme);
+	}
+
+	public createPost(){
+		if (this.newPostContent.length===0){
+			return this.events.onAlertEvent.emit("No Content for your post was provided.");
+		}
+
+		let requestOption = {
+			type : "POST",
+			location: "users/create-post",
+			body : {
+				theme : this.newPostTheme,
+				content : this.newPostContent
+			},
+			authorize: true
+		}
+		this.api.makeRequest(requestOption).then((val:any)=>{
+			if (val.statusCode===201) {
+				this.events.onAlertEvent.emit(val.message);
+				this.newPostContent = "";
+			}else {
+				this.events.onAlertEvent.emit("Something went wrong.");
+			}
+		})
 	}
 }

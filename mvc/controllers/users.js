@@ -1,6 +1,7 @@
 const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model("User");
+const Post = mongoose.model("Post");
 
 const containsDuplicate = (arr)=>{
     arr.sort();
@@ -66,6 +67,29 @@ const loginUser = (req,res) =>{
 
 const generateFeed = (req,res)=>{
     res.statusJson(200,{ message : "Generating posts for a users feed." });
+}
+
+const createPost = ({ body,payload },res)=>{
+    if (!body.content || !body.theme){
+        return res.statusJson(400,{ message : "Insufficient Data" });
+    }
+    let userID = payload._id;
+    const post = new Post();
+    post.theme = body.theme;
+    post.content = body.content;
+
+    User.findById(userID,null,{},(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        user.posts.push(post);
+        user.save().then(()=>{
+            return res.statusJson(201, {message : "Successfully created the post."});
+        }).catch((err)=>{
+            return res.send({error : err});
+        })
+    })
+
 }
 
 const getSearchResult = (req,res)=>{
@@ -201,5 +225,6 @@ module.exports = {
     sendFriendRequest,
     getUserData,
     getFriendsRequests,
-    resolveFriendRequest
+    resolveFriendRequest,
+    createPost
 }
