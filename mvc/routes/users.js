@@ -16,8 +16,10 @@ router.post("/send-friend-request/:from/:to",middleware.authorize,userCtrl.sendF
 router.get("/get-friend-requests",middleware.authorize,userCtrl.getFriendsRequests);
 router.post("/resolve-friend-request/:from/:to",middleware.authorize,userCtrl.resolveFriendRequest);
 
-router.get("/:userid",middleware.authorize,userCtrl.getUserData);
 
 router.delete("/all",userCtrl.deleteAllUsers);
+router.get("/all",userCtrl.getAllUsers);
+
+router.get("/:userid",middleware.authorize,userCtrl.getUserData);
 
 module.exports = router;

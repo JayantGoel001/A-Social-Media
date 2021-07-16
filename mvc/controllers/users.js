@@ -122,6 +122,15 @@ const deleteAllUsers = (req,res)=>{
     });
 }
 
+const getAllUsers = (req,res)=>{
+    User.find({},(err,users)=>{
+        if(err){
+            return res.send({ error : err });
+        }
+        return res.json({ users : users });
+    });
+}
+
 const sendFriendRequest = (req,res)=>{
     let params = req.params;
     User.findById(params.to,(err,user)=>{
@@ -222,9 +231,10 @@ module.exports = {
     generateFeed,
     getSearchResult,
     deleteAllUsers,
+    getAllUsers,
     sendFriendRequest,
     getUserData,
     getFriendsRequests,
     resolveFriendRequest,
-    createPost
+    createPost,
 }
