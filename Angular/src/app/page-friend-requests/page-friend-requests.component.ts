@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
+import { Title } from "@angular/platform-browser";
 
 @Component({
 	selector: 'app-page-friend-requests',
@@ -11,9 +12,10 @@ export class PageFriendRequestsComponent implements OnInit {
 
 	public friendRequests:any
 
-	constructor(private userData :UserDataService,private api:ApiService) {  }
+	constructor(private userData :UserDataService,private api:ApiService,private title:Title) {  }
 
 	ngOnInit(): void {
+		this.title.setTitle("Friend Requests");
 		this.userData.getUserData.subscribe((data:any)=>{
 			let array = JSON.stringify(data.friendRequests);
 			let requestObject = {
