@@ -31,7 +31,6 @@ export class TopbarComponent implements OnInit {
 		});
 		this.userData.getUserData.subscribe((data)=>{
 			this.data = data;
-			console.log(this.data);
 		});
 
 		let requestObject = {
