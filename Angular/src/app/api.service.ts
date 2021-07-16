@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import {LocalStorageService} from "./local-storage.service";
 import {AlertsService} from "./alerts.service";
+import {resolve} from "@angular/compiler-cli/src/ngtsc/file_system";
 
 @Injectable({
 	providedIn: 'root'
@@ -66,6 +67,25 @@ export class ApiService {
 			}else {
 				this.alerts.onAlertEvent.emit(val.error);
 			}
-		})
+		});
+	}
+
+	public resolveFriendRequest(resolution:string,from:string){
+		return new Promise((resolve, reject)=>{
+			let to = this.localStorage.getParsedToken()._id;
+			let requestObject = {
+				type : "POST",
+				location : `users/resolve-friend-request/${from}/${to}?resolution=${resolution}`,
+				authorize: true
+			}
+			this.makeRequest(requestObject).then((val:any)=>{
+				if (val.statusCode===201) {
+					let resolved = (resolution === "accept")?"accepted":"declined";
+					this.alerts.onAlertEvent.emit(`Successfully ${resolved} Friend request`);
+				}else {
+					this.alerts.onAlertEvent.emit(`Successfully ${val.error} Friend request`);
+				}
+			});
+		});
 	}
 }

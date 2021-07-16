@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output , EventEmitter} from '@angular/core';
 import {ApiService} from "../api.service";
+import {LocalStorageService} from "../local-storage.service";
 
 @Component({
   selector: 'app-result-request',
@@ -9,21 +10,30 @@ import {ApiService} from "../api.service";
 export class ResultRequestComponent implements OnInit {
 	@Input() resultRequest: any;
 	@Input() use: any;
+	@Output() resultRequestChange = new EventEmitter<any>();
 
-	constructor(public api: ApiService) {  }
+	constructor(public api: ApiService,public localStorage:LocalStorageService) {  }
 
-	ngOnInit(): void {
-
-	}
+	ngOnInit(): void {  }
 
 	public accept(){
-
+		this.updateRequest();
+		this.api.resolveFriendRequest("accept",this.resultRequest._id).then((val)=>{
+			console.log(val);
+		});
 	}
 	public decline(){
-
+		this.updateRequest();
+		this.api.resolveFriendRequest("decline",this.resultRequest._id).then((val)=>{
+			console.log(val);
+		});
 	}
 	public sendMessage(){
 
+	}
+
+	private updateRequest(){
+		this.resultRequestChange.emit(this.resultRequest._id);
 	}
 
 }
