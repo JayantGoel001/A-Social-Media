@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
 import { Title } from "@angular/platform-browser";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
 	selector: 'app-page-friend-requests',
@@ -12,7 +13,7 @@ export class PageFriendRequestsComponent implements OnInit {
 
 	public friendRequests:any
 
-	constructor(private userData :UserDataService,private api:ApiService,private title:Title) {  }
+	constructor(private userData :UserDataService,private api:ApiService,private title:Title,@Inject(DOCUMENT) private document : Document) {  }
 
 	ngOnInit(): void {
 		this.title.setTitle("Friend Requests");
@@ -29,6 +30,10 @@ export class PageFriendRequestsComponent implements OnInit {
 				}
 			})
 		});
+		if (this.document.getElementById("sidebarToggleTop")) {
+			// @ts-ignore
+			this.document.getElementById("sidebarToggleTop").classList.add("d-none");
+		}
 	}
 
 	public updateFriendRequest(id:string){

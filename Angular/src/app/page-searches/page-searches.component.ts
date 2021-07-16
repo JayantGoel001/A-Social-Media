@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
 import {ActivatedRoute} from "@angular/router";
 import { Title } from "@angular/platform-browser";
+import { DOCUMENT } from "@angular/common";
 
 @Component({
 	selector: 'app-page-searches',
@@ -14,7 +15,7 @@ export class PageSearchesComponent implements OnInit {
 	public searchQuery = this.route.snapshot.params.query;
 	private subscription: any;
 
-	constructor(private api:ApiService,private route:ActivatedRoute,private title:Title) {  }
+	constructor(private api:ApiService,private route:ActivatedRoute,private title:Title,@Inject(DOCUMENT) private document : Document) {  }
 
 	ngOnInit(): void {
 		this.title.setTitle("Search Results");
@@ -22,6 +23,10 @@ export class PageSearchesComponent implements OnInit {
 			this.searchQuery = params.query;
 			this.getResults();
 		});
+		if (this.document.getElementById("sidebarToggleTop")) {
+			// @ts-ignore
+			this.document.getElementById("sidebarToggleTop").classList.add("d-none");
+		}
 	}
 
 	private getResults(){

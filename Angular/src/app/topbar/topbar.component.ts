@@ -18,6 +18,7 @@ export class TopbarComponent implements OnInit {
 	public alertMessage :string = "";
 	public data:any;
 	public userID:any;
+	public friendRequests:number=0;
 
 	constructor(public auth: AuthService,private router:Router,private localStorage:LocalStorageService,private alerts:AlertsService,private userData:UserDataService,public api:ApiService){  }
 
@@ -29,8 +30,12 @@ export class TopbarComponent implements OnInit {
 		this.alerts.onAlertEvent.subscribe((message:string)=>{
 			this.alertMessage = message;
 		});
+		this.alerts.updateNumberOfFriendRequestEvent.subscribe((message:string)=>{
+			this.friendRequests--;
+		});
 		this.userData.getUserData.subscribe((data)=>{
 			this.data = data;
+			this.friendRequests = data.friendRequests.length;
 		});
 
 		let requestObject = {

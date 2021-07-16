@@ -80,6 +80,7 @@ export class ApiService {
 			}
 			this.makeRequest(requestObject).then((val:any)=>{
 				if (val.statusCode===201) {
+					this.alerts.updateNumberOfFriendRequestEvent.emit();
 					let resolved = (resolution === "accept")?"accepted":"declined";
 					this.alerts.onAlertEvent.emit(`Successfully ${resolved} Friend request`);
 				}else {

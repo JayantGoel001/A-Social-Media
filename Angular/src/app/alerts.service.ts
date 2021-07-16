@@ -1,12 +1,13 @@
-import { Injectable,EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AlertsService {
 
 	onAlertEvent : EventEmitter<string> = new EventEmitter<string>();
+	updateNumberOfFriendRequestEvent : EventEmitter<string> = new EventEmitter<string>();
 
-	constructor() { }
+	constructor() {  }
 
 }
