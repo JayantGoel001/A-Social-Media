@@ -120,8 +120,12 @@ const createPost = ({ body,payload },res)=>{
             return res.json({ error : err });
         }
         user.posts.push(post);
+
+        let latestPost = post.toObject();
+        latestPost.name = payload.name;
+
         user.save().then(()=>{
-            return res.statusJson(201, {message : "Successfully created the post."});
+            return res.statusJson(201, {message : "Successfully created the post.", post : latestPost});
         }).catch((err)=>{
             return res.send({error : err});
         })
