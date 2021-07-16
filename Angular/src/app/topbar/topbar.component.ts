@@ -31,7 +31,9 @@ export class TopbarComponent implements OnInit {
 			this.alertMessage = message;
 		});
 		this.alerts.updateNumberOfFriendRequestEvent.subscribe((message:string)=>{
-			this.friendRequests--;
+			if (this.friendRequests>0) {
+				this.friendRequests--;
+			}
 		});
 		this.userData.getUserData.subscribe((data)=>{
 			this.data = data;

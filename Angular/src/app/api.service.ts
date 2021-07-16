@@ -53,7 +53,7 @@ export class ApiService {
 		console.log("Could not make the request. Make sure a type of GET  or POST is supplied.");
 	}
 
-	public makFriendRequest(to:string){
+	public makeFriendRequest(to:string){
 		let from = this.localStorage.getParsedToken()._id;
 		let requestObject = {
 			type : "POST",
