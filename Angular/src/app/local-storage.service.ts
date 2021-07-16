@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class LocalStorageService {
 
 	private readonly tokenName = "--token-ASM";
+	private readonly theme = "--theme";
 	private localStorage = window.localStorage;
 
 	constructor() {  }
@@ -42,5 +43,12 @@ export class LocalStorageService {
 
 	public getParsedToken():any{
 		return JSON.parse(atob(this.getToken().split(".")[1]));
+	}
+
+	public setPostTheme(theme:string){
+		this.set(this.theme,theme);
+	}
+	public getPostTheme():string{
+		return this.get(this.theme);
 	}
 }
