@@ -1,1 +1,44 @@
-<p>post works!</p>
+<div class="card mt-4">
+	<div class="card-header bg-{{post.theme}}">
+		<a href="#"><img alt="image" class="profile-img-sm rounded-circle" src="assets/images/f1.jpg"></a>
+		<span class="ml-3 h5"><a class="link text-white" href="">{{ post.name }}</a></span>
+	</div>
+	<div class="card-body">
+		<p class="card-text post-body h5">{{ post.content }}</p>
+		<div class="d-flex justify-content-between py-2">
+			<small class="text-muted">11 mins ago</small>
+			<div>
+				<a href="#"><i class="hov-scale text-{{post.theme}} fas fa-thumbs-up"></i></a>
+				<span class="ml-3 badge badge-{{post.theme}} badge-pill">14</span>
+			</div>
+		</div>
+	</div>
+	<div>
+		<a href="{{ '#' + fakeID + post._id}}" class="d-block card-header py-3" data-toggle="collapse" role="button">
+			<h6 class="m-0 font-weight-bold text-{{post.theme}}">Comments</h6>
+		</a>
+		<div class="collapse" id="{{fakeID + post._id}}">
+			<div class="card-body">
+				<form class="mb-2" action="" method="post">
+					<div class="form-group">
+						<input type="text" class="rounded-pill form-control" placeholder="Leave a comment.">
+					</div>
+				</form>
+				<div class="comment-list">
+					<div *ngIf="post && !post.comments.length" class="text-center mt-2">
+						Be the first to comment on this post!
+					</div>
+					<div class="comment p-3 my-2 rounded" *ngFor="let comment of post.comments">
+						<div class="comment-user">
+							<a href="#"><img alt="image" src="assets/images/f1.jpg" class="rounded-circle profile-img-sm"></a>
+							<span class="ml-2"><a href="#" class="link">{{comment.name}}</a></span>
+						</div>
+						<div class="comment-body pl-3 mt-2">
+							{{comment.content}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

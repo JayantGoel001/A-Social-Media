@@ -38,7 +38,7 @@ const registerUser = ({body},res) =>{
         res.statusJson(201,{ token : token });
     }).catch((err)=>{
         err = err.toString();
-        if (err && err.includes("duplicate key error")){
+        if (err && err.includes("duplicate key error") && err.includes("email")){
             return res.json({ message : "Provided Email is already registered." });
         }else {
             return res.json({message: "Something went wrong."});
@@ -65,8 +65,45 @@ const loginUser = (req,res) =>{
     })(req,res);
 }
 
-const generateFeed = (req,res)=>{
-    res.statusJson(200,{ message : "Generating posts for a users feed." });
+const generateFeed = ({payload},res)=>{
+    const addNameToPosts = (ar,name)=>{
+        for (let i = 0; i < ar.length; i++) {
+            ar[i].name = name;
+        }
+    }
+    const maxAmountOfPosts = 48;
+    let posts = [];
+    let myPosts = new Promise((resolve, reject)=>{
+        User.findById(payload._id,"name friends posts",{lean:true},(err,user)=>{
+            if(err){
+                reject("Something Went Wrong");
+                return res.json({ error : err });
+            }
+            addNameToPosts(user.posts,user.name);
+            posts.push(...user.posts);
+            resolve(user.friends);
+        });
+    });
+    let myFriendPosts = myPosts.then((friends)=>{
+        return new Promise((resolve, reject)=>{
+            User.find({'_id' : { $in : friends }},"name posts",{lean : true},(err,users)=>{
+                if(err){
+                    reject("Something Went Wrong");
+                    return res.json({ error : err });
+                }
+                for (const user of users) {
+                    addNameToPosts(user.posts,user.name);
+                    posts.push(...user.posts);
+                }
+                resolve();
+            });
+        });
+    });
+    myFriendPosts.then(()=> {
+        posts = posts.sort((a,b)=> (a.date <= b.date) );
+        posts = posts.slice(0,maxAmountOfPosts);
+        res.statusJson(200, { posts: posts });
+    });
 }
 
 const createPost = ({ body,payload },res)=>{

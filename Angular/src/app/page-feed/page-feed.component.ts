@@ -13,6 +13,7 @@ export class PageFeedComponent implements OnInit {
 
 	public newPostContent : string = "";
 	public newPostTheme : string =  "primary";
+	public posts = [[], [], [], []];
 
 	constructor(private api:ApiService,private title:Title,private localStorage:LocalStorageService,private events:EventEmitterService) {  }
 
@@ -23,7 +24,11 @@ export class PageFeedComponent implements OnInit {
 			location : "users/generate-feed",
 			authorize : true
 		}
-		this.api.makeRequest(requestObject).then((val:any)=>{  });
+		this.api.makeRequest(requestObject).then((val:any)=>{
+			for (let i = 0; i < 4; i++) {
+				this.posts[i] = val.posts.filter((_ : any,  x : number) => x%4==i);
+			}
+		});
 
 		if (this.localStorage.getPostTheme()){
 			this.newPostTheme = this.localStorage.getPostTheme();
