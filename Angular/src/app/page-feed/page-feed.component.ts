@@ -69,6 +69,7 @@ export class PageFeedComponent implements OnInit {
 			if (val.statusCode===201) {
 				this.events.onAlertEvent.emit(val.message);
 				this.newPostContent = "";
+				val.post.timeAgo = "now";
 				// @ts-ignore
 				this.posts[0].unshift(val.post);
 			}else {

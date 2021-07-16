@@ -1,12 +1,12 @@
-<div class="card mt-4">
-	<div class="card-header" [ngClass]="'bg-' + post.theme">
+<div class="card mt-4 shadow">
+	<div class="card-header rounded-0" [ngClass]="'bg-' + post.theme">
 		<a href="#"><img alt="image" class="profile-img-sm rounded-circle" src="assets/images/f1.jpg"></a>
 		<span class="ml-3 h5"><a class="link text-white" href="">{{ post.name }}</a></span>
 	</div>
 	<div class="card-body">
 		<p [ngStyle]="{ 'font-size' : fontSize +'px' ,'text-align' : align }" class="card-text post-body h5">{{ post.content }}</p>
 		<div class="d-flex justify-content-between py-2">
-			<small class="text-muted">11 mins ago</small>
+			<small class="text-muted">{{ post.timeAgo }}</small>
 			<div>
 				<a href="#"><i class="hov-scale fas fa-thumbs-up"  [ngClass]="'text-' + post.theme"></i></a>
 				<span class="ml-3 badge badge-pill"  [ngClass]="'badge-' + post.theme">{{post.likes}}</span>

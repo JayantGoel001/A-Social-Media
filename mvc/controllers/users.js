@@ -1,5 +1,7 @@
 const passport = require('passport');
 const mongoose = require('mongoose');
+const timeAgo = require("time-ago");
+
 const User = mongoose.model("User");
 const Post = mongoose.model("Post");
 
@@ -66,9 +68,10 @@ const loginUser = (req,res) =>{
 }
 
 const generateFeed = ({payload},res)=>{
-    const addNameToPosts = (ar,name)=>{
+    const addNameAndDateToPosts = (ar,name)=>{
         for (let i = 0; i < ar.length; i++) {
             ar[i].name = name;
+            ar[i].timeAgo = timeAgo.ago(ar[i].date);
         }
     }
     const maxAmountOfPosts = 48;
@@ -79,7 +82,7 @@ const generateFeed = ({payload},res)=>{
                 reject("Something Went Wrong");
                 return res.json({ error : err });
             }
-            addNameToPosts(user.posts,user.name);
+            addNameAndDateToPosts(user.posts,user.name);
             posts.push(...user.posts);
             resolve(user.friends);
         });
@@ -92,7 +95,7 @@ const generateFeed = ({payload},res)=>{
                     return res.json({ error : err });
                 }
                 for (const user of users) {
-                    addNameToPosts(user.posts,user.name);
+                    addNameAndDateToPosts(user.posts,user.name);
                     posts.push(...user.posts);
                 }
                 resolve();
