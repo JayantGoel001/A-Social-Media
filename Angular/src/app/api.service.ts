@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import {LocalStorageService} from "./local-storage.service";
-import {AlertsService} from "./alerts.service";
+import {EventEmitterService} from "./event-emitter.service";
 import {resolve} from "@angular/compiler-cli/src/ngtsc/file_system";
 
 @Injectable({
@@ -16,7 +16,7 @@ export class ApiService {
 	private errorHandler = (value : any)=>{
 		return value;
 	}
-	constructor(private http : HttpClient,private localStorage:LocalStorageService,private alerts:AlertsService) {
+	constructor(private http : HttpClient,private localStorage:LocalStorageService,private alerts:EventEmitterService) {
 		// if (process.env.NODE_ENV=="PRODUCTION"){
 		// 	this.baseURL = ``;
 		// }

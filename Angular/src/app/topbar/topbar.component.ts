@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 import {LocalStorageService} from "../local-storage.service";
-import {AlertsService} from "../alerts.service";
+import {EventEmitterService} from "../event-emitter.service";
 import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
 
@@ -20,7 +20,7 @@ export class TopbarComponent implements OnInit {
 	public userID:any;
 	public friendRequests:number=0;
 
-	constructor(public auth: AuthService,private router:Router,private localStorage:LocalStorageService,private alerts:AlertsService,private userData:UserDataService,public api:ApiService){  }
+	constructor(public auth: AuthService, private router:Router, private localStorage:LocalStorageService, private alerts:EventEmitterService, private userData:UserDataService, public api:ApiService){  }
 
 	ngOnInit(): void {
 		let parsedToken = this.localStorage.getParsedToken();
