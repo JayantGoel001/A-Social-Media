@@ -74,7 +74,7 @@ const getSearchResult = (req,res)=>{
     if (!query.query){
         return res.json({ error : "Missing a query." });
     }
-    User.find({ name : { $regex : query.query , $options : "i"} },null,{},(err,results)=>{
+    User.find({ name : { $regex : query.query , $options : "i"} },"name friends friendRequests",{},(err,results)=>{
         if (err){
             return res.json({ error :err });
         }

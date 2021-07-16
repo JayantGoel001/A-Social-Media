@@ -36,4 +36,7 @@ export class ResultRequestComponent implements OnInit {
 		this.resultRequestChange.emit(this.resultRequest._id);
 	}
 
+	public haveSentFriendRequest:boolean = false;
+	public haveReceivedFriendRequest:boolean = false;
+	public isFriend:boolean = false;
 }
