@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-page-profile',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageProfileComponent implements OnInit {
 
-  constructor() { }
+	constructor(private title: Title) {
+	}
 
-  ngOnInit(): void {
-  }
+	ngOnInit(): void {
+		this.title.setTitle("A Social Media - Profile");
+	}
 
 }
