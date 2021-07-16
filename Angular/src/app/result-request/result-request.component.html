@@ -7,6 +7,11 @@
 	</div>
 	<div *ngIf="use==='result'" class="ml-auto mr-3 mt-3 align-self-start">
 		<button class="btn btn-sm btn-primary rounded-pill" (click)="this.api.makFriendRequest(resultRequest._id)">Add Friend</button>
-		<button class="btn btn-sm btn-success rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop">Send Message</button>
+		<button class="btn btn-sm btn-success rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)="sendMessage();">Send Message</button>
+	</div>
+	<div *ngIf="use==='request'" class="ml-auto mr-3 mt-3 align-self-start">
+		<button class="btn btn-sm btn-primary rounded-pill" (click)="accept();">Accept</button>
+		<button class="btn btn-sm btn-success rounded-pill ml-1" data-toggle="modal" data-target="#staticBackdrop" (click)="sendMessage();">Send Message</button>
+		<button class="btn btn-sm btn-danger rounded-pill ml-1" (click)="decline();">Decline</button>
 	</div>
 </div>
