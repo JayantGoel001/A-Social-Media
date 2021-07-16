@@ -8,6 +8,8 @@ router.post("/register",userCtrl.registerUser) ;
 router.post("/login",userCtrl.loginUser);
 
 router.get("/generate-feed",middleware.authorize,userCtrl.generateFeed);
+router.post("/create-post",middleware.authorize,userCtrl.createPost);
+
 
 router.get("/search-results",middleware.authorize,userCtrl.getSearchResult);
 router.post("/send-friend-request/:from/:to",middleware.authorize,userCtrl.sendFriendRequest);

@@ -27,8 +27,8 @@
 							<span [ngClass]="{ 'active' : newPostTheme === 'orange' }" class="bg-orange mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('orange')"></span>
 						</div>
 
-						<form class="mt-3 w-100" action="" method="post">
-							<textarea [ngClass]="'bg-' + newPostTheme" class="text-white-placeholder h5 p-3 w-100 rounded text-white" name="content" rows="8" cols="80" placeholder="Tell us what's up." spellcheck="false" required></textarea>
+						<form (submit)="this.createPost();" class="mt-3 w-100" action="" method="post">
+							<textarea [ngClass]="'bg-' + newPostTheme" class="text-white-placeholder h5 p-3 w-100 rounded text-white" name="content" rows="8" cols="80" placeholder="Tell us what's up." spellcheck="false" required [(ngModel)]="this.newPostContent"></textarea>
 							<input [ngClass]="'bg-' + newPostTheme"  type="submit" class="w-50 mx-auto d-block mx-md-0 rounded-pill hov-scale py-1 px-3 btn btn-lg text-white" value="Create Post">
 						</form>
 					</div>
