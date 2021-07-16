@@ -1,13 +1,10 @@
 <div id="wrapper">
-	<ul class="navbar-nav bg-gradient-primary sidebar auto-toggle sidebar-dark accordion" id="accordionSidebar">
-		<app-sidebar></app-sidebar>
-	</ul>
+	<ul class="navbar-nav bg-gradient-primary sidebar auto-toggle sidebar-dark accordion" id="accordionSidebar"><app-sidebar></app-sidebar></ul>
 	<div id="content-wrapper" class="d-flex flex-column">
 		<div id="content">
 			<app-topbar></app-topbar>
 			<div class="container-fluid">
 				<h1 class="h3 mb-4 text-gray-800 text-center text-md-left">Your Feed</h1>
-
 				<div class="w-100 w-xl-50 mb-4">
 					<div class="create-post shadow rounded-pill">
 						<a href="#create-post" class="d-block link rounded-pill card-header py-3 bg-white" data-toggle="collapse" role="button">
@@ -33,7 +30,6 @@
 						</form>
 					</div>
 				</div>
-
 				<div class="row mb-5 pb-5">
 					<div class="col-xl-3 col-lg-6" *ngFor="let column of this.posts">
 						<app-post *ngFor="let post of column" [post]="post"></app-post>

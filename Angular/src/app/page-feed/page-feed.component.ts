@@ -15,7 +15,14 @@ export class PageFeedComponent implements OnInit {
 	public newPostTheme : string =  "primary";
 	public posts = [[], [], [], []];
 
-	constructor(private api:ApiService,private title:Title,private localStorage:LocalStorageService,private events:EventEmitterService) {  }
+	constructor(
+		private api:ApiService,
+		private title:Title,
+		private localStorage:LocalStorageService,
+		private events:EventEmitterService
+	) {
+
+	}
 
 	ngOnInit(): void {
 		this.title.setTitle("A Social Media - Feed");

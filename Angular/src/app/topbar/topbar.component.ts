@@ -20,7 +20,14 @@ export class TopbarComponent implements OnInit {
 	public userID:any;
 	public friendRequests:number=0;
 
-	constructor(public auth: AuthService, private router:Router, private localStorage:LocalStorageService, private alerts:EventEmitterService, private userData:UserDataService, public api:ApiService){  }
+	constructor(
+		public auth: AuthService,
+		private router:Router,
+		private localStorage:LocalStorageService,
+		private alerts:EventEmitterService,
+		private userData:UserDataService,
+		public api:ApiService
+	) {  }
 
 	ngOnInit(): void {
 		let parsedToken = this.localStorage.getParsedToken();
