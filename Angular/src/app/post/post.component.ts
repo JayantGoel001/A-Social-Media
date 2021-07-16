@@ -10,6 +10,8 @@ export class PostComponent implements OnInit {
 	@Input() post: any;
 
 	public fakeID : string = "fakeID";
+	public fontSize : number = 18;
+	public align : string = "left";
 
 	constructor() {
 
@@ -27,5 +29,21 @@ export class PostComponent implements OnInit {
 			return id;
 		}
 		this.fakeID = removeLeadingNumber(this.post._id);
+		if (this.post.content.length<40){
+			this.fontSize = 22;
+		}
+		if (this.post.content.length<24){
+			this.fontSize = 28;
+			this.align = "center";
+		}
+		if (this.post.content.length<14){
+			this.fontSize = 32;
+		}
+		if (this.post.content.length<8){
+			this.fontSize = 44;
+		}
+		if (this.post.content.length<5){
+			this.fontSize = 62;
+		}
 	}
 }

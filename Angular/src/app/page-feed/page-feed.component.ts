@@ -32,8 +32,12 @@ export class PageFeedComponent implements OnInit {
 			authorize : true
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{
-			for (let i = 0; i < 4; i++) {
-				this.posts[i] = val.posts.filter((_ : any,  x : number) => x%4==i);
+			if(val.statusCode===200) {
+				for (let i = 0; i < 4; i++) {
+					this.posts[i] = val.posts.filter((_: any, x: number) => x % 4 == i);
+				}
+			}else {
+				this.events.onAlertEvent.emit("Something went wrong.")
 			}
 		});
 
@@ -65,6 +69,8 @@ export class PageFeedComponent implements OnInit {
 			if (val.statusCode===201) {
 				this.events.onAlertEvent.emit(val.message);
 				this.newPostContent = "";
+				// @ts-ignore
+				this.posts[0].unshift(val.post);
 			}else {
 				this.events.onAlertEvent.emit("Something went wrong.");
 			}
