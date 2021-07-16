@@ -100,7 +100,7 @@ const generateFeed = ({payload},res)=>{
         });
     });
     myFriendPosts.then(()=> {
-        posts = posts.sort((a,b)=> (a.date <= b.date) );
+        posts = posts.sort((a,b)=> (a.date > b.date ? -1 : 1));
         posts = posts.slice(0,maxAmountOfPosts);
         res.statusJson(200, { posts: posts });
     });
