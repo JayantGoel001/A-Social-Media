@@ -13,7 +13,7 @@ export class ResultRequestComponent implements OnInit {
 	constructor(public api:ApiService) { }
 
 	ngOnInit(): void {
-		console.log(this.resultRequest);
+
 	}
 
 }

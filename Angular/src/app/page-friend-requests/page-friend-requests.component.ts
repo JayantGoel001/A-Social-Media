@@ -7,16 +7,14 @@ import {UserDataService} from "../user-data.service";
 	styleUrls: ['./page-friend-requests.component.css']
 })
 export class PageFriendRequestsComponent implements OnInit {
+
 	public data:any
 
 	constructor(private userData :UserDataService) {  }
 
 	ngOnInit(): void {
-		this.userData.getUserData.subscribe((data)=>{
-			this.data = data;
-			console.log(this.data);
+		this.userData.getUserData.subscribe((data:any)=>{
+			this.data = data.friendRequests;
 		});
 	}
-
-
 }
