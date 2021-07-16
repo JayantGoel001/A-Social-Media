@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-post',
@@ -7,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostComponent implements OnInit {
 
-  constructor() { }
+	@Input() post: any;
 
-  ngOnInit(): void {
-  }
+	public fakeID : string = "fakeID";
 
+	constructor() {  }
+
+	ngOnInit(): void {
+		let removeLeadingNumber = (id:string)=>{
+			let isNumber = (n:any)=>{
+				n = Number(n);
+				return !isNaN(n);
+			}
+			if (id && isNumber(id[0])){
+				id = removeLeadingNumber(id.substr(1));
+			}
+			return id;
+		}
+		this.fakeID = removeLeadingNumber(this.post._id);
+	}
 }
