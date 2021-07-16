@@ -41,8 +41,7 @@ const postSchema = new mongoose.Schema({
 const messageSchema = new mongoose.Schema({
     fromID : {
         type : String,
-        required : true,
-        unique : true
+        required : true
     },
     content : [{
         messenger : String,
