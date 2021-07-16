@@ -12,6 +12,7 @@ router.get("/generate-feed",middleware.authorize,userCtrl.generateFeed);
 router.get("/search-results",middleware.authorize,userCtrl.getSearchResult);
 router.post("/send-friend-request/:from/:to",middleware.authorize,userCtrl.sendFriendRequest);
 router.get("/get-friend-requests",middleware.authorize,userCtrl.getFriendsRequests);
+router.post("/resolve-friend-request/:from/:to",middleware.authorize,userCtrl.resolveFriendRequest);
 
 router.get("/:userid",middleware.authorize,userCtrl.getUserData);
 

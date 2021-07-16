@@ -137,6 +137,62 @@ const getFriendsRequests = (req,res)=>{
     })
 }
 
+const resolveFriendRequest = ({query,params},res)=>{
+    let from = params.from;
+    let to = params.to;
+
+    let resolution = query.resolution;
+
+    User.findById(to,(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        for (let i = 0; i < user.friendRequests.length; i++) {
+            if (user.friendRequests[i]===from){
+                user.friendRequests.splice(i,1);
+                break;
+            }
+        }
+        let promise = new Promise((resolve, _)=>{
+            if (resolution === "accept"){
+                if (!containsDuplicate([from,...user.friendRequests])){
+                    user.friends.push(from);
+
+                    User.findById(from,(err,fromUser)=>{
+                        if(err){
+                            return res.json({ error : err });
+                        }
+                        if (containsDuplicate([to,...fromUser.friendRequests])){
+                            return res.json({ message : "Duplicate Error." });
+                        }else {
+                            fromUser.friends.push(to);
+                            fromUser.save((err,_)=>{
+                                if(err){
+                                    return res.json({ error : err });
+                                }
+                                resolve();
+                            })
+                        }
+                    })
+                }else {
+                    return res.json({ message : "Duplicate Error." });
+                }
+            }else {
+                resolve();
+            }
+        });
+
+        promise.then(()=>{
+            user.save((err,_)=>{
+                if(err){
+                    return res.json({ error : err });
+                }
+                res.statusJson(201,{ message : "Resolved Friend Request" });
+            })
+        });
+    });
+}
+
 module.exports = {
     registerUser,
     loginUser,
@@ -145,5 +201,6 @@ module.exports = {
     deleteAllUsers,
     sendFriendRequest,
     getUserData,
-    getFriendsRequests
+    getFriendsRequests,
+    resolveFriendRequest
 }

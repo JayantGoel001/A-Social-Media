@@ -9,7 +9,7 @@ import {ApiService} from "../api.service";
 })
 export class PageFriendRequestsComponent implements OnInit {
 
-	public data:any
+	public friendRequests:any
 
 	constructor(private userData :UserDataService,private api:ApiService) {  }
 
@@ -23,9 +23,18 @@ export class PageFriendRequestsComponent implements OnInit {
 			}
 			this.api.makeRequest(requestObject).then((val:any)=>{
 				if (val.statusCode===200) {
-					this.data = val.data;
+					this.friendRequests = val.data;
 				}
 			})
 		});
+	}
+
+	public updateFriendRequest(id:string){
+		for (let i=0;i<this.friendRequests.length;i++) {
+			if (this.friendRequests[i]._id === id){
+				this.friendRequests.splice(i,1);
+				break;
+			}
+		}
 	}
 }
