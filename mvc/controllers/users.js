@@ -391,6 +391,8 @@ const resolveFriendRequest = ({query,params},res)=>{
     });
 }
 
+
+
 module.exports = {
     registerUser,
     loginUser,
