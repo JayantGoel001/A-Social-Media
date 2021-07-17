@@ -4,6 +4,7 @@ const timeAgo = require("time-ago");
 
 const User = mongoose.model("User");
 const Post = mongoose.model("Post");
+const Comment = mongoose.model("Comment");
 
 const containsDuplicate = (arr)=>{
     arr.sort();
@@ -13,6 +14,31 @@ const containsDuplicate = (arr)=>{
         }
     }
     return false;
+}
+
+const addCommentDetails = (posts)=>{
+    return new Promise((resolve, reject)=>{
+        let promises = [];
+        for (const post of posts) {
+            for (const comment of post.comments) {
+                let promise = new Promise((resolve, reject)=>{
+                    User.findById(comment.id,"name profileImage",(err,user)=>{
+                        if(err){
+                            reject("Something Went Wrong!");
+                            return res.json({ error : err });
+                        }
+                        comment.name = user.name;
+                        comment.profileImage = user.profileImage;
+                        resolve(comment);
+                    });
+                });
+                promises.push(promise);
+            }
+        }
+        Promise.all(promises).then(()=>{
+            resolve(posts);
+        });
+    });
 }
 
 const registerUser = ({body},res) =>{
@@ -106,7 +132,10 @@ const generateFeed = ({payload},res)=>{
     myFriendPosts.then(()=> {
         posts = posts.sort((a,b)=> (a.date > b.date ? -1 : 1));
         posts = posts.slice(0,maxAmountOfPosts);
-        res.statusJson(200, { posts: posts });
+
+        addCommentDetails(posts).then((updatedPosts)=>{
+            res.statusJson(200, { posts: updatedPosts });
+        });
     });
 }
 
@@ -154,6 +183,33 @@ const likeUnlike = ({ payload, params },res)=>{
         }).catch((err)=>{
             return res.json({ error : err });
         })
+    })
+}
+
+const postComment = ({body,params,payload},res)=>{
+    User.findById(params.ownerID,(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        let post = user.posts.id(params.postID);
+
+        let comment = new Comment();
+        comment.id = payload._id;
+        comment.content = body.content;
+
+        post.comments.push(comment);
+
+        user.save().then(()=>{
+            User.findById(payload._id,"name profileImage",{},(err,commenter)=>{
+                if(err){
+                    return res.json({ error : err });
+                }
+                res.statusJson(201,{ message : "Posted Comment",comment : comment, commenterName : commenter.name, commenterImage : commenter.profileImage });
+            });
+        }).catch((err)=>{
+            return res.json({ error : err });
+        })
+
     })
 }
 
@@ -302,5 +358,6 @@ module.exports = {
     getFriendsRequests,
     resolveFriendRequest,
     createPost,
-    likeUnlike
+    likeUnlike,
+    postComment
 }

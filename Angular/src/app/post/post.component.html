@@ -19,8 +19,8 @@
 		</a>
 		<div class="collapse" id="{{ this.fakeID }}">
 			<div class="card-body">
-				<form class="mb-2" action="" method="post">
-					<div class="form-group"><input type="text" class="rounded-pill form-control" placeholder="Leave a comment."></div>
+				<form (submit)="this.postComment();" class="mb-2" action="" method="post">
+					<div class="form-group"><input [(ngModel)]="this.comment" name="comment" type="text" class="rounded-pill form-control" placeholder="Leave a comment." autocomplete="off"></div>
 				</form>
 				<div class="comment-list">
 					<div *ngIf="post && !post.comments.length" class="text-center mt-2">Be the first to comment on this post!</div>
@@ -29,9 +29,7 @@
 							<a href="#"><img alt="image" src="assets/images/f1.jpg" class="rounded-circle profile-img-sm"></a>
 							<span class="ml-2"><a href="#" class="link">{{comment.name}}</a></span>
 						</div>
-						<div class="comment-body pl-3 mt-2">
-							{{comment.content}}
-						</div>
+						<div class="comment-body pl-3 mt-2">{{comment.content}}</div>
 					</div>
 				</div>
 			</div>

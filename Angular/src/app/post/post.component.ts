@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
 import {LocalStorageService} from "../local-storage.service";
+import {EventEmitterService} from "../event-emitter.service";
 
 @Component({
 	selector: 'app-post',
@@ -11,16 +12,19 @@ export class PostComponent implements OnInit {
 
 	@Input() post: any;
 
+	public userID:string = "";
+
 	public fakeID : string = "fakeID";
 	public fontSize : number = 18;
-	public align : string = "left";
 
+	public align : string = "left";
 	public liked : boolean = false;
-	public userID:string = "";
+	public comment:string = "";
 
 	constructor(
 		private api:ApiService,
-		private localStorage:LocalStorageService
+		private localStorage:LocalStorageService,
+		private events : EventEmitterService
 	) {
 
 	}
@@ -76,6 +80,33 @@ export class PostComponent implements OnInit {
 					this.post.likes.push(this.userID);
 					this.liked = true;
 				}
+			}
+		})
+	}
+
+	public postComment(){
+		if (this.comment.length === 0){
+			return;
+		}
+		let requestObject = {
+			location : `users/post-comment/${this.post.ownerID}/${this.post._id}`,
+			type : "POST",
+			body : {
+				content : this.comment
+			},
+			authorize: true
+		}
+		this.api.makeRequest(requestObject).then((val:any)=>{
+			if (val.statusCode === 201) {
+				let updatedCommented = {
+					...val.comment,
+					name : val.commenterName,
+					profileImage : val.commenterImage
+				}
+				this.post.comments.push(updatedCommented);
+				this.comment = "";
+			}else {
+				this.events.onAlertEvent.emit(val.error);
 			}
 		})
 	}
