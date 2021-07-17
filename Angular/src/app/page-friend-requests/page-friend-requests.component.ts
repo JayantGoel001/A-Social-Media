@@ -3,15 +3,18 @@ import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
 import { Title } from "@angular/platform-browser";
 import {DOCUMENT} from "@angular/common";
+import {AutoUnsubscribe} from "../unsubscribe";
 
 @Component({
 	selector: 'app-page-friend-requests',
 	templateUrl: './page-friend-requests.component.html',
 	styleUrls: ['./page-friend-requests.component.css']
 })
+@AutoUnsubscribe
 export class PageFriendRequestsComponent implements OnInit {
 
-	public friendRequests:any
+	public friendRequests:any;
+	public subscriptions = [];
 
 	constructor(
 		private userData :UserDataService,
@@ -24,7 +27,7 @@ export class PageFriendRequestsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.title.setTitle("Friend Requests");
-		this.userData.getUserData.subscribe((data:any)=>{
+		let userDataEvent = this.userData.getUserData.subscribe((data:any)=>{
 			let array = JSON.stringify(data.friendRequests);
 			let requestObject = {
 				method: "GET",
@@ -40,6 +43,8 @@ export class PageFriendRequestsComponent implements OnInit {
 			// @ts-ignore
 			this.document.getElementById("sidebarToggleTop").classList.add("d-none");
 		}
+		// @ts-ignore
+		this.subscriptions.push(userDataEvent);
 	}
 
 	public updateFriendRequest(id:string){

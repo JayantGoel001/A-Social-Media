@@ -5,12 +5,14 @@ import { ActivatedRoute } from "@angular/router";
 import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
 import {EventEmitterService} from "../event-emitter.service";
+import {AutoUnsubscribe} from "../unsubscribe";
 
 @Component({
 	selector: 'app-page-profile',
 	templateUrl: './page-profile.component.html',
 	styleUrls: ['./page-profile.component.css']
 })
+@AutoUnsubscribe
 export class PageProfileComponent implements OnInit {
 
 	public randomFriends :any = [];
@@ -20,6 +22,7 @@ export class PageProfileComponent implements OnInit {
 	public userName:string = "";
 	public userEmail:string = "";
 	public userID:string = "";
+	public subscriptions = [];
 
 	public showPosts :number = 6;
 	public canAddUser:boolean = false;
@@ -35,7 +38,7 @@ export class PageProfileComponent implements OnInit {
 		}
 
 
-		this.userData.getUserData.subscribe((user)=>{
+		let userDataEvent = this.userData.getUserData.subscribe((user)=>{
 			this.route.params.subscribe((params)=> {
 				this.showPosts = 6;
 				if (user._id.toString() === params.userID.toString()) {
@@ -64,6 +67,8 @@ export class PageProfileComponent implements OnInit {
 				}
 			})
 		});
+		// @ts-ignore
+		this.subscriptions.push(userDataEvent);
 	}
 
 	constructor(

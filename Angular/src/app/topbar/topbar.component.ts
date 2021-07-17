@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 import {LocalStorageService} from "../local-storage.service";
 import {EventEmitterService} from "../event-emitter.service";
 import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
+import { AutoUnsubscribe } from "../unsubscribe";
 
 @Component({
 	selector: 'app-topbar',
 	templateUrl: './topbar.component.html',
 	styleUrls: ['./topbar.component.css']
 })
+@AutoUnsubscribe
 export class TopbarComponent implements OnInit {
 
 	public query:string="";
@@ -19,6 +21,7 @@ export class TopbarComponent implements OnInit {
 	public data:any;
 	public userID:any;
 	public friendRequests:number=0;
+	public subscriptions = [];
 
 	constructor(
 		public auth: AuthService,
@@ -34,15 +37,16 @@ export class TopbarComponent implements OnInit {
 		this.userName = parsedToken.name;
 		this.userID = parsedToken._id;
 
-		this.alerts.onAlertEvent.subscribe((message:string)=>{
+		let alertEvent = this.alerts.onAlertEvent.subscribe((message:string)=>{
 			this.alertMessage = message;
 		});
-		this.alerts.updateNumberOfFriendRequestEvent.subscribe((message:string)=>{
+
+		let friendAlert = this.alerts.updateNumberOfFriendRequestEvent.subscribe((message:string)=>{
 			if (this.friendRequests>0) {
 				this.friendRequests--;
 			}
 		});
-		this.userData.getUserData.subscribe((data)=>{
+		let userDataEvent = this.userData.getUserData.subscribe((data)=>{
 			this.data = data;
 			this.friendRequests = data.friendRequests.length;
 		});
@@ -54,6 +58,8 @@ export class TopbarComponent implements OnInit {
 		this.api.makeRequest(requestObject).then((data:any)=>{
 			this.userData.getUserData.emit(data.user);
 		})
+		// @ts-ignore
+		this.subscriptions.push(alertEvent,friendAlert,userDataEvent);
 	}
 
 	public searchForFriends(){
