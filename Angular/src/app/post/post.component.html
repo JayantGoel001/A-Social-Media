@@ -1,6 +1,9 @@
 <div class="card mt-4 shadow">
 	<div class="card-header rounded-0" [ngClass]="'bg-' + post.theme">
-		<a href="#"><img alt="image" class="profile-img-sm rounded-circle" src="assets/images/f1.jpg"></a>
+
+
+
+		<a href="#"><img alt="image" class="profile-img-sm rounded-circle" src="assets/images/{{post.profileImage}}.jpg"></a>
 		<span class="ml-3 h5"><a class="link text-white" href="">{{ post.name }}</a></span>
 	</div>
 	<div class="card-body">
