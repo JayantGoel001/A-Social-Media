@@ -21,7 +21,7 @@ export class PageProfileComponent implements OnInit {
 
 	public showPosts :number = 6;
 	public canAddUser:boolean = false;
-	public canSendMessage:boolean = true;
+	public canSendMessage:boolean = false;
 
 	constructor(
 		private title: Title,
@@ -40,14 +40,25 @@ export class PageProfileComponent implements OnInit {
 			this.document.getElementById("sidebarToggleTop").classList.add("d-none");
 		}
 
-		let paramID = this.route.snapshot.params.userID;
 
 		this.userData.getUserData.subscribe((user)=>{
-			if (user._id.toString() === paramID.toString()) {
-				this.setComponentValues(user);
-			} else {
+			this.route.params.subscribe((params)=> {
+				if (user._id.toString() === params.userID.toString()) {
+					this.setComponentValues(user);
+				} else {
+					this.canSendMessage = true;
 
-			}
+					let requestObject = {
+						location: "users/get-user-data/" + params.userID,
+						method: "GET"
+					}
+					this.api.makeRequest(requestObject).then((val: any) => {
+						if (val.statusCode === 200) {
+							this.setComponentValues(val.user);
+						}
+					});
+				}
+			})
 		});
 	}
 
