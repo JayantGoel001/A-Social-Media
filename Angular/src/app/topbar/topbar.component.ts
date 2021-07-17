@@ -49,7 +49,7 @@ export class TopbarComponent implements OnInit {
 
 		let requestObject = {
 			type : "GET",
-			location : `users/${this.userID}`,
+			location : `users/get-user-data/${this.userID}`,
 			authorize : true
 		}
 		this.api.makeRequest(requestObject).then((data:any)=>{

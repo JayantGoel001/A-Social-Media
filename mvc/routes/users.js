@@ -7,8 +7,11 @@ const userCtrl = require("../controllers/users");
 router.post("/register",userCtrl.registerUser) ;
 router.post("/login",userCtrl.loginUser);
 
+router.get("/get-user-data/:userid",middleware.authorize,userCtrl.getUserData);
+
 router.get("/generate-feed",middleware.authorize,userCtrl.generateFeed);
 router.post("/create-post",middleware.authorize,userCtrl.createPost);
+router.post("/like-unlike/:ownerID/:postID",middleware.authorize,userCtrl.likeUnlike);
 
 router.get("/search-results",middleware.authorize,userCtrl.getSearchResult);
 router.post("/send-friend-request/:from/:to",middleware.authorize,userCtrl.sendFriendRequest);
@@ -17,7 +20,5 @@ router.post("/resolve-friend-request/:from/:to",middleware.authorize,userCtrl.re
 
 router.delete("/all",userCtrl.deleteAllUsers);
 router.get("/all",userCtrl.getAllUsers);
-
-router.get("/:userid",middleware.authorize,userCtrl.getUserData);
 
 module.exports = router;
