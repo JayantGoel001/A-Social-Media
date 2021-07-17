@@ -2,7 +2,7 @@
 	<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
 	<form (ngSubmit)="searchForFriends()" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 		<div class="input-group">
-			<input name="query" [(ngModel)]="this.query" type="text" class="form-control bg-light border-0 small" placeholder="Find Friends for..." aria-label="Search" aria-describedby="basic-addon2">
+			<input name="query" [(ngModel)]="this.query" type="text" class="form-control bg-light border-0 small" placeholder="Find Friends" aria-label="Search" aria-describedby="basic-addon2" autocomplete="off">
 			<div class="input-group-append"><button class="btn btn-primary" type="submit"><i class="fas fa-search fa-sm"></i></button></div>
 		</div>
 	</form>
@@ -14,7 +14,7 @@
 			<div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
 				<form (ngSubmit)="searchForFriends();"  class="form-inline mr-auto w-100 navbar-search">
 					<div class="input-group">
-						<input name="query" [(ngModel)]="this.query" type="text" class="form-control bg-light border-0 small" placeholder="Find Friends" aria-label="Search" aria-describedby="basic-addon2">
+						<input name="query" [(ngModel)]="this.query" type="text" class="form-control bg-light border-0 small" placeholder="Find Friends" aria-label="Search" aria-describedby="basic-addon2" autocomplete="off">
 						<div class="input-group-append"><button class="btn btn-primary" type="button"><i class="fas fa-search fa-sm"></i></button></div>
 					</div>
 				</form>
