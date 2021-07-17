@@ -44,9 +44,8 @@ export class PageSearchesComponent implements OnInit {
 
 	private getResults(){
 		let requestObject = {
-			type:"GET",
-			location:`users/search-results?query=${this.searchQuery}`,
-			authorize: true
+			method:"GET",
+			location:`users/search-results?query=${this.searchQuery}`
 		}
 		this.api.makeRequest(requestObject).then((results:any)=>{
 			this.results = results.results;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
+import {UserDataService} from "../user-data.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -8,12 +9,18 @@ import {AuthService} from "../auth.service";
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(public auth:AuthService) {
 
-  }
+	public data:any = {  };
 
-  ngOnInit(): void {
+	constructor(
+		public auth: AuthService,
+		private userData : UserDataService
+	) {
 
-  }
-
+	}
+	ngOnInit(): void {
+		this.userData.getUserData.subscribe((data)=>{
+			this.data = data;
+		});
+	}
 }

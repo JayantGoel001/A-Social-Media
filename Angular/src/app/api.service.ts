@@ -25,9 +25,9 @@ export class ApiService {
 		// }
 	}
 	public makeRequest(requestObject:any) : any{
-		let type = requestObject.type.toLowerCase();
-		if (!type){
-			console.log("No type Specified in the Request Object");
+		let method = requestObject.method.toLowerCase();
+		if (!method){
+			console.log("No method Specified in the Request Object");
 			return;
 		}
 		let body = requestObject.body || {};
@@ -41,7 +41,7 @@ export class ApiService {
 
 		let httpOption = {};
 
-		if (requestObject.authorize){
+		if (this.localStorage.getToken()){
 			httpOption = {
 				headers : new HttpHeaders({
 					'Authorization' :`Bearer ${this.localStorage.getToken()}`
@@ -49,20 +49,19 @@ export class ApiService {
 			}
 		}
 
-		if (type==="get"){
+		if (method==="get"){
 			return this.http.get(url,httpOption).toPromise().then(this.successHandler).catch(this.errorHandler);
-		}else if (type==="post"){
+		}else if (method==="post"){
 			return this.http.post(url,body,httpOption).toPromise().then(this.successHandler).catch(this.errorHandler);
 		}
-		console.log("Could not make the request. Make sure a type of GET  or POST is supplied.");
+		console.log("Could not make the request. Make sure a method of GET  or POST is supplied.");
 	}
 
 	public makeFriendRequest(to:string){
 		let from = this.localStorage.getParsedToken()._id;
 		let requestObject = {
-			type : "POST",
-			location : `users/send-friend-request/${from}/${to}`,
-			authorize : true
+			method : "POST",
+			location : `users/send-friend-request/${from}/${to}`
 		}
 		this.makeRequest(requestObject).then((val:any)=>{
 			if (val.message){
@@ -77,9 +76,8 @@ export class ApiService {
 		return new Promise(()=>{
 			let to = this.localStorage.getParsedToken()._id;
 			let requestObject = {
-				type : "POST",
-				location : `users/resolve-friend-request/${from}/${to}?resolution=${resolution}`,
-				authorize: true
+				method : "POST",
+				location : `users/resolve-friend-request/${from}/${to}?resolution=${resolution}`
 			}
 			this.makeRequest(requestObject).then((val:any)=>{
 				if (val.statusCode===201) {

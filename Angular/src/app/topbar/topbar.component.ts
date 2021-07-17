@@ -48,9 +48,8 @@ export class TopbarComponent implements OnInit {
 		});
 
 		let requestObject = {
-			type : "GET",
-			location : `users/get-user-data/${this.userID}`,
-			authorize : true
+			method : "GET",
+			location : `users/get-user-data/${this.userID}`
 		}
 		this.api.makeRequest(requestObject).then((data:any)=>{
 			this.userData.getUserData.emit(data.user);

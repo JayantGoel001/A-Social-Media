@@ -2,8 +2,6 @@
 	<a href="#" class="p-4 w-max"><img src="assets/images/{{ resultRequest.profileImage }}.jpg" class="profile-img-md rounded " alt="image"></a>
 	<div>
 		<h5><a href="" routerLink="" class="link">{{ resultRequest.name }}</a></h5>
-		<h6>Montreal, Canada</h6>
-		<div class="small">7 Mutual Friends</div>
 	</div>
 	<div class="ml-auto mr-3 mt-3 align-self-start">
 		<button *ngIf="use=='result' && !haveSentFriendRequest && !haveReceivedFriendRequest && !isFriend" class="btn btn-sm btn-primary rounded-pill" (click)="this.api.makeFriendRequest(resultRequest._id); haveSentFriendRequest = true">Add Friend</button>
