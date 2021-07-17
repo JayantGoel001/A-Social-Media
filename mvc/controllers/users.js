@@ -68,21 +68,22 @@ const loginUser = (req,res) =>{
 }
 
 const generateFeed = ({payload},res)=>{
-    const addNameAndDateToPosts = (ar,name)=>{
+    const addNameAndDateToPosts = (ar,name,ownerID)=>{
         for (let i = 0; i < ar.length; i++) {
             ar[i].name = name;
             ar[i].timeAgo = timeAgo.ago(ar[i].date);
+            ar[i].ownerID = ownerID;
         }
     }
     const maxAmountOfPosts = 48;
     let posts = [];
     let myPosts = new Promise((resolve, reject)=>{
-        User.findById(payload._id,"name friends posts",{lean:true},(err,user)=>{
+        User.findById(payload._id,"",{ lean : true },(err,user)=>{
             if(err){
                 reject("Something Went Wrong");
                 return res.json({ error : err });
             }
-            addNameAndDateToPosts(user.posts,user.name);
+            addNameAndDateToPosts(user.posts,user.name,user._id);
             posts.push(...user.posts);
             resolve(user.friends);
         });
@@ -95,7 +96,7 @@ const generateFeed = ({payload},res)=>{
                     return res.json({ error : err });
                 }
                 for (const user of users) {
-                    addNameAndDateToPosts(user.posts,user.name);
+                    addNameAndDateToPosts(user.posts,user.name,user._id);
                     posts.push(...user.posts);
                 }
                 resolve();
@@ -134,6 +135,26 @@ const createPost = ({ body,payload },res)=>{
         })
     })
 
+}
+
+const likeUnlike = ({ payload, params },res)=>{
+    User.findById(params.ownerID,(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        const post = user.posts.id(params.postID);
+        if (post.likes.includes(payload._id)){
+            post.likes.splice(post.likes.indexOf(payload._id),1);
+        }else {
+            post.likes.push(payload._id);
+        }
+
+        user.save().then((updateUser)=>{
+            res.statusJson(201,{ message : "Liked or Unliked a post." ,user : updateUser});
+        }).catch((err)=>{
+            return res.json({ error : err });
+        })
+    })
 }
 
 const getSearchResult = (req,res)=>{
@@ -281,4 +302,5 @@ module.exports = {
     getFriendsRequests,
     resolveFriendRequest,
     createPost,
+    likeUnlike
 }

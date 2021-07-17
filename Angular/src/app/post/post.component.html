@@ -8,8 +8,8 @@
 		<div class="d-flex justify-content-between py-2">
 			<small class="text-muted">{{ post.timeAgo }}</small>
 			<div>
-				<a href="#"><i class="hov-scale fas fa-thumbs-up"  [ngClass]="'text-' + post.theme"></i></a>
-				<span class="ml-3 badge badge-pill"  [ngClass]="'badge-' + post.theme">{{post.likes}}</span>
+				<a class="like-icon" (click)="this.likeButtonClicked(post._id);"><i [ngClass]="{ 'liked' : liked===true }" class="text-{{ post.theme }} hov-scale fas fa-thumbs-up" ></i></a>
+				<span class="ml-3 badge badge-pill"  [ngClass]="'badge-' + post.theme">{{ post.likes.length }}</span>
 			</div>
 		</div>
 	</div>

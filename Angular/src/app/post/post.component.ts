@@ -1,9 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ApiService} from "../api.service";
+import {LocalStorageService} from "../local-storage.service";
 
 @Component({
-  selector: 'app-post',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css']
+	selector: 'app-post',
+	templateUrl: './post.component.html',
+	styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
 
@@ -13,7 +15,13 @@ export class PostComponent implements OnInit {
 	public fontSize : number = 18;
 	public align : string = "left";
 
-	constructor() {
+	public liked : boolean = false;
+	public userID:string = "";
+
+	constructor(
+		private api:ApiService,
+		private localStorage:LocalStorageService
+	) {
 
 	}
 
@@ -29,6 +37,11 @@ export class PostComponent implements OnInit {
 			return id;
 		}
 		this.fakeID = removeLeadingNumber(this.post._id);
+		this.userID = this.localStorage.getParsedToken()._id;
+		if (this.post.likes.includes(this.userID)){
+			this.liked = true;
+		}
+
 		if (this.post.content.length<40){
 			this.fontSize = 22;
 		}
@@ -45,5 +58,25 @@ export class PostComponent implements OnInit {
 		if (this.post.content.length<5){
 			this.fontSize = 62;
 		}
+
+	}
+
+	public likeButtonClicked(id:string){
+		let requestObject = {
+			location : `users/like-unlike/${this.post.ownerID}/${id}`,
+			type : "POST",
+			authorize : true
+		}
+		this.api.makeRequest(requestObject).then((val:any)=>{
+			if (val.statusCode === 201){
+				if (this.post.likes.includes(this.userID)){
+					this.post.likes.splice(this.post.likes.indexOf(this.userID),1);
+					this.liked = false
+				}else {
+					this.post.likes.push(this.userID);
+					this.liked = true;
+				}
+			}
+		})
 	}
 }
