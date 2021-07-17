@@ -94,4 +94,28 @@ export class ApiService {
 			});
 		});
 	}
+
+	public sendMessage(sendMessageObject:any){
+		if (sendMessageObject.content.length === 0){
+			this.alerts.onAlertEvent.emit("Message Not Sent. You must provide some content for your message.");
+			return;
+		}
+		let requestObject = {
+			method:"POST",
+			location:`users/send-message/${sendMessageObject.id}`,
+			body : {
+				content : sendMessageObject.content
+			}
+		}
+		return new Promise((resolve, reject) => {
+			this.makeRequest(requestObject).then((val:any)=>{
+				console.log(val);
+				if (val.statusCode === 201){
+					this.alerts.onAlertEvent.emit("Successfully sent a message.");
+					sendMessageObject.content = "";
+				}
+				resolve(val);
+			});
+		});
+	}
 }

@@ -20,6 +20,8 @@ router.post("/send-friend-request/:from/:to",middleware.authorize,userCtrl.sendF
 router.get("/get-friend-requests",middleware.authorize,userCtrl.getFriendsRequests);
 router.post("/resolve-friend-request/:from/:to",middleware.authorize,userCtrl.resolveFriendRequest);
 
+router.post("/send-message/:to",middleware.authorize,userCtrl.sendMessage);
+
 router.post("/create-fake-users",fakeCtrl.createFakeUsers);
 
 router.delete("/all",userCtrl.deleteAllUsers);

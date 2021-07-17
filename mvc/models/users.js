@@ -68,12 +68,12 @@ const userSchema = new mongoose.Schema({
         default : "default_avatar"
     },
     latestMessageNotifications : {
-        type : Number,
-        default : 0
+        type : [String],
+        default : []
     },
     latestNotifications : {
-        type : Number,
-        default : 0
+        type : [String],
+        default : []
     },
     password:String,
     salt:String

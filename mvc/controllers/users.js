@@ -5,6 +5,7 @@ const timeAgo = require("time-ago");
 const User = mongoose.model("User");
 const Post = mongoose.model("Post");
 const Comment = mongoose.model("Comment");
+const Message = mongoose.model("Message");
 
 const getRandom = (min,max)=>{
     return Math.floor(Math.random() * (max - min)) + min;
@@ -391,7 +392,87 @@ const resolveFriendRequest = ({query,params},res)=>{
     });
 }
 
+const sendMessage = ({body,params,payload},res)=>{
 
+    let from = payload._id;
+    let to = params.to;
+
+    let fromPromise = new Promise((resolve, reject)=>{
+        User.findById(from,"messages",(err,user)=>{
+            if(err){
+                reject(err);
+                return res.json({ error : err });
+            }
+            from = user;
+            resolve(user);
+        })
+    })
+    let toPromise = new Promise((resolve, reject)=>{
+        User.findById(to,"messages",(err,user)=>{
+            if(err){
+                reject(err);
+                return res.json({ error : err });
+            }
+            to = user;
+            resolve(user);
+        });
+    });
+
+    let sendMessagePromise = Promise.all([fromPromise,toPromise]).then(()=>{
+
+        function hasMessageFrom(messages,id) {
+            for(let message of messages){
+                if(message.fromID.toString() === id.toString()){
+                    return message;
+                }
+            }
+        }
+
+        function sendMessageTo(to,from){
+            return new Promise((resolve, reject)=>{
+                let foundMessage = hasMessageFrom(to.messages,from._id)
+                if (foundMessage){
+                    foundMessage.content.push(message);
+                    to.save().then((user)=>{
+                        resolve(user);
+                    }).catch((err)=>{
+                        reject(err);
+                        return res.json({error : err});
+                    })
+                }else {
+                    let newMessage = new Message();
+                    newMessage.fromID = from._id;
+                    newMessage.content = [message];
+
+                    to.messages.push(newMessage);
+                    to.save().then((user)=>{
+                        resolve(user);
+                    }).catch((err)=>{
+                        reject(err);
+                        return res.json({error : err});
+                    });
+                }
+            });
+        }
+
+        let message = {
+            messenger : from._id,
+            message : body.content
+        }
+
+        let sendMessageToRecipient = sendMessageTo(to,from);
+        let sendMessageToAuthor = sendMessageTo(from,to);
+
+        return new Promise((resolve, reject) => {
+            Promise.all([sendMessageToRecipient,sendMessageToAuthor]).then(()=>{
+                resolve();
+            });
+        });
+    });
+    sendMessagePromise.then(()=>{
+        res.statusJson(201,{ message : "Sending Message" });
+    })
+}
 
 module.exports = {
     registerUser,
@@ -406,5 +487,6 @@ module.exports = {
     resolveFriendRequest,
     createPost,
     likeUnlike,
-    postComment
+    postComment,
+    sendMessage
 }

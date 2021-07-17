@@ -29,7 +29,6 @@ export class TopbarComponent implements OnInit {
 		content:""
 	}
 
-
 	constructor(
 		public auth: AuthService,
 		private router:Router,
@@ -78,10 +77,7 @@ export class TopbarComponent implements OnInit {
 	}
 
 	public sendMessage(){
-		if (this.sendMessageObject.content.length === 0){
-			this.alerts.onAlertEvent.emit("Message Not Sent. You must provide some content for your message.");
-			return;
-		}
+		this.api.sendMessage(this.sendMessageObject);
 		this.sendMessageObject.content = "";
 	}
 }
