@@ -4,11 +4,12 @@ import { DOCUMENT } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
+import {EventEmitterService} from "../event-emitter.service";
 
 @Component({
-  selector: 'app-page-profile',
-  templateUrl: './page-profile.component.html',
-  styleUrls: ['./page-profile.component.css']
+	selector: 'app-page-profile',
+	templateUrl: './page-profile.component.html',
+	styleUrls: ['./page-profile.component.css']
 })
 export class PageProfileComponent implements OnInit {
 
@@ -18,20 +19,13 @@ export class PageProfileComponent implements OnInit {
 	public profileImage:string = "default_avatar";
 	public userName:string = "";
 	public userEmail:string = "";
+	public userID:string = "";
 
 	public showPosts :number = 6;
 	public canAddUser:boolean = false;
 	public canSendMessage:boolean = false;
-
-	constructor(
-		private title: Title,
-		@Inject(DOCUMENT) private document : Document,
-		private userData:UserDataService,
-		private api:ApiService,
-		private route:ActivatedRoute
-	) {
-
-	}
+	public haveSentFriendRequest:boolean = false;
+	public haveReceivedFriendRequest:boolean = false;
 
 	ngOnInit(): void {
 		this.title.setTitle("A Social Media - Profile");
@@ -43,8 +37,10 @@ export class PageProfileComponent implements OnInit {
 
 		this.userData.getUserData.subscribe((user)=>{
 			this.route.params.subscribe((params)=> {
+				this.showPosts = 6;
 				if (user._id.toString() === params.userID.toString()) {
 					this.setComponentValues(user);
+					this.resetBooleans();
 				} else {
 					this.canSendMessage = true;
 
@@ -54,12 +50,31 @@ export class PageProfileComponent implements OnInit {
 					}
 					this.api.makeRequest(requestObject).then((val: any) => {
 						if (val.statusCode === 200) {
+							this.canAddUser = !user.friends.includes(val.user._id);
+							this.haveReceivedFriendRequest = user.friendRequests.includes(val.user._id);
+							this.haveSentFriendRequest = val.user.friendRequests.includes(user._id);
+
+							if (this.canAddUser){
+								this.showPosts = 0;
+							}
+
 							this.setComponentValues(val.user);
 						}
 					});
 				}
 			})
 		});
+	}
+
+	constructor(
+		private title: Title,
+		private userData:UserDataService,
+		private api:ApiService,
+		private route:ActivatedRoute,
+		private events:EventEmitterService,
+		@Inject(DOCUMENT) private document : Document,
+	) {
+
 	}
 
 	public showMorePosts() {
@@ -77,5 +92,39 @@ export class PageProfileComponent implements OnInit {
 		this.totalFriends = user.friends.length;
 		this.userName = user.name;
 		this.posts = user.posts;
+		this.userID = user._id;
+	}
+
+	public accept(){
+		this.api.resolveFriendRequest("accept",this.userID).then((val:any)=>{
+			if (val.statusCode === 201){
+				this.haveReceivedFriendRequest = false;
+				this.canAddUser = false;
+				this.totalFriends++;
+				this.showPosts = 6;
+			}
+		});
+	}
+	public decline(){
+		this.api.resolveFriendRequest("decline",this.userID).then((val:any)=>{
+			if (val.statusCode === 201){
+				this.haveReceivedFriendRequest = false;
+			}
+		});
+	}
+
+	public makeFriendRequest(){
+		this.api.makeFriendRequest(this.userID).then((val:any)=>{
+			if (val.statusCode === 201){
+				this.haveSentFriendRequest =true;
+			}
+		})
+	}
+
+	private resetBooleans(){
+		this.canAddUser = false;
+		this.canSendMessage = false;
+		this.haveSentFriendRequest = false;
+		this.haveReceivedFriendRequest = false;
 	}
 }

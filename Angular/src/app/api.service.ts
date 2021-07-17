@@ -63,18 +63,21 @@ export class ApiService {
 			method : "POST",
 			location : `users/send-friend-request/${from}/${to}`
 		}
-		this.makeRequest(requestObject).then((val:any)=>{
-			if (val.message){
-				this.alerts.onAlertEvent.emit(val.message);
-			}else {
-				this.alerts.onAlertEvent.emit(val.error);
-			}
+		return new Promise((resolve, reject)=>{
+			this.makeRequest(requestObject).then((val:any)=>{
+				if (val.statusCode === 201){
+					this.alerts.onAlertEvent.emit(val.message);
+				}else {
+					this.alerts.onAlertEvent.emit(val.error);
+				}
+				resolve(val);
+			});
 		});
 	}
 
 	public resolveFriendRequest(resolution:string,from:string){
-		return new Promise(()=>{
-			let to = this.localStorage.getParsedToken()._id;
+		let to = this.localStorage.getParsedToken()._id;
+		return new Promise((resolve, reject)=>{
 			let requestObject = {
 				method : "POST",
 				location : `users/resolve-friend-request/${from}/${to}?resolution=${resolution}`
@@ -87,6 +90,7 @@ export class ApiService {
 				}else {
 					this.alerts.onAlertEvent.emit(`Successfully ${val.error} Friend request`);
 				}
+				resolve(val);
 			});
 		});
 	}

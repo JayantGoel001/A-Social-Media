@@ -15,7 +15,17 @@
 								<h3 class="text-white">{{ userName }}</h3>
 								<p class="w-50 h6 mx-auto text-white">I'm just a normal person, I like cats & {{ userEmail }}. I also went skydiving once.</p>
 								<div class="my-4">
-									<button *ngIf="canAddUser " class="btn btn-light text-primary rounded-pill m-1">Add Friend</button>
+									<div class="my-4">
+										<div *ngIf="haveReceivedFriendRequest" class="my-4">
+											<hr class="w-25 my4 bg-white">
+											<h6 class="text-white font-weight-200">{{userName }} has sent you a friend request.</h6>
+											<button class="btn btn-success btn-sm rounded-pill m-1 px-4" (click)="accept()">Accept</button>
+											<button class="btn btn-danger btn-sm rounded-pill m-1 px-4" (click)="decline()">Decline</button>
+											<hr class="w-25 my4 bg-white">
+										</div>
+										<button *ngIf="haveSentFriendRequest" class="btn btn-warning rounded-pill m-1">Friend Request Pending</button>
+									</div>
+									<button *ngIf="canAddUser && !haveSentFriendRequest && !haveReceivedFriendRequest" class="btn btn-light text-primary rounded-pill m-1" (click)="makeFriendRequest()">Add Friend</button>
 									<button *ngIf="canSendMessage " class="btn btn-info rounded-pill m-1">Send Message</button>
 								</div>
 								<hr class="w-25 my-4 bg-white">
@@ -41,7 +51,8 @@
 					<div id="recent-posts" class="col-lg-5 col-md-6 mt-5 mt-md-0">
 						<h3 class="text-success shadow py-3 text-center bg-white rounded-pill">Recent Posts</h3>
 						<app-post *ngFor="let post of posts.slice(0,showPosts)" [post]="post"></app-post>
-						<a (click)="showMorePosts();" *ngIf="posts.length && showPosts < posts.length " class="bg-success d-block mt-4 py-3 text-center rounded-pill text-white link h5">Load More</a>
+						<a (click)="showMorePosts();" *ngIf="posts.length && showPosts < posts.length && showPosts" class="bg-success d-block mt-4 py-3 text-center rounded-pill text-white link h5">Load More</a>
+						<h3 *ngIf="!showPosts" class="text-center w-75 mx-auto mt-5 text-purple">Add {{ userName }} as a friend to see their latest posts.</h3>
 						<div *ngIf="posts.length && posts.length <= showPosts">
 							<h2 class="mt-5 text-primary text-center">No more posts, you have stalked {{ userName }} completely</h2>
 							<a href="" (click)="backToTop();" class="link h4 text-center d-block w-max mx-auto my-3"></a>
