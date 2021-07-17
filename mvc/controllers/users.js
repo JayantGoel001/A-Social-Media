@@ -17,7 +17,7 @@ const containsDuplicate = (arr)=>{
 }
 
 const addCommentDetails = (posts)=>{
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve)=>{
         let promises = [];
         for (const post of posts) {
             for (const comment of post.comments) {
@@ -94,23 +94,24 @@ const loginUser = (req,res) =>{
 }
 
 const generateFeed = ({payload},res)=>{
-    const addNameAndDateToPosts = (ar,name,ownerID)=>{
+    const addNameAndDateToPosts = (ar,user)=>{
         for (let i = 0; i < ar.length; i++) {
-            ar[i].name = name;
+            ar[i].name = user.name;
             ar[i].timeAgo = timeAgo.ago(ar[i].date);
-            ar[i].ownerID = ownerID;
+            ar[i].ownerID = user._id;
+            ar[i].profileImage = user.profileImage;
         }
     }
     const maxAmountOfPosts = 48;
     let posts = [];
     let myPosts = new Promise((resolve, reject)=>{
-        User.findById(payload._id,"",{ lean : true },(err,user)=>{
+        User.findById(payload._id,null,{ lean : true },(err,user)=>{
             if(err){
                 reject("Something Went Wrong");
                 return res.json({ error : err });
             }
             if (user) {
-                addNameAndDateToPosts(user.posts, user.name, user._id);
+                addNameAndDateToPosts(user.posts, user);
                 posts.push(...user.posts);
                 resolve(user.friends);
             }
@@ -118,13 +119,13 @@ const generateFeed = ({payload},res)=>{
     });
     let myFriendPosts = myPosts.then((friends)=>{
         return new Promise((resolve, reject)=>{
-            User.find({'_id' : { $in : friends }},"name posts",{lean : true},(err,users)=>{
+            User.find({'_id' : { $in : friends }},null,{lean : true},(err,users)=>{
                 if(err){
                     reject("Something Went Wrong");
                     return res.json({ error : err });
                 }
                 for (const user of users) {
-                    addNameAndDateToPosts(user.posts,user.name,user._id);
+                    addNameAndDateToPosts(user.posts,user);
                     posts.push(...user.posts);
                 }
                 resolve();
@@ -222,7 +223,7 @@ const getSearchResult = (req,res)=>{
     if (!query.query){
         return res.json({ error : "Missing a query." });
     }
-    User.find({ name : { $regex : query.query , $options : "i"} },"name friends friendRequests",{},(err,results)=>{
+    User.find({ name : { $regex : query.query , $options : "i"} },null,{},(err,results)=>{
         if (err){
             return res.json({ error :err });
         }
