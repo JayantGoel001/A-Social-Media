@@ -75,6 +75,6 @@ export class PageFeedComponent implements OnInit {
 			}else {
 				this.events.onAlertEvent.emit("Something went wrong.");
 			}
-		})
+		});
 	}
 }
