@@ -6,6 +6,19 @@ const User = mongoose.model("User");
 const Post = mongoose.model("Post");
 const Comment = mongoose.model("Comment");
 
+const getRandom = (min,max)=>{
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+const addNameAndDateToPosts = (ar,user)=>{
+    for (let i = 0; i < ar.length; i++) {
+        ar[i].name = user.name;
+        ar[i].timeAgo = timeAgo.ago(ar[i].date);
+        ar[i].ownerID = user._id;
+        ar[i].profileImage = user.profileImage;
+    }
+}
+
 const containsDuplicate = (arr)=>{
     arr.sort();
     for (let i = 1; i < arr.length; i++) {
@@ -94,14 +107,7 @@ const loginUser = (req,res) =>{
 }
 
 const generateFeed = ({payload},res)=>{
-    const addNameAndDateToPosts = (ar,user)=>{
-        for (let i = 0; i < ar.length; i++) {
-            ar[i].name = user.name;
-            ar[i].timeAgo = timeAgo.ago(ar[i].date);
-            ar[i].ownerID = user._id;
-            ar[i].profileImage = user.profileImage;
-        }
-    }
+
     const maxAmountOfPosts = 48;
     let posts = [];
     let myPosts = new Promise((resolve, reject)=>{
@@ -160,6 +166,7 @@ const createPost = ({ body,payload },res)=>{
         let latestPost = post.toObject();
         latestPost.name = payload.name;
         latestPost.ownerID = payload._id;
+        latestPost.profileImage = user.profileImage;
 
         user.save().then(()=>{
             return res.statusJson(201, {message : "Successfully created the post.", post : latestPost});
@@ -276,11 +283,45 @@ const sendFriendRequest = (req,res)=>{
 }
 
 const getUserData = (req,res)=>{
-    User.findById(req.params.userid,null,{},(err,user)=>{
+    User.findById(req.params.userid, "-salt -password",{lean:true},(err,user)=>{
         if(err){
             return res.json({ error : err });
         }
-        res.statusJson(200,{ user : user });
+
+        const getRandomFriends = (friendsList)=>{
+            let friends = Array.from(friendsList);
+
+            let randomID = [];
+            if (friendsList.length<=6){
+                randomID = friends;
+            }else {
+                for (let i = 0; i < 6; i++) {
+                    let index = getRandom(0,friends.length-1);
+                    randomID.push(friends[index]);
+                    friends.splice(index,1);
+                }
+            }
+            return new Promise((resolve, reject)=>{
+                User.find({'_id' : { $in : randomID }},null,(err,friends)=>{
+                    if(err){
+                        reject(err);
+                        return res.json({ error : err });
+                    }
+                    resolve(friends);
+                });
+            });
+        }
+
+        user.posts.sort((a,b)=> (a.date > b.date ? -1 : 1));
+        addNameAndDateToPosts(user.posts,user);
+
+        let randomFriends = getRandomFriends(user.friends);
+        let commentDetails = addCommentDetails(user.posts);
+
+        Promise.all([randomFriends,commentDetails]).then((val)=>{
+            user.randomFriends = val[0];
+            res.statusJson(200,{ user : user });
+        });
     });
 }
 

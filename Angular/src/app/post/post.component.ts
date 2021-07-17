@@ -68,8 +68,7 @@ export class PostComponent implements OnInit {
 	public likeButtonClicked(id:string){
 		let requestObject = {
 			location : `users/like-unlike/${this.post.ownerID}/${id}`,
-			type : "POST",
-			authorize : true
+			method : "POST"
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{
 			if (val.statusCode === 201){
@@ -90,11 +89,10 @@ export class PostComponent implements OnInit {
 		}
 		let requestObject = {
 			location : `users/post-comment/${this.post.ownerID}/${this.post._id}`,
-			type : "POST",
+			method : "POST",
 			body : {
 				content : this.comment
-			},
-			authorize: true
+			}
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{
 			if (val.statusCode === 201) {

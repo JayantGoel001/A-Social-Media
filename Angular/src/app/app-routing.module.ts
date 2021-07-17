@@ -28,7 +28,7 @@ const routes: Routes = [
 		canActivate : [AuthService],
 		data : { loggedIn :true }
 	},{
-		path : "profile",
+		path : "profile/:userID",
 		component : PageProfileComponent,
 		canActivate : [AuthService],
 		data : { loggedIn :true }

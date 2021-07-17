@@ -27,15 +27,16 @@ export class PageFeedComponent implements OnInit {
 	ngOnInit(): void {
 		this.title.setTitle("A Social Media - Feed");
 		let requestObject = {
-			type: "GET",
-			location : "users/generate-feed",
-			authorize : true
+			method: "GET",
+			location : "users/generate-feed"
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{
 			if(val.statusCode===200) {
+				let columns = [];
 				for (let i = 0; i < 4; i++) {
-					this.posts[i] = val.posts.filter((_: any, x: number) => x % 4 == i);
+					columns.push(val.posts.filter((_: any, x: number) => x % 4 == i));
 				}
+				this.addPostToFeed(columns,0,0);
 			}else {
 				this.events.onAlertEvent.emit("Something went wrong.")
 			}
@@ -57,13 +58,12 @@ export class PageFeedComponent implements OnInit {
 		}
 
 		let requestOption = {
-			type : "POST",
+			method : "POST",
 			location: "users/create-post",
 			body : {
 				theme : this.newPostTheme,
 				content : this.newPostContent
-			},
-			authorize: true
+			}
 		}
 		this.api.makeRequest(requestOption).then((val:any)=>{
 			if (val.statusCode===201) {
@@ -76,5 +76,16 @@ export class PageFeedComponent implements OnInit {
 				this.events.onAlertEvent.emit("Something went wrong.");
 			}
 		});
+	}
+
+	public addPostToFeed(arr:Array<any>,col:number,delay:number){
+		setTimeout(()=>{
+			if (arr[col].length){
+				// @ts-ignore
+				this.posts[col].push(arr[col].splice(0,1)[0]);
+				col = (++col)%4;
+				this.addPostToFeed(arr,col,100);
+			}
+		},delay);
 	}
 }

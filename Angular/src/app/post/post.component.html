@@ -1,8 +1,5 @@
 <div class="card mt-4 shadow">
 	<div class="card-header rounded-0" [ngClass]="'bg-' + post.theme">
-
-
-
 		<a href="#"><img alt="image" class="profile-img-sm rounded-circle" src="assets/images/{{post.profileImage}}.jpg"></a>
 		<span class="ml-3 h5"><a class="link text-white" href="">{{ post.name }}</a></span>
 	</div>
@@ -29,7 +26,7 @@
 					<div *ngIf="post && !post.comments.length" class="text-center mt-2">Be the first to comment on this post!</div>
 					<div class="comment p-3 my-2 rounded" *ngFor="let comment of post.comments">
 						<div class="comment-user">
-							<a href="#"><img alt="image" src="assets/images/f1.jpg" class="rounded-circle profile-img-sm"></a>
+							<a href="#"><img alt="image" src="assets/images/{{comment.profileImage}}.jpg" class="rounded-circle profile-img-sm"></a>
 							<span class="ml-2"><a href="#" class="link">{{comment.name}}</a></span>
 						</div>
 						<div class="comment-body pl-3 mt-2">{{comment.content}}</div>

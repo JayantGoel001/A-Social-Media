@@ -27,9 +27,8 @@ export class PageFriendRequestsComponent implements OnInit {
 		this.userData.getUserData.subscribe((data:any)=>{
 			let array = JSON.stringify(data.friendRequests);
 			let requestObject = {
-				type: "GET",
-				location : `users/get-friend-requests?friend_requests=${array}`,
-				authorize : true
+				method: "GET",
+				location : `users/get-friend-requests?friend_requests=${array}`
 			}
 			this.api.makeRequest(requestObject).then((val:any)=>{
 				if (val.statusCode===200) {

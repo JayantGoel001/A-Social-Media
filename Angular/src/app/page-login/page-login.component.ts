@@ -50,7 +50,7 @@ export class PageLoginComponent implements OnInit {
 	}
 	private logIn(){
 		let requestObject = {
-			type:"POST",
+			method:"POST",
 			location : "users/login",
 			body : this.credentials
 		}
