@@ -156,6 +156,7 @@ const createPost = ({ body,payload },res)=>{
 
         let latestPost = post.toObject();
         latestPost.name = payload.name;
+        latestPost.ownerID = payload._id;
 
         user.save().then(()=>{
             return res.statusJson(201, {message : "Successfully created the post.", post : latestPost});
