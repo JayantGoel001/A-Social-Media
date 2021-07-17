@@ -109,9 +109,11 @@ const generateFeed = ({payload},res)=>{
                 reject("Something Went Wrong");
                 return res.json({ error : err });
             }
-            addNameAndDateToPosts(user.posts,user.name,user._id);
-            posts.push(...user.posts);
-            resolve(user.friends);
+            if (user) {
+                addNameAndDateToPosts(user.posts, user.name, user._id);
+                posts.push(...user.posts);
+                resolve(user.friends);
+            }
         });
     });
     let myFriendPosts = myPosts.then((friends)=>{

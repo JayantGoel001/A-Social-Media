@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema({
     notifications : [String],
     profileImage : {
         type : String,
-        default : "default_avatar.jpg"
+        default : "default_avatar"
     },
     latestMessageNotifications : {
         type : Number,
