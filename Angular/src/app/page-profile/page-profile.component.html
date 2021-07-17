@@ -28,7 +28,7 @@
 							<div class="row m-0">
 								<div *ngFor="let friend of randomFriends" class="col-xl-4 col-6 mt-5">
 									<div class="friend">
-										<img alt="image" src="assets/images/{{friend.profileImage}}.jpg">
+										<img alt="image" src="assets/images/{{friend.profileImage}}.jpg" routerLink="/profile/{{friend._id}}">
 										<h5 class="text-center pb-1">
 											<a href="" class="link text-purple font-weight-400" routerLink="/profile/{{friend._id}}">{{ friend.name}}</a>
 										</h5>
