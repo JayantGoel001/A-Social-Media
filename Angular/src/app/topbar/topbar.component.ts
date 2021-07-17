@@ -23,6 +23,13 @@ export class TopbarComponent implements OnInit {
 	public friendRequests:number=0;
 	public subscriptions = [];
 
+	public sendMessageObject = {
+		id : "",
+		name : "",
+		content:""
+	}
+
+
 	constructor(
 		public auth: AuthService,
 		private router:Router,
@@ -51,6 +58,10 @@ export class TopbarComponent implements OnInit {
 			this.friendRequests = data.friendRequests.length;
 		});
 
+		let updateMessageEvent = this.alerts.updateSendMessageObjectEvent.subscribe((val:any)=>{
+			this.sendMessageObject.id = val.id;
+			this.sendMessageObject.name = val.name;
+		});
 		let requestObject = {
 			method : "GET",
 			location : `users/get-user-data/${this.userID}`
@@ -59,10 +70,18 @@ export class TopbarComponent implements OnInit {
 			this.userData.getUserData.emit(data.user);
 		})
 		// @ts-ignore
-		this.subscriptions.push(alertEvent,friendAlert,userDataEvent);
+		this.subscriptions.push(alertEvent,friendAlert,userDataEvent,updateMessageEvent);
 	}
 
 	public searchForFriends(){
 		this.router.navigate(['/search-results',{ query : this.query }]).then(_ =>{ });
+	}
+
+	public sendMessage(){
+		if (this.sendMessageObject.content.length === 0){
+			this.alerts.onAlertEvent.emit("Message Not Sent. You must provide some content for your message.");
+			return;
+		}
+		this.sendMessageObject.content = "";
 	}
 }

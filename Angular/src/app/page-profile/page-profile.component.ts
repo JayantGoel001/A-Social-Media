@@ -67,6 +67,9 @@ export class PageProfileComponent implements OnInit {
 				}
 			})
 		});
+
+
+
 		// @ts-ignore
 		this.subscriptions.push(userDataEvent);
 	}
@@ -131,5 +134,9 @@ export class PageProfileComponent implements OnInit {
 		this.canSendMessage = false;
 		this.haveSentFriendRequest = false;
 		this.haveReceivedFriendRequest = false;
+	}
+
+	public updateSendMessageObject(id:string,name:string){
+		this.events.updateSendMessageObjectEvent.emit({id, name});
 	}
 }
