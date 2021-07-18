@@ -21,7 +21,7 @@ export class PageProfileComponent implements OnInit {
 	public userName:string = "";
 	public userEmail:string = "";
 	public userID:string = "";
-	public subscriptions = [];
+	public subscriptions :any= [];
 
 	public showPosts :number = 6;
 	public canAddUser:boolean = false;
@@ -85,9 +85,6 @@ export class PageProfileComponent implements OnInit {
 			})
 		});
 
-
-
-		// @ts-ignore
 		this.subscriptions.push(userDataEvent);
 	}
 

@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
 	public enemies : any = [];
 
 	public data:any = {  };
-	public subscriptions = [];
+	public subscriptions:any = [];
 
 	constructor(
 		public auth: AuthService,
@@ -29,7 +29,6 @@ export class SidebarComponent implements OnInit {
 			this.besties = data.besties;
 			this.enemies = data.enemies;
 		});
-		// @ts-ignore
 		this.subscriptions.push(userDataEvent);
 	}
 }
