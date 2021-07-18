@@ -3,8 +3,8 @@ import {ApiService} from "../api.service";
 import {ActivatedRoute} from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { DOCUMENT } from "@angular/common";
-import {UserDataService} from "../user-data.service";
 import {AutoUnsubscribe} from "../unsubscribe";
+import {EventEmitterService} from "../event-emitter.service";
 
 @Component({
 	selector: 'app-page-searches',
@@ -25,7 +25,7 @@ export class PageSearchesComponent implements OnInit {
 		private route:ActivatedRoute,
 		private title:Title,
 		@Inject(DOCUMENT) private document : Document,
-		private userData:UserDataService
+		private userData:EventEmitterService
 	) {  }
 
 	ngOnInit(): void {

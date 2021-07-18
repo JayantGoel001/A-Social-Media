@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import {ApiService} from "../api.service";
-import {UserDataService} from "../user-data.service";
 import {AutoUnsubscribe} from "../unsubscribe";
+import {EventEmitterService} from "../event-emitter.service";
 
 @Component({
 	selector: 'app-page-messages',
@@ -15,7 +15,7 @@ export class PageMessagesComponent implements OnInit {
 	constructor(
 		private title: Title,
 		private api:ApiService,
-		public userData:UserDataService
+		public userData:EventEmitterService
 	) {
 
 	}
@@ -43,8 +43,11 @@ export class PageMessagesComponent implements OnInit {
 			this.activeMessage.fromID = history.state.data.msgID;
 		}
 		let userDataEvent = this.userData.getUserData.subscribe((val)=>{
+			if (val.messages.length===0){
+				return;
+			}
 			this.activeMessage.fromID = this.activeMessage.fromID || val.messages[0].fromID;
-			this.messages = val.messages;
+			this.messages = val.messages.reverse();
 			this.userName = val.name;
 			this.userID = val._id;
 			this.userProfileImage = val.profileImage;
@@ -119,6 +122,23 @@ export class PageMessagesComponent implements OnInit {
 					}
 				}
 				this.newMessage = "";
+			}
+		});
+	}
+	public deleteMessage(id:string){
+		let requestObject = {
+			location : `users/delete-messages/${id}`,
+			method : "POST"
+		}
+		this.api.makeRequest(requestObject).then((val:any)=>{
+			if (val.statusCode === 201){
+				for (let i = 0;i<this.messages.length;i++) {
+					if (this.messages[i]._id.toString() === id.toString()){
+						this.messages.splice(i,1);
+						this.setActiveMessage(this.messages[0].fromID);
+						break;
+					}
+				}
 			}
 		});
 	}

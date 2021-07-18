@@ -349,9 +349,27 @@ const getUserData = (req,res)=>{
         let randomFriends = getRandomFriends(user.friends);
         let commentDetails = addCommentDetails(user.posts);
         let messageDetails = addMessengerDetails(user.messages);
+        let besties = new Promise((resolve, reject)=>{
+            User.find({ '_id': { $in : user.besties }},"name profileImage",(err,users)=>{
+                if(err){
+                    return res.json({ error : err });
+                }
+                user.besties = users;
+                resolve();
+            });
+        });
+        let enemies = new Promise((resolve, reject)=>{
+            User.find({ '_id': { $in : user.enemies }},"name profileImage",(err,users)=>{
+                if(err){
+                    return res.json({ error : err });
+                }
+                user.enemies = users;
+                resolve();
+            });
+        });
 
-
-        Promise.all([randomFriends,commentDetails,messageDetails]).then((val)=>{
+        let waitFor = [randomFriends,commentDetails,messageDetails,besties,enemies];
+        Promise.all(waitFor).then((val)=>{
             user.randomFriends = val[0];
             user.messages = val[2];
             res.statusJson(200,{ user : user });
@@ -499,7 +517,7 @@ const sendMessage = ({body,params,payload},res)=>{
         let sendMessageToRecipient = sendMessageTo(to,from,true);
         let sendMessageToAuthor = sendMessageTo(from,to);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             Promise.all([sendMessageToRecipient,sendMessageToAuthor]).then(()=>{
                 resolve();
             });
@@ -524,6 +542,54 @@ const resetMessageNotifications = ({payload}, res)=>{
     })
 }
 
+const deleteMessage  = ({payload,params},res)=>{
+    User.findById(payload._id,(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        const message = user.messages.id(params.id).remove();
+
+        user.save().then(()=>{
+            res.statusJson(201,{ message : "Deleted Successfully" });
+        }).catch((err)=>{
+            return res.send({ error :err });
+        })
+    })
+}
+
+const bestieEnemyToggle = ({payload,params,query},res)=>{
+
+    let toggle = query.toggle;
+    if (toggle !== "besties" && toggle!== "enemies"){
+        return res.json({ message: "Incorrect query Supplied." })
+    }
+    let friendID = params.id;
+    User.findById(payload._id,(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        if (!user.friends.includes(friendID)){
+            return res.json({ message : "You are not friend with this user." });
+        }
+
+        let ar = user[toggle];
+
+        if (ar.includes(friendID)){
+            ar.splice(ar.indexOf(friendID),1);
+        }else {
+            if (toggle === "besties" && user.besties && user.besties.length>=2){
+                return res.json({ message : "You have the maximum amount of besties." });
+            }
+            ar.push(friendID);
+        }
+        user.save().then(()=>{
+            return res.statusJson(201,{message : "Success"});
+        }).catch((err)=>{
+            return res.send({ error : err });
+        });
+    });
+}
+
 module.exports = {
     registerUser,
     loginUser,
@@ -539,5 +605,7 @@ module.exports = {
     likeUnlike,
     postComment,
     sendMessage,
-    resetMessageNotifications
+    resetMessageNotifications,
+    deleteMessage,
+    bestieEnemyToggle
 }
