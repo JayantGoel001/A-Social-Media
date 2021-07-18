@@ -8,7 +8,6 @@ require("dotenv").config();
 
 require("./mvc/models/db");
 
-let indexRouter = require('./mvc/routes/index');
 let usersRouter = require('./mvc/routes/users');
 let app = express();
 
@@ -21,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname,'Angular', 'build')));
 
 app.use(function(req,res,next) {
     res.statusJson = function(statusCode,data) {
@@ -37,15 +37,15 @@ app.use(passport.initialize());
 
 app.use('/',(req,res,next)=>{
     let url = "http://localhost:4200/"
-    if (process.env.NODE_ENV ==="PRODUCTION"){
-        url = "https://jayantgoel001.github.io/A-Social-Media/"
-    }
     res.header('Access-Control-Allow-Origin',url);
     res.header('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept,Authorization');
     next();
 })
 
 app.use('/users', usersRouter);
+app.get("*",function (req, res, next) {
+    res.sendFile(path.join(__dirname,'Angular','build','index.html'));
+})
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
