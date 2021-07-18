@@ -313,14 +313,47 @@ const getUserData = (req,res)=>{
             });
         }
 
+        function addMessengerDetails(messages) {
+            return new Promise((resolve) => {
+                if (!messages.length){
+                    resolve(messages);
+                }
+                let usersArray = [];
+                for (const message of messages) {
+                    usersArray.push(message.fromID);
+                }
+
+                User.find({'_id': { $in : usersArray }},"name profileImage",{},(err,users)=>{
+                    if(err){
+                        return res.json({ error : err });
+                    }
+                    for (let message of messages) {
+                        for (let i = 0; i < users.length; i++) {
+
+                            if (message.fromID.toString() === users[i]._id.toString()){
+                                message.messengerName = users[i].name;
+                                message.messengerProfileImage = users[i].profileImage;
+                                users.splice(i,1);
+                                break;
+                            }
+                        }
+                    }
+                    resolve(messages);
+                })
+            });
+        }
+
         user.posts.sort((a,b)=> (a.date > b.date ? -1 : 1));
         addNameAndDateToPosts(user.posts,user);
 
         let randomFriends = getRandomFriends(user.friends);
         let commentDetails = addCommentDetails(user.posts);
+        let messageDetails = addMessengerDetails(user.messages);
 
-        Promise.all([randomFriends,commentDetails]).then((val)=>{
+
+        Promise.all([randomFriends,commentDetails,messageDetails]).then((val)=>{
             user.randomFriends = val[0];
+            user.messages = val[2];
             res.statusJson(200,{ user : user });
         });
     });
@@ -408,7 +441,7 @@ const sendMessage = ({body,params,payload},res)=>{
         })
     })
     let toPromise = new Promise((resolve, reject)=>{
-        User.findById(to,"messages",(err,user)=>{
+        User.findById(to,"messages latestMessageNotifications",(err,user)=>{
             if(err){
                 reject(err);
                 return res.json({ error : err });
@@ -428,8 +461,11 @@ const sendMessage = ({body,params,payload},res)=>{
             }
         }
 
-        function sendMessageTo(to,from){
+        function sendMessageTo(to,from, notify = false){
             return new Promise((resolve, reject)=>{
+                if (notify && !to.latestMessageNotifications.includes(from._id)){
+                    to.latestMessageNotifications.push(from._id);
+                }
                 let foundMessage = hasMessageFrom(to.messages,from._id)
                 if (foundMessage){
                     foundMessage.content.push(message);
@@ -460,7 +496,7 @@ const sendMessage = ({body,params,payload},res)=>{
             message : body.content
         }
 
-        let sendMessageToRecipient = sendMessageTo(to,from);
+        let sendMessageToRecipient = sendMessageTo(to,from,true);
         let sendMessageToAuthor = sendMessageTo(from,to);
 
         return new Promise((resolve, reject) => {
@@ -470,7 +506,21 @@ const sendMessage = ({body,params,payload},res)=>{
         });
     });
     sendMessagePromise.then(()=>{
-        res.statusJson(201,{ message : "Sending Message" });
+        res.statusJson(201,{ message : "Sent Message" });
+    });
+}
+
+const resetMessageNotifications = ({payload}, res)=>{
+    User.findById(payload._id,(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        user.latestMessageNotifications = [];
+        user.save().then(()=>{
+            res.statusJson(201,{ message: "Reset message notifications." })
+        }).catch((err)=>{
+            res.send({ error : err });
+        })
     })
 }
 
@@ -488,5 +538,6 @@ module.exports = {
     createPost,
     likeUnlike,
     postComment,
-    sendMessage
+    sendMessage,
+    resetMessageNotifications
 }

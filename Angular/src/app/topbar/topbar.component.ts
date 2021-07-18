@@ -15,18 +15,24 @@ import { AutoUnsubscribe } from "../unsubscribe";
 @AutoUnsubscribe
 export class TopbarComponent implements OnInit {
 
-	public query:string="";
 	public userName:string = "";
-	public alertMessage :string = "";
-	public data:any;
 	public userID:any;
-	public friendRequests:number=0;
-	public subscriptions = [];
+	public profilePicture :string = "default_avatar";
 
+	public alertMessage :string = "";
+	public subscriptions = [];
+	public messagePreview:any = [];
+	public query:string="";
 	public sendMessageObject = {
 		id : "",
 		name : "",
 		content:""
+	}
+
+	public notifications = {
+		alert : 0,
+		friendRequests:0,
+		messages:0
 	}
 
 	constructor(
@@ -48,19 +54,24 @@ export class TopbarComponent implements OnInit {
 		});
 
 		let friendAlert = this.alerts.updateNumberOfFriendRequestEvent.subscribe((message:string)=>{
-			if (this.friendRequests>0) {
-				this.friendRequests--;
-			}
+			this.notifications.friendRequests--;
 		});
 		let userDataEvent = this.userData.getUserData.subscribe((data)=>{
-			this.data = data;
-			this.friendRequests = data.friendRequests.length;
+			this.notifications.friendRequests = data.friendRequests.length;
+			this.notifications.messages = data.latestMessageNotifications.length;
+			this.profilePicture = data.profileImage;
+			this.setMessagePreview(data.messages,data.latestMessageNotifications);
 		});
 
 		let updateMessageEvent = this.alerts.updateSendMessageObjectEvent.subscribe((val:any)=>{
 			this.sendMessageObject.id = val.id;
 			this.sendMessageObject.name = val.name;
 		});
+
+		let resetMessagesEvent = this.alerts.resetSendMessageObjectEvent.subscribe((val:any)=>{
+			this.notifications.messages = 0;
+		});
+
 		let requestObject = {
 			method : "GET",
 			location : `users/get-user-data/${this.userID}`
@@ -69,7 +80,7 @@ export class TopbarComponent implements OnInit {
 			this.userData.getUserData.emit(data.user);
 		})
 		// @ts-ignore
-		this.subscriptions.push(alertEvent,friendAlert,userDataEvent,updateMessageEvent);
+		this.subscriptions.push(alertEvent,friendAlert,userDataEvent,updateMessageEvent,resetMessagesEvent);
 	}
 
 	public searchForFriends(){
@@ -79,5 +90,38 @@ export class TopbarComponent implements OnInit {
 	public sendMessage(){
 		this.api.sendMessage(this.sendMessageObject);
 		this.sendMessageObject.content = "";
+	}
+
+	public resetMessageNotifications(){
+		this.api.resetMessageNotifications().then(()=>{
+
+		});
+	}
+
+	private setMessagePreview(messages:any,messageNotifications:any){
+		for (let i = messages.length-1; i >=0 ; i--) {
+			let lastMessage = messages[i].content[messages[i].content.length-1];
+			let preview = {
+				messengerName : messages[i].messengerName,
+				messageContent : lastMessage.message,
+				messengerImage : "",
+				messengerID : messages[i]._id,
+				isNew : false
+			}
+
+			if (lastMessage.messenger.toString() === this.userID.toString()){
+				preview.messengerImage = this.profilePicture;
+			}else {
+				preview.messengerImage = messages[i].messengerProfileImage;
+				if (messageNotifications.includes(messages[i].fromID)){
+					preview.isNew = true;
+				}
+			}
+			if (preview.isNew){
+				this.messagePreview.unshift(preview);
+			}else {
+				this.messagePreview.push(preview);
+			}
+		}
 	}
 }

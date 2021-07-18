@@ -21,6 +21,7 @@ router.get("/get-friend-requests",middleware.authorize,userCtrl.getFriendsReques
 router.post("/resolve-friend-request/:from/:to",middleware.authorize,userCtrl.resolveFriendRequest);
 
 router.post("/send-message/:to",middleware.authorize,userCtrl.sendMessage);
+router.post("/reset-message-notifications",middleware.authorize,userCtrl.resetMessageNotifications);
 
 router.post("/create-fake-users",fakeCtrl.createFakeUsers);
 
