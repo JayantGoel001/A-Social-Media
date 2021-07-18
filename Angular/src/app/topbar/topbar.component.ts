@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 import {LocalStorageService} from "../local-storage.service";
@@ -19,7 +19,7 @@ export class TopbarComponent implements OnInit {
 	public profilePicture :string = "default_avatar";
 
 	public alertMessage :string = "";
-	public subscriptions = [];
+	public subscriptions :any= [];
 	public messagePreview:any = [];
 	public query:string="";
 	public sendMessageObject = {
@@ -28,11 +28,12 @@ export class TopbarComponent implements OnInit {
 		content:""
 	}
 
-	public notifications = {
-		alert : 0,
+	public notifications :any = {
+		alerts: 0,
 		friendRequests:0,
 		messages:0
 	}
+	public alertsArray :any = [];
 
 	constructor(
 		public auth: AuthService,
@@ -51,13 +52,15 @@ export class TopbarComponent implements OnInit {
 			this.alertMessage = message;
 		});
 
-		let friendAlert = this.alerts.updateNumberOfFriendRequestEvent.subscribe((message:string)=>{
+		let friendAlert = this.alerts.updateNumberOfFriendRequestEvent.subscribe(()=>{
 			this.notifications.friendRequests--;
 		});
 		let userDataEvent = this.alerts.getUserData.subscribe((data)=>{
 			this.notifications.friendRequests = data.friendRequests.length;
 			this.notifications.messages = data.latestMessageNotifications.length;
+			this.notifications.alerts = data.latestNotifications;
 			this.profilePicture = data.profileImage;
+			this.setAlertNotificationData(data.notifications);
 			this.setMessagePreview(data.messages,data.latestMessageNotifications);
 		});
 
@@ -66,7 +69,7 @@ export class TopbarComponent implements OnInit {
 			this.sendMessageObject.name = val.name;
 		});
 
-		let resetMessagesEvent = this.alerts.resetSendMessageObjectEvent.subscribe((val:any)=>{
+		let resetMessagesEvent = this.alerts.resetSendMessageObjectEvent.subscribe(()=>{
 			this.notifications.messages = 0;
 		});
 
@@ -77,7 +80,7 @@ export class TopbarComponent implements OnInit {
 		this.api.makeRequest(requestObject).then((data:any)=>{
 			this.alerts.getUserData.emit(data.user);
 		})
-		// @ts-ignore
+
 		this.subscriptions.push(alertEvent,friendAlert,userDataEvent,updateMessageEvent,resetMessagesEvent);
 	}
 
@@ -127,5 +130,37 @@ export class TopbarComponent implements OnInit {
 		this.router.navigate(['/message'],{ state : { data : { msgID : messageID } } }).then(()=>{
 
 		});
+	}
+
+	private setAlertNotificationData(notificationData:any){
+		for (const alert of notificationData) {
+			let alertObj = JSON.parse(alert);
+
+			let newAlert = {
+				text : alertObj.alertText,
+				icon : "",
+				bgColor : "",
+				href : ""
+			}
+			switch (alertObj.alertType){
+				case "new_friend":
+					newAlert.icon = "fa-user-check";
+					newAlert.bgColor = "bg-success";
+					newAlert.href = `/profile/${alertObj.fromID}`;
+					break
+				case "liked_post":
+					newAlert.icon = "fa-thumbs-up";
+					newAlert.bgColor = "bg-purple";
+					newAlert.href = `/profile/${this.userID}`;
+					break
+				case "commented_post":
+					newAlert.icon = "fa-comment";
+					newAlert.bgColor = "bg-primary";
+					newAlert.href = `/profile/${this.userID}`;
+					break
+
+			}
+			this.alertsArray.push(newAlert);
+		}
 	}
 }
