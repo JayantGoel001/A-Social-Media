@@ -21,7 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'Angular','build')));
 
 app.use(function(req,res,next) {
     res.statusJson = function(statusCode,data) {
@@ -43,9 +42,6 @@ app.use('/',(req,res,next)=>{
 })
 
 app.use('/users', usersRouter);
-app.get('*',function (req, res, next) {
-    res.sendFile(path.join(__dirname,'Angular','build','index.html'));
-})
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
