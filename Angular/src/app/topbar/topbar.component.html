@@ -21,10 +21,10 @@
 			</div>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.friendRequests">{{ this.notifications.friendRequests }}</span></a>
+			<a class="nav-link dropdown-toggle" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.friendRequests">{{ this.notifications.friendRequests }}</span></a>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.alerts ">{{ this.notifications.alerts }}</span></a>
+			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="resetAlertNotifications();"><i class="fas fa-bell fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.alerts ">{{ this.notifications.alerts }}</span></a>
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
 				<h6 class="dropdown-header">Alerts Center</h6>
 				<div class="custom-scroll limit-h">

@@ -25,6 +25,7 @@ router.post("/resolve-friend-request/:from/:to",middleware.authorize,userCtrl.re
 
 router.post("/send-message/:to",middleware.authorize,userCtrl.sendMessage);
 router.post("/reset-message-notifications",middleware.authorize,userCtrl.resetMessageNotifications);
+router.post("/reset-alert-notifications",middleware.authorize,userCtrl.resetAlertNotifications);
 router.post("/delete-messages/:id",middleware.authorize,userCtrl.deleteMessage);
 
 router.post("/bestie-enemy-toggle/:id",middleware.authorize,userCtrl.bestieEnemyToggle);
