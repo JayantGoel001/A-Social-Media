@@ -11,6 +11,16 @@ const authorize = jwt({
     algorithms: ['HS256']
 });
 
+
+const apiGuard = (req,res,next)=>{
+    if (req.get('host')!=="localhost"){
+        res.json({ error : "Can't Create Fake Users in production mode." })
+    }else {
+        next();
+    }
+}
+
 module.exports = {
-    authorize
+    authorize,
+    apiGuard
 }
