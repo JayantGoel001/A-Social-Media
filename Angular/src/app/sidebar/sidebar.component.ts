@@ -11,6 +11,8 @@ import {EventEmitterService} from "../event-emitter.service";
 @AutoUnsubscribe
 export class SidebarComponent implements OnInit {
 
+	public besties : any = [];
+	public enemies : any = [];
 
 	public data:any = {  };
 	public subscriptions = [];
@@ -24,6 +26,8 @@ export class SidebarComponent implements OnInit {
 	ngOnInit(): void {
 		let userDataEvent = this.userData.getUserData.subscribe((data)=>{
 			this.data = data;
+			this.besties = data.besties;
+			this.enemies = data.enemies;
 		});
 		// @ts-ignore
 		this.subscriptions.push(userDataEvent);

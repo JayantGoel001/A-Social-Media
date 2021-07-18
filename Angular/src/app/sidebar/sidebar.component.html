@@ -11,14 +11,13 @@
 <li class="nav-item">
 	<a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#besties"><i class="fas fa-user-friends"></i><span>Besties</span></a>
 	<div id="besties" class="collapse" data-parent="#accordionSidebar">
-		<div class="bg-white py-2 collapse-inner rounded w-100">
-			<div class="m-3">
-				<img alt="image" class="img-fluid rounded-circle profile-img-sm" src="assets/images/f1.jpg">
-				<span class="h6 ml-3"><a href="#">Sarah Parker</a></span>
-			</div>
-			<div class="m-3">
-				<img alt="image" class="img-fluid rounded-circle profile-img-sm" src="assets/images/f2.jpg">
-				<span class="h6 ml-3"><a href="#">Sarah Parker</a></span>
+		<div *ngIf="!besties.length" class="ml-3 text-white">
+			You have no besties :(
+		</div>
+		<div *ngIf="besties.length" class="bg-white py-2 collapse-inner rounded w-100">
+			<div *ngFor="let bestie of besties" class="m-3">
+				<img routerLink="/profile/{{bestie._id}}" alt="image" class="link img-fluid rounded-circle profile-img-sm" src="assets/images/{{bestie.profileImage}}.jpg">
+				<span class="h6 ml-3"><a class="link small" routerLink="/profile/{{bestie._id}}">{{bestie.name}}</a></span>
 			</div>
 		</div>
 	</div>
@@ -26,14 +25,13 @@
 <li class="nav-item">
 	<a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#enemies" aria-expanded="true" aria-controls="collapseEnemies"><i class="fas fa-skull-crossbones"></i><span>Enemies</span></a>
 	<div id="enemies" class="collapse" data-parent="#accordionSidebar">
-		<div class="bg-white py-2 collapse-inner rounded">
-			<div class="m-3">
-				<img alt="image" class="img-fluid rounded-circle profile-img-sm" src="assets/images/f1.jpg">
-				<span class="h6 ml-3"><a class="text-danger" href="#">Sarah Parker</a></span>
-			</div>
-			<div class="m-3">
-				<img alt="image" class="img-fluid rounded-circle profile-img-sm" src="assets/images/f1.jpg">
-				<span class="h6 ml-3"><a class="text-danger" href="#">Sarah Parker</a></span>
+		<div *ngIf="!enemies.length" class="ml-3 text-white">
+			You have no enemies :)
+		</div>
+		<div *ngIf="enemies.length" class="bg-white py-2 collapse-inner rounded w-100">
+			<div *ngFor="let enemy of enemies" class="m-3">
+				<img routerLink="/profile/{{enemy._id}}" alt="image" class="link img-fluid rounded-circle profile-img-sm" src="assets/images/{{enemy.profileImage}}.jpg">
+				<span class="h6 ml-3"><a class="link small text-danger" routerLink="/profile/{{enemy._id}}">{{enemy.name}}</a></span>
 			</div>
 		</div>
 	</div>
