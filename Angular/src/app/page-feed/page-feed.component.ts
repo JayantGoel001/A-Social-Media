@@ -13,8 +13,8 @@ export class PageFeedComponent implements OnInit {
 
 	public newPostContent : string = "";
 	public newPostTheme : string =  "primary";
-	public posts = [[], [], [], []];
-
+	public posts :any= [[], [], [], []];
+	public bestiePost : any = [];
 	constructor(
 		private api:ApiService,
 		private title:Title,
@@ -36,6 +36,7 @@ export class PageFeedComponent implements OnInit {
 				for (let i = 0; i < 4; i++) {
 					columns.push(val.posts.filter((_: any, x: number) => x % 4 == i));
 				}
+				this.bestiePost = val.bestiePosts;
 				this.addPostToFeed(columns,0,0);
 			}else {
 				this.events.onAlertEvent.emit("Something went wrong.")
@@ -70,7 +71,6 @@ export class PageFeedComponent implements OnInit {
 				this.events.onAlertEvent.emit(val.message);
 				this.newPostContent = "";
 				val.post.timeAgo = "now";
-				// @ts-ignore
 				this.posts[0].unshift(val.post);
 			}else {
 				this.events.onAlertEvent.emit("Something went wrong.");
@@ -81,7 +81,6 @@ export class PageFeedComponent implements OnInit {
 	public addPostToFeed(arr:Array<any>,col:number,delay:number){
 		setTimeout(()=>{
 			if (arr[col].length){
-				// @ts-ignore
 				this.posts[col].push(arr[col].splice(0,1)[0]);
 				col = (++col)%4;
 				this.addPostToFeed(arr,col,100);

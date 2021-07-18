@@ -30,6 +30,16 @@
 						</form>
 					</div>
 				</div>
+
+				<div *ngIf="bestiePost.length">
+					<h1 class="text-center text-xl-left text-uppercase text-primary h4 font-weight-900 mt-5 mb-0">My Besties</h1>
+					<div class="row mb-5 pb-5">
+						<div class="col-xl-3 col-lg-6" *ngFor="let post of bestiePost" >
+							<app-post [post]="post"></app-post>
+						</div>
+					</div>
+					<hr class="divider w-25">
+				</div>
 				<div class="row mb-5 pb-5">
 					<div class="col-xl-3 col-lg-6" *ngFor="let column of this.posts">
 						<app-post *ngFor="let post of column" [post]="post"></app-post>
