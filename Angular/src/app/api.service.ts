@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import {LocalStorageService} from "./local-storage.service";
 import {EventEmitterService} from "./event-emitter.service";
+import {environment} from "../environments/environment";
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ApiService {
-	private readonly baseURL:String  = "http://localhost:3000/";
+	private readonly baseURL:String  = environment.baseUrl;
 
 	private successHandler = (value : any)=>{
 		return value;
@@ -20,9 +21,7 @@ export class ApiService {
 		private localStorage:LocalStorageService,
 		private alerts:EventEmitterService
 	) {
-		// if (process.env.NODE_ENV=="PRODUCTION"){
-		// 	this.baseURL = ``;
-		// }
+
 	}
 	public makeRequest(requestObject:any) : any{
 		let method = requestObject.method.toLowerCase();
