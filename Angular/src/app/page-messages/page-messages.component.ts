@@ -32,6 +32,7 @@ export class PageMessagesComponent implements OnInit {
 	public userName :string = "";
 	public userID :string = "";
 	public subscriptions :any = [];
+	public newMessage:string = "";
 
 	ngOnInit(): void {
 		this.title.setTitle("Your Messages");
@@ -64,7 +65,7 @@ export class PageMessagesComponent implements OnInit {
 					let me = (content.messenger.toString() === this.userID.toString());
 
 					if (groups.length) {
-						var lastMessengerID = groups[groups.length - 1].id;
+						const lastMessengerID = groups[groups.length - 1].id;
 						if (content.messenger.toString() === lastMessengerID.toString()) {
 							groups[groups.length - 1].messages.push(content.message);
 							continue;
@@ -81,5 +82,44 @@ export class PageMessagesComponent implements OnInit {
 				}
 			}
 		}
+	}
+
+	public sendMessage(){
+		if (!this.newMessage){
+			return;
+		}
+
+		let obj = {
+			content : this.newMessage,
+			id : this.activeMessage.fromID
+		}
+
+		this.api.sendMessage(obj,false)?.then((val:any)=>{
+			if (val.statusCode === 201) {
+				let groups = this.activeMessage.messageGroups;
+				if (groups[groups.length-1].isMe){
+					groups[groups.length-1].messages.push(this.newMessage);
+				}else {
+					let newGroup = {
+						image : this.userProfileImage,
+						name : this.userName,
+						id : this.userID,
+						messages : [this.newMessage],
+						isMe : true
+					}
+					groups.push(newGroup);
+				}
+				for (const message of this.messages) {
+					if (message.fromID.toString() === this.activeMessage.fromID.toString()){
+						let newContent = {
+							message : this.newMessage,
+							messenger : this.userID
+						}
+						message.content.push(newContent);
+					}
+				}
+				this.newMessage = "";
+			}
+		});
 	}
 }
