@@ -16,7 +16,7 @@ export class PageSearchesComponent implements OnInit {
 
 	public results:Array<any> = [];
 	public searchQuery = this.route.snapshot.params.query;
-	public subscriptions = [];
+	public subscriptions:any = [];
 
 	public user:any;
 
@@ -37,7 +37,6 @@ export class PageSearchesComponent implements OnInit {
 				this.getResults();
 			});
 		});
-		// @ts-ignore
 		this.subscriptions.push(userDataEvent);
 		if (this.document.getElementById("sidebarToggleTop")) {
 			// @ts-ignore

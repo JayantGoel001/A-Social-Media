@@ -14,7 +14,7 @@ import {EventEmitterService} from "../event-emitter.service";
 export class PageFriendRequestsComponent implements OnInit {
 
 	public friendRequests:any;
-	public subscriptions = [];
+	public subscriptions :any= [];
 
 	constructor(
 		private userData :EventEmitterService,
@@ -43,7 +43,6 @@ export class PageFriendRequestsComponent implements OnInit {
 			// @ts-ignore
 			this.document.getElementById("sidebarToggleTop").classList.add("d-none");
 		}
-		// @ts-ignore
 		this.subscriptions.push(userDataEvent);
 	}
 
