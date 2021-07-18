@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { DOCUMENT } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
-import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
 import {EventEmitterService} from "../event-emitter.service";
 import {AutoUnsubscribe} from "../unsubscribe";
@@ -29,6 +28,11 @@ export class PageProfileComponent implements OnInit {
 	public canSendMessage:boolean = false;
 	public haveSentFriendRequest:boolean = false;
 	public haveReceivedFriendRequest:boolean = false;
+	public isBestie : boolean = false;
+	public isEnemy :boolean = false;
+	public maxAmountOfBesties:boolean = false;
+	private besties = [];
+	private enemies = [];
 
 	ngOnInit(): void {
 		this.title.setTitle("A Social Media - Profile");
@@ -38,9 +42,22 @@ export class PageProfileComponent implements OnInit {
 		}
 
 
-		let userDataEvent = this.userData.getUserData.subscribe((user)=>{
+		let userDataEvent = this.events.getUserData.subscribe((user)=>{
+
+			this.besties = user.besties;
+			this.enemies = user.enemies;
+
 			this.route.params.subscribe((params)=> {
 				this.showPosts = 6;
+
+				if (user.besties){
+					this.isBestie = user.besties.some((val:any)=> val._id.toString() === params.userID.toString());
+					this.maxAmountOfBesties = user.besties.length>=2;
+				}
+				if (user.enemies){
+					this.isEnemy = user.enemies.some((val:any)=> val._id.toString() === params.userID.toString());
+				}
+
 				if (user._id.toString() === params.userID.toString()) {
 					this.setComponentValues(user);
 					this.resetBooleans();
@@ -76,7 +93,6 @@ export class PageProfileComponent implements OnInit {
 
 	constructor(
 		private title: Title,
-		private userData:UserDataService,
 		private api:ApiService,
 		private route:ActivatedRoute,
 		private events:EventEmitterService,
@@ -134,9 +150,46 @@ export class PageProfileComponent implements OnInit {
 		this.canSendMessage = false;
 		this.haveSentFriendRequest = false;
 		this.haveReceivedFriendRequest = false;
+		this.isBestie = false;
+		this.isEnemy = false;
+		this.maxAmountOfBesties = false;
 	}
 
 	public updateSendMessageObject(id:string,name:string){
 		this.events.updateSendMessageObjectEvent.emit({id, name});
+	}
+
+	public toggleBestie(){
+		this.toggleRequest('besties');
+	}
+	public toggleEnemy(){
+		this.toggleRequest('enemies');
+	}
+	public toggleRequest(toggle:any){
+
+		const toggleValue = (ar: any) => {
+			for (let i = 0; i < ar.length; i++) {
+				if (ar[i]._id.toString() === this.userID.toString()){
+					return ar.splice(i,1);
+				}
+			}
+			ar.push({ _id : this.userID });
+		}
+		let requestObject = {
+			location : `users/bestie-enemy-toggle/${this.userID}?toggle=${toggle}`,
+			method : "POST"
+		}
+		this.api.makeRequest(requestObject).then((val:any)=>{
+			if (val.statusCode === 201){
+				if (toggle==="besties"){
+					toggleValue.call(this,this.besties);
+					this.maxAmountOfBesties = this.besties.length>=2;
+					this.isBestie = !this.isBestie;
+				}else {
+					toggleValue.call(this,this.enemies);
+					this.isEnemy = !this.isEnemy;
+				}
+			}
+		});
 	}
 }

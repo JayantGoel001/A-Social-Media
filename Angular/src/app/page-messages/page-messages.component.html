@@ -7,6 +7,7 @@
 			<app-topbar></app-topbar>
 			<div class="container-fluid p-0 p-sm-4">
 				<h1 class="h3 mb-4 text-gray-800 text-center text-md-left">Your Messages</h1>
+				<h2 *ngIf="!messages.length" class="h4 ml-3 font-weight-300">You Currently have no messages!</h2>
 				<div class="row mb-5">
 					<div class="col-xl-4 col-lg-5">
 						<div class="message-list mb-5 custom-scroll pr-3">
@@ -17,7 +18,7 @@
 											<a><img alt="image" src="assets/images/{{message.messengerProfileImage}}.jpg" class="rounded-circle profile-img-md"></a>
 											<span class="ml-3"><a class="link text-primary">{{ message.messengerName }}</a></span>
 										</div>
-										<i class="link mb-2 fas fa-trash-alt"></i>
+										<i class="link mb-2 fas fa-trash-alt" (click)="deleteMessage(message._id)"></i>
 									</div>
 									<p class="mt-2 text-truncate">{{ message.content[message.content.length-1].message }}...</p>
 								</div>

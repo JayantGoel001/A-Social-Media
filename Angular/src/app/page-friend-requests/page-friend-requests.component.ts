@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {UserDataService} from "../user-data.service";
 import {ApiService} from "../api.service";
 import { Title } from "@angular/platform-browser";
 import {DOCUMENT} from "@angular/common";
 import {AutoUnsubscribe} from "../unsubscribe";
+import {EventEmitterService} from "../event-emitter.service";
 
 @Component({
 	selector: 'app-page-friend-requests',
@@ -17,7 +17,7 @@ export class PageFriendRequestsComponent implements OnInit {
 	public subscriptions = [];
 
 	constructor(
-		private userData :UserDataService,
+		private userData :EventEmitterService,
 		private api:ApiService,
 		private title:Title,
 		@Inject(DOCUMENT) private document : Document

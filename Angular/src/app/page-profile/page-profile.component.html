@@ -46,6 +46,22 @@
 								</div>
 							</div>
 						</div>
+						<div *ngIf="!canAddUser && canSendMessage" class="text-center mt-5">
+							<div *ngIf="!isBestie && !isEnemy">
+								<div *ngIf="!maxAmountOfBesties" (click)="toggleBestie()" class="hov-scale h1 font-weight-900 px-4 link text-primary m-1">Make Bestie</div>
+								<div *ngIf="maxAmountOfBesties" (click)="toggleBestie()" class="w-75 mx-auto hov-scale h4 font-weight-500 p-2 px-4 link text-primary m-1">You are only allowed to have two Besties.</div>
+								<div (click)="toggleEnemy()" class="hov-scale h1 font-weight-900 px-4 link text-danger m-1">Declare Enemy</div>
+							</div>
+							<div (click)="toggleBestie()" *ngIf="isBestie" class="hov-scale h2 font-weight-300 link text-primary m-1">
+								You and {{ this.userName }} are <span class="font-weight-900">Besties!</span>
+								<div class="h6 mt-2 text-uppercase text-dark">Click to undo</div>
+							</div>
+							<div (click)="toggleEnemy()" *ngIf="isEnemy" class="hov-scale h2 font-weight-300 link text-danger m-1">
+								You and {{ this.userName }} are <span class="font-weight-900">Enemies!</span>
+								<div class="h6 mt-2 text-uppercase text-dark">Click to undo</div>
+							</div>
+						</div>
+
 					</div>
 
 					<div id="recent-posts" class="col-lg-5 col-md-6 mt-5 mt-md-0">
