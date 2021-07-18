@@ -63,7 +63,7 @@ export class ApiService {
 			method : "POST",
 			location : `users/send-friend-request/${from}/${to}`
 		}
-		return new Promise((resolve, reject)=>{
+		return new Promise((resolve)=>{
 			this.makeRequest(requestObject).then((val:any)=>{
 				if (val.statusCode === 201){
 					this.alerts.onAlertEvent.emit(val.message);
@@ -77,7 +77,7 @@ export class ApiService {
 
 	public resolveFriendRequest(resolution:string,from:string){
 		let to = this.localStorage.getParsedToken()._id;
-		return new Promise((resolve, reject)=>{
+		return new Promise((resolve)=>{
 			let requestObject = {
 				method : "POST",
 				location : `users/resolve-friend-request/${from}/${to}?resolution=${resolution}`
@@ -107,14 +107,29 @@ export class ApiService {
 				content : sendMessageObject.content
 			}
 		}
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			this.makeRequest(requestObject).then((val:any)=>{
-				console.log(val);
 				if (val.statusCode === 201){
 					this.alerts.onAlertEvent.emit("Successfully sent a message.");
 					sendMessageObject.content = "";
 				}
 				resolve(val);
+			});
+		});
+	}
+
+	public resetMessageNotifications(){
+		let requestObj = {
+			location :`users/reset-message-notifications`,
+			method :"POST"
+		}
+
+		return new Promise((resolve)=>{
+			this.makeRequest(requestObj).then((val:any)=>{
+				if (val.statusCode === 201){
+					this.alerts.resetSendMessageObjectEvent.emit();
+				}
+				resolve("Success");
 			});
 		});
 	}

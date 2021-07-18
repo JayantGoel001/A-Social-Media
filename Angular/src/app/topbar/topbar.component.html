@@ -21,101 +21,51 @@
 			</div>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.friendRequests">{{ this.friendRequests }}</span></a>
+			<a class="nav-link dropdown-toggle" href="" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications && this.notifications.friendRequests">{{ this.notifications.friendRequests }}</span></a>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.data && this.data.latestNotifications.length">{{ this.data.latestNotifications.length }}</span></a>
+			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications && this.notifications.alert ">{{ this.notifications.alert }}</span></a>
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
 				<h6 class="dropdown-header">Alerts Center</h6>
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<div class="mr-3"><div class="icon-circle bg-primary"><i class="fas fa-file-alt text-white"></i></div></div>
-					<div><div class="small text-gray-500">December 12, 2019</div><span class="font-weight-bold">A new monthly report is ready to download!</span></div>
-				</a>
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<div class="mr-3">
-						<div class="icon-circle bg-success">
-							<i class="fas fa-donate text-white"></i>
-						</div>
-					</div>
-					<div>
-						<div class="small text-gray-500">December 7, 2019</div>
-						$290.29 has been deposited into your account!
-					</div>
-				</a>
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<div class="mr-3">
-						<div class="icon-circle bg-warning">
-							<i class="fas fa-exclamation-triangle text-white"></i>
-						</div>
-					</div>
-					<div>
-						<div class="small text-gray-500">December 2, 2019</div>
-						Spending Alert: We've noticed unusually high spending for your account.
-					</div>
-				</a>
+				<div class="custom-scroll limit-h">
+					<a class="dropdown-item d-flex align-items-center" href="#">
+						<div class="mr-3"><div class="icon-circle bg-primary"><i class="fas fa-file-alt text-white"></i></div></div>
+						<div><div class="small text-gray-500">December 12, 2019</div><span class="font-weight-bold">A new monthly report is ready to download!</span></div>
+					</a>
+				</div>
 				<br>
 			</div>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<a class="nav-link dropdown-toggle" href="" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  (click)="resetMessageNotifications();">
 				<i class="fas fa-envelope fa-fw"></i>
-				<span class="badge badge-danger badge-counter" *ngIf="this.data && this.data.latestMessageNotifications.length">{{ this.data.latestMessageNotifications.length }}</span>
+				<span class="badge badge-danger badge-counter" *ngIf="this.notifications && this.notifications.messages">{{ this.notifications.messages }}</span>
 			</a>
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-				<h6 class="dropdown-header">
-					Message Center
-				</h6>
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<div class="dropdown-list-image mr-3">
-						<img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
-						<div class="status-indicator bg-success"></div>
-					</div>
-					<div class="font-weight-bold">
-						<div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
-						<div class="small text-gray-500">Emily Fowler · 58m</div>
-					</div>
-				</a>
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<div class="dropdown-list-image mr-3">
-						<img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
-						<div class="status-indicator"></div>
-					</div>
-					<div>
-						<div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
-						<div class="small text-gray-500">Jae Chun · 1d</div>
-					</div>
-				</a>
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<div class="dropdown-list-image mr-3">
-						<img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
-						<div class="status-indicator bg-warning"></div>
-					</div>
-					<div>
-						<div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
-						<div class="small text-gray-500">Morgan Alvarez · 2d</div>
-					</div>
-				</a>
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<div class="dropdown-list-image mr-3">
-						<img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-						<div class="status-indicator bg-success"></div>
-					</div>
-					<div>
-						<div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
-						<div class="small text-gray-500">Chicken the Dog · 2w</div>
-					</div>
-				</a>
-				<a class="dropdown-item text-center small text-gray-500" href="" routerLink="/message">Read More Messages</a>
+				<h6 class="dropdown-header">Message Center</h6>
+				<div class="custom-scroll limit-h">
+					<a *ngFor="let mPreview of messagePreview" class="dropdown-item d-flex align-items-center" routerLink="/profile/{{ mPreview.messengerID }}">
+						<div class="dropdown-list-image mr-3">
+							<img class="rounded-circle" src="assets/images/{{mPreview.messengerImage}}.jpg" alt="">
+							<div *ngIf="mPreview.isNew " class="new badge badge-counter badge-success">NEW</div>
+						</div>
+						<div class="font-weight-700">
+							<div class="text-truncate">{{ mPreview.messageContent }}</div>
+							<div class="small text-primary">{{ mPreview.messengerName }}</div>
+						</div>
+					</a>
+					<a class="dropdown-item text-center small text-gray-500" href="" routerLink="/message">Read More Messages</a>
+				</div>
 			</div>
 		</li>
 		<div class="topbar-divider d-none d-sm-block"></div>
 		<li class="nav-item dropdown no-arrow">
 			<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ userName }}</span>
-				<img *ngIf="this.data" class="img-profile rounded-circle" src="assets/images/{{ this.data.profileImage }}.jpg" alt="image">
+				<img class="img-profile rounded-circle" src="assets/images/{{ this.profilePicture }}.jpg" alt="image">
 			</a>
 			<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-				<a *ngIf="this.data" class="dropdown-item" href="" routerLink="/profile/{{ this.data._id }}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+				<a class="dropdown-item" href="" routerLink="/profile/{{ this.userID }}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
 				<a class="dropdown-item" href="" routerLink="/feed"><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>Feed</a>
 				<div class="dropdown-divider"></div>
 				<a (click)="this.auth.logOut();" class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href=""><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Sign Out</a>
@@ -142,7 +92,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Never mind</button>
-				<button type="submit" class="btn btn-primary" form="send-message" (click)="sendMessage();">Send Message</button>
+				<button type="submit" class="btn btn-primary" form="send-message" (click)="sendMessage();" data-dismiss="modal">Send Message</button>
 			</div>
 		</div>
 	</div>
