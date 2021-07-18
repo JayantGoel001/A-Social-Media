@@ -48,7 +48,8 @@ const alertUser = (fromUser,toUser,type,postContent)=>{
                 return res.json({ error : err });
             }
             user.latestNotifications++;
-            user.notifications.push(JSON.stringify(alert));
+            user.notifications.splice(18);
+            user.notifications.unshift(JSON.stringify(alert));
             user.save().then(()=>{
                 resolve();
             }).catch((err)=>{
@@ -286,7 +287,7 @@ const postComment = ({body,params,payload},res)=>{
                 if(err){
                     return res.json({ error : err });
                 }
-                let promise = new Promise((resolve, reject) => {
+                let promise = new Promise((resolve) => {
                     if (payload._id.toString() !== params.ownerID.toString()) {
                         alertUser(commenter, params.ownerID, "commented_post", post.content).then(() => {
                             resolve();
@@ -430,7 +431,7 @@ const getUserData = (req,res)=>{
         let randomFriends = getRandomFriends(user.friends);
         let commentDetails = addCommentDetails(user.posts);
         let messageDetails = addMessengerDetails(user.messages);
-        let besties = new Promise((resolve, reject)=>{
+        let besties = new Promise((resolve)=>{
             User.find({ '_id': { $in : user.besties }},"name profileImage",(err,users)=>{
                 if(err){
                     return res.json({ error : err });
@@ -439,7 +440,7 @@ const getUserData = (req,res)=>{
                 resolve();
             });
         });
-        let enemies = new Promise((resolve, reject)=>{
+        let enemies = new Promise((resolve)=>{
             User.find({ '_id': { $in : user.enemies }},"name profileImage",(err,users)=>{
                 if(err){
                     return res.json({ error : err });
@@ -673,6 +674,19 @@ const bestieEnemyToggle = ({payload,params,query},res)=>{
     });
 }
 
+const resetAlertNotifications = ({payload},res)=>{
+    User.findById(payload._id,(err,user)=>{
+        if(err){
+            return res.json({ error : err });
+        }
+        user.latestNotifications = 0;
+        user.save().then(()=>{
+            return res.statusJson(201,{ message: "Success" });
+        }).catch((err)=>{
+            return res.send({ error : err });
+        })
+    })
+}
 
 module.exports = {
     registerUser,
@@ -691,5 +705,6 @@ module.exports = {
     sendMessage,
     resetMessageNotifications,
     deleteMessage,
-    bestieEnemyToggle
+    bestieEnemyToggle,
+    resetAlertNotifications
 }

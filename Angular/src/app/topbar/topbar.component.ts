@@ -94,9 +94,10 @@ export class TopbarComponent implements OnInit {
 	}
 
 	public resetMessageNotifications(){
-		this.api.resetMessageNotifications().then(()=>{
-
-		});
+		if (this.notifications.messages===0){
+			return;
+		}
+		this.api.resetMessageNotifications().then(()=>{ });
 	}
 
 	private setMessagePreview(messages:any,messageNotifications:any){
@@ -162,5 +163,20 @@ export class TopbarComponent implements OnInit {
 			}
 			this.alertsArray.push(newAlert);
 		}
+	}
+
+	public resetAlertNotifications(){
+		if (this.notifications.alerts === 0){
+			return;
+		}
+		let requestObject = {
+			location : `users/reset-alert-notifications`,
+			method : "POST"
+		}
+		this.api.makeRequest(requestObject).then((val:any)=>{
+			if (val.statusCode === 201){
+				this.notifications.alerts = 0;
+			}
+		})
 	}
 }
