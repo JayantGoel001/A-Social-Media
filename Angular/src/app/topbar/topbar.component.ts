@@ -124,4 +124,10 @@ export class TopbarComponent implements OnInit {
 			}
 		}
 	}
+
+	public messageLink(messageID:string){
+		this.router.navigate(['/message'],{ state : { data : { msgID : messageID } } }).then(()=>{
+
+		});
+	}
 }
