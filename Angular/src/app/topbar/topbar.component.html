@@ -21,16 +21,16 @@
 			</div>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications && this.notifications.friendRequests">{{ this.notifications.friendRequests }}</span></a>
+			<a class="nav-link dropdown-toggle" href="" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.friendRequests">{{ this.notifications.friendRequests }}</span></a>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications && this.notifications.alert ">{{ this.notifications.alert }}</span></a>
+			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.alerts ">{{ this.notifications.alerts }}</span></a>
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
 				<h6 class="dropdown-header">Alerts Center</h6>
 				<div class="custom-scroll limit-h">
-					<a class="dropdown-item d-flex align-items-center" href="#">
-						<div class="mr-3"><div class="icon-circle bg-primary"><i class="fas fa-file-alt text-white"></i></div></div>
-						<div><div class="small text-gray-500">December 12, 2019</div><span class="font-weight-bold">A new monthly report is ready to download!</span></div>
+					<a *ngFor="let alertE of alertsArray" class="dropdown-item d-flex align-items-center" routerLink="{{alertE.href}}">
+						<div class="mr-3"><div class="icon-circle {{alertE.bgColor}}"><i class="fas {{alertE.icon}} text-white"></i></div></div>
+						<div><span class="font-weight-bold">{{ alertE.text }}</span></div>
 					</a>
 				</div>
 				<br>
@@ -39,7 +39,7 @@
 		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  (click)="resetMessageNotifications();">
 				<i class="fas fa-envelope fa-fw"></i>
-				<span class="badge badge-danger badge-counter" *ngIf="this.notifications && this.notifications.messages">{{ this.notifications.messages }}</span>
+				<span class="badge badge-danger badge-counter" *ngIf="this.notifications.messages">{{ this.notifications.messages }}</span>
 			</a>
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
 				<h6 class="dropdown-header">Message Center</h6>

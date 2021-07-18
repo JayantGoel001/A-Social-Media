@@ -72,8 +72,8 @@ const userSchema = new mongoose.Schema({
         default : []
     },
     latestNotifications : {
-        type : [String],
-        default : []
+        type : Number,
+        default : 0
     },
     password:String,
     salt:String
