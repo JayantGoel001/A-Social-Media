@@ -156,7 +156,7 @@ const generateFeed = ({payload},res)=>{
         User.findById(payload._id,"",{ lean : true },(err,user)=>{
             if(err){
                 reject("Something Went Wrong");
-                return res.json({ error : err });
+                return res.statusJson(400,{ error : err });
             }
             if (user) {
                 addNameAndDateToPosts(user.posts, user);
@@ -165,6 +165,9 @@ const generateFeed = ({payload},res)=>{
                     return !user.besties.includes(val);
                 });
                 resolve(user);
+            }else {
+                reject("Something Went Wrong");
+                return res.statusJson(404,{ error : "User Doesn't exists" });
             }
         });
     });
@@ -368,7 +371,10 @@ const sendFriendRequest = (req,res)=>{
 const getUserData = (req,res)=>{
     User.findById(req.params.userid, "-salt -password",{lean:true},(err,user)=>{
         if(err){
-            return res.json({ error : err });
+            return res.statusJson(400,{ error : err });
+        }
+        if (!user){
+            return res.statusJson(404,{ error : "User does not exists."});
         }
 
         const getRandomFriends = (friendsList)=>{

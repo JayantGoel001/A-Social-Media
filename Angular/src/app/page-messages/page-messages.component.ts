@@ -135,6 +135,9 @@ export class PageMessagesComponent implements OnInit {
 				for (let i = 0;i<this.messages.length;i++) {
 					if (this.messages[i]._id.toString() === id.toString()){
 						this.messages.splice(i,1);
+						if (!this.messages.length){
+							return;
+						}
 						this.setActiveMessage(this.messages[0].fromID);
 						break;
 					}

@@ -13,8 +13,7 @@ export class SidebarComponent implements OnInit {
 
 	public besties : any = [];
 	public enemies : any = [];
-
-	public data:any = {  };
+	public userID : string = "";
 	public subscriptions:any = [];
 
 	constructor(
@@ -25,7 +24,7 @@ export class SidebarComponent implements OnInit {
 	}
 	ngOnInit(): void {
 		let userDataEvent = this.userData.getUserData.subscribe((data)=>{
-			this.data = data;
+			this.userID = data._id;
 			this.besties = data.besties;
 			this.enemies = data.enemies;
 		});

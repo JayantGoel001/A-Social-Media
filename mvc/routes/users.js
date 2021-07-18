@@ -30,9 +30,9 @@ router.post("/delete-messages/:id",middleware.authorize,userCtrl.deleteMessage);
 
 router.post("/bestie-enemy-toggle/:id",middleware.authorize,userCtrl.bestieEnemyToggle);
 
-router.post("/create-fake-users",fakeCtrl.createFakeUsers);
+router.post("/create-fake-users",middleware.apiGuard,fakeCtrl.createFakeUsers);
 
-router.delete("/all",userCtrl.deleteAllUsers);
-router.get("/all",userCtrl.getAllUsers);
+router.delete("/all",middleware.apiGuard,userCtrl.deleteAllUsers);
+router.get("/all",middleware.apiGuard,userCtrl.getAllUsers);
 
 module.exports = router;
