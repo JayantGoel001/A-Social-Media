@@ -22,6 +22,7 @@ export class SidebarComponent implements OnInit {
 	) {
 
 	}
+
 	ngOnInit(): void {
 		let userDataEvent = this.userData.getUserData.subscribe((data)=>{
 			this.userID = data._id;

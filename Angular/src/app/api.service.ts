@@ -7,6 +7,7 @@ import {environment} from "../environments/environment";
 @Injectable({
 	providedIn: 'root'
 })
+
 export class ApiService {
 	private readonly baseURL:String  = environment.baseUrl;
 
@@ -23,6 +24,7 @@ export class ApiService {
 	) {
 
 	}
+
 	public makeRequest(requestObject:any) : any{
 		let method = requestObject.method.toLowerCase();
 		if (!method){
@@ -53,6 +55,7 @@ export class ApiService {
 		}else if (method==="post"){
 			return this.http.post(url,body,httpOption).toPromise().then(this.successHandler).catch(this.errorHandler);
 		}
+
 		console.log("Could not make the request. Make sure a method of GET  or POST is supplied.");
 	}
 

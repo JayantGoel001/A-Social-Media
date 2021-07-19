@@ -22,6 +22,7 @@ export class TopbarComponent implements OnInit {
 	public subscriptions :any= [];
 	public messagePreview:any = [];
 	public query:string="";
+
 	public sendMessageObject = {
 		id : "",
 		name : "",

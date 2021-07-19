@@ -1,8 +1,6 @@
 <div class="result-request d-flex my-3 align-items-center bg-white shadow">
 	<a routerLink="/profile/{{ resultRequest._id }}"  class="p-4 w-max"><img src="assets/images/{{ resultRequest.profileImage }}.jpg" class="profile-img-md rounded " alt="image"></a>
-	<div>
-		<h5><a routerLink="/profile/{{ resultRequest._id }}" class="link">{{ resultRequest.name }}</a></h5>
-	</div>
+	<div><h5><a routerLink="/profile/{{ resultRequest._id }}" class="link">{{ resultRequest.name }}</a></h5></div>
 	<div class="ml-auto mr-3 mt-3 align-self-start">
 		<button *ngIf="use=='result' && !haveSentFriendRequest && !haveReceivedFriendRequest && !isFriend" class="btn btn-sm btn-primary rounded-pill" (click)="this.api.makeFriendRequest(resultRequest._id); haveSentFriendRequest = true">Add Friend</button>
 		<button *ngIf="haveSentFriendRequest" class="btn btn-sm btn-warning rounded-pill ml-1">Friend Request Pending</button>

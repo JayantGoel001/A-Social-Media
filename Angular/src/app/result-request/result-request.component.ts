@@ -8,6 +8,7 @@ import {EventEmitterService} from "../event-emitter.service";
   templateUrl: './result-request.component.html',
   styleUrls: ['./result-request.component.css']
 })
+
 export class ResultRequestComponent implements OnInit {
 	@Input() resultRequest: any;
 	@Input() use: any;

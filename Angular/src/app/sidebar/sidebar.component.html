@@ -3,17 +3,13 @@
 	<div class="sidebar-brand-text mx-3">A Social Media</div>
 </a>
 <hr class="sidebar-divider my-0">
-<li class="nav-item active">
-	<a class="nav-link" href="" routerLink="/profile/{{ this.userID }}"><i class="far fa-address-card"></i><span>Profile</span></a>
-</li>
+<li class="nav-item active"><a class="nav-link" href="" routerLink="/profile/{{ this.userID }}"><i class="far fa-address-card"></i><span>Profile</span></a></li>
 <hr class="sidebar-divider">
 <div class="sidebar-heading">Friendships</div>
 <li class="nav-item">
 	<a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#besties"><i class="fas fa-user-friends"></i><span>Besties</span></a>
 	<div id="besties" class="collapse" data-parent="#accordionSidebar">
-		<div *ngIf="!besties.length" class="ml-3 text-white">
-			You have no besties :(
-		</div>
+		<div *ngIf="!besties.length" class="ml-3 text-white">You have no besties :(</div>
 		<div *ngIf="besties.length" class="bg-white py-2 collapse-inner rounded w-100">
 			<div *ngFor="let bestie of besties" class="m-3">
 				<img routerLink="/profile/{{bestie._id}}" alt="image" class="link img-fluid rounded-circle profile-img-sm" src="assets/images/{{bestie.profileImage}}.jpg">
@@ -25,9 +21,7 @@
 <li class="nav-item">
 	<a class="nav-link collapsed w-100 pr-md-5" href="#" data-toggle="collapse" data-target="#enemies" aria-expanded="true" aria-controls="collapseEnemies"><i class="fas fa-skull-crossbones"></i><span>Enemies</span></a>
 	<div id="enemies" class="collapse" data-parent="#accordionSidebar">
-		<div *ngIf="!enemies.length" class="ml-3 text-white">
-			You have no enemies :)
-		</div>
+		<div *ngIf="!enemies.length" class="ml-3 text-white">You have no enemies :)</div>
 		<div *ngIf="enemies.length" class="bg-white py-2 collapse-inner rounded w-100">
 			<div *ngFor="let enemy of enemies" class="m-3">
 				<img routerLink="/profile/{{enemy._id}}" alt="image" class="link img-fluid rounded-circle profile-img-sm" src="assets/images/{{enemy.profileImage}}.jpg">

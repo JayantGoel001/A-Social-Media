@@ -17,10 +17,12 @@ export class AuthService {
 	public canActivate(route :ActivatedRouteSnapshot, state : RouterStateSnapshot ) : boolean{
 		let activate = this.isLoggedIn();
 		let redirect = "/feed";
+
 		if (route.data && route.data.loggedIn){
 			activate = !activate;
 			redirect = "/register";
 		}
+
 		if (!activate){
 			return true;
 		}else {
@@ -28,9 +30,11 @@ export class AuthService {
 			return false;
 		}
 	}
+
 	public isLoggedIn(){
 		return !!this.localStorage.getToken();
 	}
+
 	public logOut(){
 		this.localStorage.removeToken();
 		this.router.navigate(["/login"]).then(_ => {  });

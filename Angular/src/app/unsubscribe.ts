@@ -1,4 +1,5 @@
 export function AutoUnsubscribe(constructor:any) {
+
 	const original = constructor.prototype.ngOnDestroy;
 
 	constructor.prototype.ngOnDestroy = function () {

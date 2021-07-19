@@ -11,6 +11,7 @@ import {AutoUnsubscribe} from "../unsubscribe";
 	templateUrl: './page-profile.component.html',
 	styleUrls: ['./page-profile.component.css']
 })
+
 @AutoUnsubscribe
 export class PageProfileComponent implements OnInit {
 
@@ -18,9 +19,11 @@ export class PageProfileComponent implements OnInit {
 	public totalFriends:number = 0;
 	public posts:object[] = [];
 	public profileImage:string = "default_avatar";
+
 	public userName:string = "";
 	public userEmail:string = "";
 	public userID:string = "";
+
 	public subscriptions :any= [];
 
 	public showPosts :number = 6;
@@ -31,6 +34,7 @@ export class PageProfileComponent implements OnInit {
 	public isBestie : boolean = false;
 	public isEnemy :boolean = false;
 	public maxAmountOfBesties:boolean = false;
+
 	private besties = [];
 	private enemies = [];
 
@@ -40,7 +44,6 @@ export class PageProfileComponent implements OnInit {
 			// @ts-ignore
 			this.document.getElementById("sidebarToggleTop").classList.add("d-none");
 		}
-
 
 		let userDataEvent = this.events.getUserData.subscribe((user)=>{
 
@@ -54,6 +57,7 @@ export class PageProfileComponent implements OnInit {
 					this.isBestie = user.besties.some((val:any)=> val._id.toString() === params.userID.toString());
 					this.maxAmountOfBesties = user.besties.length>=2;
 				}
+
 				if (user.enemies){
 					this.isEnemy = user.enemies.some((val:any)=> val._id.toString() === params.userID.toString());
 				}
@@ -159,9 +163,11 @@ export class PageProfileComponent implements OnInit {
 	public toggleBestie(){
 		this.toggleRequest('besties');
 	}
+
 	public toggleEnemy(){
 		this.toggleRequest('enemies');
 	}
+
 	public toggleRequest(toggle:any){
 
 		const toggleValue = (ar: any) => {
@@ -172,10 +178,12 @@ export class PageProfileComponent implements OnInit {
 			}
 			ar.push({ _id : this.userID });
 		}
+
 		let requestObject = {
 			location : `users/bestie-enemy-toggle/${this.userID}?toggle=${toggle}`,
 			method : "POST"
 		}
+
 		this.api.makeRequest(requestObject).then((val:any)=>{
 			if (val.statusCode === 201){
 				if (toggle==="besties"){

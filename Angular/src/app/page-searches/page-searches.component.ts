@@ -11,6 +11,7 @@ import {EventEmitterService} from "../event-emitter.service";
 	templateUrl: './page-searches.component.html',
 	styleUrls: ['./page-searches.component.css']
 })
+
 @AutoUnsubscribe
 export class PageSearchesComponent implements OnInit {
 
@@ -42,14 +43,15 @@ export class PageSearchesComponent implements OnInit {
 			// @ts-ignore
 			this.document.getElementById("sidebarToggleTop").classList.add("d-none");
 		}
-
 	}
 
 	private getResults(){
+
 		let requestObject = {
 			method:"GET",
 			location:`users/search-results?query=${this.searchQuery}`
 		}
+
 		this.api.makeRequest(requestObject).then((results:any)=>{
 			this.results = results.results;
 
@@ -57,9 +59,11 @@ export class PageSearchesComponent implements OnInit {
 				if (result.friends.includes(this.user._id)){
 					result.isFriend = true;
 				}
+
 				if (result.friendRequests.includes(this.user._id)){
 					result.haveSentFriendRequest = true;
 				}
+
 				if (this.user.friendRequests.includes(result._id)){
 					result.haveReceivedFriendRequest = true;
 				}
