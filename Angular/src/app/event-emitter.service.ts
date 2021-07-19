@@ -11,6 +11,8 @@ export class EventEmitterService {
 	public resetSendMessageObjectEvent : EventEmitter<string> = new EventEmitter<string>();
 	public getUserData : EventEmitter<any> = new EventEmitter<any>();
 
-	constructor() {  }
+	constructor() {
+
+	}
 
 }

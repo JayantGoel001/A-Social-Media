@@ -8,6 +8,7 @@ import {EventEmitterService} from "../event-emitter.service";
 	templateUrl: './post.component.html',
 	styleUrls: ['./post.component.css']
 })
+
 export class PostComponent implements OnInit {
 
 	@Input() post: any;
@@ -40,8 +41,10 @@ export class PostComponent implements OnInit {
 			}
 			return id;
 		}
+
 		this.fakeID = removeLeadingNumber(this.post._id);
 		this.userID = this.localStorage.getParsedToken()._id;
+
 		if (this.post.likes.includes(this.userID)){
 			this.liked = true;
 		}
@@ -49,16 +52,20 @@ export class PostComponent implements OnInit {
 		if (this.post.content.length<40){
 			this.fontSize = 22;
 		}
+
 		if (this.post.content.length<24){
 			this.fontSize = 28;
 			this.align = "center";
 		}
+
 		if (this.post.content.length<14){
 			this.fontSize = 32;
 		}
+
 		if (this.post.content.length<8){
 			this.fontSize = 44;
 		}
+
 		if (this.post.content.length<5){
 			this.fontSize = 62;
 		}
@@ -70,6 +77,7 @@ export class PostComponent implements OnInit {
 			location : `users/like-unlike/${this.post.ownerID}/${id}`,
 			method : "POST"
 		}
+
 		this.api.makeRequest(requestObject).then((val:any)=>{
 			if (val.statusCode === 201){
 				if (this.post.likes.includes(this.userID)){
@@ -80,13 +88,14 @@ export class PostComponent implements OnInit {
 					this.liked = true;
 				}
 			}
-		})
+		});
 	}
 
 	public postComment(){
 		if (this.comment.length === 0){
 			return;
 		}
+
 		let requestObject = {
 			location : `users/post-comment/${this.post.ownerID}/${this.post._id}`,
 			method : "POST",
@@ -94,6 +103,7 @@ export class PostComponent implements OnInit {
 				content : this.comment
 			}
 		}
+
 		this.api.makeRequest(requestObject).then((val:any)=>{
 			if (val.statusCode === 201) {
 				let updatedCommented = {

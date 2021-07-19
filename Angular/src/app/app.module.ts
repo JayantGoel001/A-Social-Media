@@ -44,4 +44,5 @@ import { FormBgComponent } from './form-bg/form-bg.component';
 	providers: [],
 	bootstrap: [AppComponent]
 })
+
 export class AppModule { }

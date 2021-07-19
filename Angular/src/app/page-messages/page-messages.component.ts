@@ -9,6 +9,7 @@ import {EventEmitterService} from "../event-emitter.service";
 	templateUrl: './page-messages.component.html',
 	styleUrls: ['./page-messages.component.css']
 })
+
 @AutoUnsubscribe
 export class PageMessagesComponent implements OnInit {
 
@@ -53,10 +54,12 @@ export class PageMessagesComponent implements OnInit {
 			this.userProfileImage = val.profileImage;
 			this.setActiveMessage(this.activeMessage.fromID);
 		});
+
 		this.subscriptions.push(userDataEvent);
 	}
 
 	public setActiveMessage(id:string){
+
 		for (const message of this.messages) {
 			if (message.fromID.toString() === id){
 				this.activeMessage.fromID = message.fromID;
@@ -74,6 +77,7 @@ export class PageMessagesComponent implements OnInit {
 							continue;
 						}
 					}
+
 					let group:any = {
 						image: me ? this.userProfileImage : message.messengerProfileImage,
 						name: me ? "Me" : message.messengerName,
@@ -81,6 +85,7 @@ export class PageMessagesComponent implements OnInit {
 						messages: [content.message],
 						isMe: me
 					}
+
 					groups.push(group);
 				}
 			}
@@ -112,6 +117,7 @@ export class PageMessagesComponent implements OnInit {
 					}
 					groups.push(newGroup);
 				}
+
 				for (const message of this.messages) {
 					if (message.fromID.toString() === this.activeMessage.fromID.toString()){
 						let newContent = {
@@ -130,6 +136,7 @@ export class PageMessagesComponent implements OnInit {
 			location : `users/delete-messages/${id}`,
 			method : "POST"
 		}
+
 		this.api.makeRequest(requestObject).then((val:any)=>{
 			if (val.statusCode === 201){
 				for (let i = 0;i<this.messages.length;i++) {

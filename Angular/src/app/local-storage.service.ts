@@ -48,6 +48,7 @@ export class LocalStorageService {
 	public setPostTheme(theme:string){
 		this.set(this.theme,theme);
 	}
+
 	public getPostTheme():string{
 		return this.get(this.theme);
 	}
