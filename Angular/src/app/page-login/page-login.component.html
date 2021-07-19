@@ -8,12 +8,8 @@
 				<p class="resp h4 w-50 mx-auto text-center" style="line-height: 150%;">A social media website for real people.  Definitely no fake users on this site. None at all.</p>
 				<h2 class="font-weight-300 mt-4 text-center">Login</h2>
 				<form class="login-form w-100 w-md-50 mx-auto user mt-5" (submit)="formSubmit();">
-					<div class="form-group">
-						<input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" name="email" [(ngModel)]="credentials.email">
-					</div>
-					<div class="form-group">
-						<input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name="password" autocomplete="on" [(ngModel)]="credentials.password">
-					</div>
+					<div class="form-group"><input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" name="email" [(ngModel)]="credentials.email"></div>
+					<div class="form-group"><input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name="password" autocomplete="on" [(ngModel)]="credentials.password"></div>
 					<input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
 				</form>
 				<h4 class="text-center p-5 m-0">Don't already have an account?

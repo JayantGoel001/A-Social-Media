@@ -6,11 +6,7 @@
 				<div class="row mb-5 grow-1">
 					<div id="me" class="col-lg-4 col-md-6 mt-5 mt-md-0">
 						<div class="rounded-0 shadow card">
-							<div class="rounded-0 card-header p-0 bg-white border-0">
-								<div class="bg-purple position-relative pt-4 profile-img d-flex justify-content-center">
-									<img alt="image" src="assets/images/{{profileImage}}.jpg" class="border border-thick rounded-circle profile-img-lg">
-								</div>
-							</div>
+							<div class="rounded-0 card-header p-0 bg-white border-0"><div class="bg-purple position-relative pt-4 profile-img d-flex justify-content-center"><img alt="image" src="assets/images/{{profileImage}}.jpg" class="border border-thick rounded-circle profile-img-lg"></div></div>
 							<div class="card-body bg-purple text-center">
 								<h3 class="text-white">{{ userName }}</h3>
 								<p class="w-50 h6 mx-auto text-white">I'm just a normal person, I like cats & {{ userEmail }}. I also went skydiving once.</p>
@@ -65,10 +61,7 @@
 						<app-post *ngFor="let post of posts.slice(0,showPosts)" [post]="post"></app-post>
 						<a (click)="showMorePosts();" *ngIf="posts.length && showPosts < posts.length && showPosts" class="bg-success d-block mt-4 py-3 text-center rounded-pill text-white link h5">Load More</a>
 						<h3 *ngIf="!showPosts" class="text-center w-75 mx-auto mt-5 text-purple">Add {{ userName }} as a friend to see their latest posts.</h3>
-						<div *ngIf="posts.length && posts.length <= showPosts">
-							<h2 class="mt-5 text-primary text-center">No more posts, you have stalked {{ userName }} completely</h2>
-							<a href="" (click)="backToTop();" class="link h4 text-center d-block w-max mx-auto my-3"></a>
-						</div>
+						<div *ngIf="posts.length && posts.length <= showPosts"><h2 class="mt-5 text-primary text-center">No more posts, you have stalked {{ userName }} completely</h2><a href="" (click)="backToTop();" class="link h4 text-center d-block w-max mx-auto my-3"></a></div>
 					</div>
 					<div id="big-links" class="col-lg-3 col--12 mt-5 mt-lg-0">
 						<div class="shadow card border-0 rounded-0 big-link bg-success text-white">
@@ -78,11 +71,7 @@
 								<i class="fas fa-list fa-sm fa-fw mr-2"></i>
 							</a>
 						</div>
-						<div class="mt-3 shadow card border-0 rounded-0 big-link bg-primary text-white">
-							<a routerLink="/message" class="text-white link font-weight-500 text-center display-3">
-								Messages<br><i class="fas fa-envelope fa-fw"></i>
-							</a>
-						</div>
+						<div class="mt-3 shadow card border-0 rounded-0 big-link bg-primary text-white"><a routerLink="/message" class="text-white link font-weight-500 text-center display-3">Messages<br><i class="fas fa-envelope fa-fw"></i></a></div>
 					</div>
 				</div>
 			</div>
