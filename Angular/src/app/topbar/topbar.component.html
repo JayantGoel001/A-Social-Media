@@ -20,9 +20,7 @@
 				</form>
 			</div>
 		</li>
-		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.friendRequests">{{ this.notifications.friendRequests }}</span></a>
-		</li>
+		<li class="nav-item dropdown no-arrow mx-1"><a class="nav-link dropdown-toggle" routerLink="/friend-requests"><i class="fas fa-users"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.friendRequests">{{ this.notifications.friendRequests }}</span></a></li>
 		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="resetAlertNotifications();"><i class="fas fa-bell fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.alerts ">{{ this.notifications.alerts }}</span></a>
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
@@ -38,21 +36,14 @@
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  (click)="resetMessageNotifications();">
-				<i class="fas fa-envelope fa-fw"></i>
-				<span class="badge badge-danger badge-counter" *ngIf="this.notifications.messages">{{ this.notifications.messages }}</span>
+				<i class="fas fa-envelope fa-fw"></i><span class="badge badge-danger badge-counter" *ngIf="this.notifications.messages">{{ this.notifications.messages }}</span>
 			</a>
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
 				<h6 class="dropdown-header">Message Center</h6>
 				<div class="custom-scroll limit-h">
 					<a *ngFor="let mPreview of messagePreview" class="dropdown-item d-flex align-items-center" (click)="messageLink(mPreview.messengerID)" style="cursor: pointer">
-						<div class="dropdown-list-image mr-3">
-							<img class="rounded-circle" src="assets/images/{{mPreview.messengerImage}}.jpg" alt="">
-							<div *ngIf="mPreview.isNew " class="new badge badge-counter badge-success">NEW</div>
-						</div>
-						<div class="font-weight-700">
-							<div class="text-truncate">{{ mPreview.messageContent }}</div>
-							<div class="small text-primary">{{ mPreview.messengerName }}</div>
-						</div>
+						<div class="dropdown-list-image mr-3"><img class="rounded-circle" src="assets/images/{{mPreview.messengerImage}}.jpg" alt=""><div *ngIf="mPreview.isNew " class="new badge badge-counter badge-success">NEW</div></div>
+						<div class="font-weight-700"><div class="text-truncate">{{ mPreview.messageContent }}</div><div class="small text-primary">{{ mPreview.messengerName }}</div></div>
 					</a>
 					<a class="dropdown-item text-center small text-gray-500" href="" routerLink="/message">Read More Messages</a>
 				</div>
@@ -83,11 +74,7 @@
 					<span>&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-				<form class="" action="index.html" method="post" id="send-message">
-					<textarea [(ngModel)]="sendMessageObject.content" name="name" placeholder="Your message..." rows="6" class="w-100" required></textarea>
-				</form>
-			</div>
+			<div class="modal-body"><form class="" action="index.html" method="post" id="send-message"><textarea [(ngModel)]="sendMessageObject.content" name="name" placeholder="Your message..." rows="6" class="w-100" required></textarea></form></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Never mind</button>
 				<button type="submit" class="btn btn-primary" form="send-message" (click)="sendMessage();" data-dismiss="modal">Send Message</button>

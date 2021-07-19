@@ -6,11 +6,7 @@
 			<div class="container-fluid">
 				<h1 class="h3 mb-4 text-gray-800 text-center text-md-left">Your Feed</h1>
 				<div class="w-100 w-xl-50 mb-4">
-					<div class="create-post shadow rounded-pill">
-						<a href="#create-post" class="d-block link rounded-pill card-header py-3 bg-white" data-toggle="collapse" role="button">
-							<h3 class="m-0 font-weight-bold h5 font-weight-600 text-center text-md-left">Create A Post</h3>
-						</a>
-					</div>
+					<div class="create-post shadow rounded-pill"><a href="#create-post" class="d-block link rounded-pill card-header py-3 bg-white" data-toggle="collapse" role="button"><h3 class="m-0 font-weight-bold h5 font-weight-600 text-center text-md-left">Create A Post</h3></a></div>
 					<div class="collapse mb-5" id="create-post">
 						<div class="mt-3 ml-4 d-flex align-items-center flex-wrap flex-md-nowrap justify-content-center justify-content-md-start">
 							<span class="theme h5 m-0 mr-3 d-inline-block">Color:</span>
@@ -23,7 +19,6 @@
 							<span [ngClass]="{ 'active' : newPostTheme === 'pink' }" class="bg-pink mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('pink')"></span>
 							<span [ngClass]="{ 'active' : newPostTheme === 'orange' }" class="bg-orange mx-1 my-2 hov-scale rounded-circle color-preview d-inline-block" (click)="changeTheme('orange')"></span>
 						</div>
-
 						<form (submit)="this.createPost();" class="mt-3 w-100" action="" method="post">
 							<textarea [ngClass]="'bg-' + newPostTheme" class="text-white-placeholder h5 p-3 w-100 rounded text-white" name="content" rows="8" cols="80" placeholder="Tell us what's up." spellcheck="false" required [(ngModel)]="this.newPostContent"></textarea>
 							<input [ngClass]="'bg-' + newPostTheme"  type="submit" class="w-50 mx-auto d-block mx-md-0 rounded-pill hov-scale py-1 px-3 btn btn-lg text-white" value="Create Post">
@@ -33,18 +28,10 @@
 
 				<div *ngIf="bestiePost.length">
 					<h1 class="text-center text-xl-left text-uppercase text-primary h4 font-weight-900 mt-5 mb-0">My Besties</h1>
-					<div class="row mb-5 pb-5">
-						<div class="col-xl-3 col-lg-6" *ngFor="let post of bestiePost" >
-							<app-post [post]="post"></app-post>
-						</div>
-					</div>
+					<div class="row mb-5 pb-5"><div class="col-xl-3 col-lg-6" *ngFor="let post of bestiePost" ><app-post [post]="post"></app-post></div></div>
 					<hr class="divider w-25">
 				</div>
-				<div class="row mb-5 pb-5">
-					<div class="col-xl-3 col-lg-6" *ngFor="let column of this.posts">
-						<app-post *ngFor="let post of column" [post]="post"></app-post>
-					</div>
-				</div>
+				<div class="row mb-5 pb-5"><div class="col-xl-3 col-lg-6" *ngFor="let column of this.posts"><app-post *ngFor="let post of column" [post]="post"></app-post></div></div>
 			</div>
 		</div>
 	</div>

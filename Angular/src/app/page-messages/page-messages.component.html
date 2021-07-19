@@ -1,7 +1,5 @@
 <div id="wrapper">
-	<ul class="navbar-nav bg-gradient-primary sidebar auto-toggle sidebar-dark accordion" id="accordionSidebar">
-		<app-sidebar></app-sidebar>
-	</ul>
+	<ul class="navbar-nav bg-gradient-primary sidebar auto-toggle sidebar-dark accordion" id="accordionSidebar"><app-sidebar></app-sidebar></ul>
 	<div id="content-wrapper" class="d-flex flex-column">
 		<div id="content">
 			<app-topbar></app-topbar>
@@ -34,9 +32,7 @@
 										<a routerLink="/profile/{{mGroup.id}}"><img alt="image" src="assets/images/{{mGroup.image}}.jpg" class="rounded-circle profile-img-sm"></a>
 										<span *ngIf="!mGroup.isMe" class="ml-3"><a routerLink="/profile/{{mGroup.id}}" class="link">{{mGroup.name}}</a></span>
 									</div>
-									<div *ngFor="let message of mGroup.messages" class="mb-2" [ngClass]="( mGroup.isMe? 'w-max ml-auto mr-5': ' w-75 ml-5')">
-										<p class="d-inline text-white px-4 p-2 rounded-pill message-style" [ngClass]="(mGroup.isMe ? 'w-max ml-auto bg-success': 'bg-primary')">{{ message }}</p>
-									</div>
+									<div *ngFor="let message of mGroup.messages" class="mb-2" [ngClass]="( mGroup.isMe? 'w-max ml-auto mr-5': ' w-75 ml-5')"><p class="d-inline text-white px-4 p-2 rounded-pill message-style" [ngClass]="(mGroup.isMe ? 'w-max ml-auto bg-success': 'bg-primary')">{{ message }}</p></div>
 								</div>
 							</div>
 							<div>
