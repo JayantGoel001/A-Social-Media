@@ -20,7 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname,'Angular', 'build')));
 
 app.use(function(req,res,next) {
     res.statusJson = function(statusCode,data) {
