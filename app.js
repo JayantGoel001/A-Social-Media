@@ -36,11 +36,7 @@ app.use(function(req,res,next) {
 app.use(passport.initialize());
 
 app.use('/',(req,res,next)=>{
-    let url = "http://localhost:4200/";
-    if(process.env.NODE_ENV==="PRODUCTION"){
-        url = "https://jayantgoel001.github.io";
-    }
-    res.header('Access-Control-Allow-Origin',url);
+    res.header('Access-Control-Allow-Origin',"*");
     res.header('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept,Authorization');
     next();
 })
