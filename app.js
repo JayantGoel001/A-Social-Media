@@ -48,11 +48,11 @@ app.use('/',(req,res,next)=>{
 })
 
 app.use('/users', usersRouter);
-app.get("*",function (req, res) {
+app.get("/",function (req, res) {
     res.redirect("https://jayantgoel001.github.io/A-Social-Media/");
 })
 
-app.use(function(req, res, next) {
+app.use("*",function(req, res, next) {
     res.redirect("https://jayantgoel001.github.io/A-Social-Media/");
 });
 
