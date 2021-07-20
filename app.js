@@ -51,7 +51,7 @@ app.get("*",function (req, res) {
 })
 
 app.use(function(req, res, next) {
-    next(createError(404));
+    res.redirect("https://jayantgoel001.github.io/A-Social-Media/");
 });
 
 app.use(function(err, req, res) {
