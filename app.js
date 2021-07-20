@@ -1,4 +1,3 @@
-let createError = require('http-errors');
 let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
@@ -36,7 +35,7 @@ app.use(function(req,res,next) {
 app.use(passport.initialize());
 
 app.use('/',(req,res,next)=>{
-    let url = "*";
+    let url;
     if(process.env.NODE_ENV==="PRODUCTION"){
         url = "https://jayantgoel001.github.io";
     }else {
@@ -48,11 +47,11 @@ app.use('/',(req,res,next)=>{
 })
 
 app.use('/users', usersRouter);
-app.get("/",function (req, res) {
+app.get("*",function (req, res) {
     res.redirect("https://jayantgoel001.github.io/A-Social-Media/");
 })
 
-app.use("*",function(req, res, next) {
+app.use(function(req, res) {
     res.redirect("https://jayantgoel001.github.io/A-Social-Media/");
 });
 
