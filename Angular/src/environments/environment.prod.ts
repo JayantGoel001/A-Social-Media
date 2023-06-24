@@ -1,4 +1,4 @@
 export const environment = {
-	baseUrl : "https://jayantgoel001-a-social-media.herokuapp.com/",
+	baseUrl : "https://a-social-media.vercel.app/",
 	production: true
 };
