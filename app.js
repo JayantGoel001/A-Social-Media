@@ -24,7 +24,7 @@ app.use(function(req,res,next) {
     res.statusJson = function(statusCode,data) {
         let obj = {
             ...data,
-            statusCode:statusCode
+            statusCode: statusCode
         }
         res.status(statusCode).json(obj);
     }
@@ -38,14 +38,14 @@ app.use('/',(req,res,next)=>{
     if(process.env.NODE_ENV==="PRODUCTION"){
         url = "https://jayantgoel001.github.io";
     }else {
-        url = "http://localhost:4200/";
+        url = "http://localhost:4200";
     }
     res.header('Access-Control-Allow-Origin',url);
     res.header('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept,Authorization');
     next();
 })
 
-app.use('/users', usersRouter);
+app.use('/api', usersRouter);
 app.get("*",function (req, res) {
     res.redirect("https://jayantgoel001.github.io/A-Social-Media/");
 })

@@ -28,7 +28,7 @@ export class PageFeedComponent implements OnInit {
 		this.title.setTitle("A Social Media - Feed");
 		let requestObject = {
 			method: "GET",
-			location : "users/generate-feed"
+			location : "api/generate-feed"
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{
 			if(val.statusCode===200) {
@@ -60,7 +60,7 @@ export class PageFeedComponent implements OnInit {
 
 		let requestOption = {
 			method : "POST",
-			location: "users/create-post",
+			location: "api/create-post",
 			body : {
 				theme : this.newPostTheme,
 				content : this.newPostContent

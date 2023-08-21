@@ -64,7 +64,7 @@ export class PageRegisterComponent implements OnInit {
 	private register(){
 		let requestObject = {
 			method:"POST",
-			location : "users/register",
+			location : "api/register",
 			body : this.credentials
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{

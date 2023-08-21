@@ -63,7 +63,7 @@ export class ApiService {
 		let from = this.localStorage.getParsedToken()._id;
 		let requestObject = {
 			method : "POST",
-			location : `users/send-friend-request/${from}/${to}`
+			location : `api/send-friend-request/${from}/${to}`
 		}
 		return new Promise((resolve)=>{
 			this.makeRequest(requestObject).then((val:any)=>{
@@ -82,7 +82,7 @@ export class ApiService {
 		return new Promise((resolve)=>{
 			let requestObject = {
 				method : "POST",
-				location : `users/resolve-friend-request/${from}/${to}?resolution=${resolution}`
+				location : `api/resolve-friend-request/${from}/${to}?resolution=${resolution}`
 			}
 			this.makeRequest(requestObject).then((val:any)=>{
 				if (val.statusCode===201) {
@@ -104,7 +104,7 @@ export class ApiService {
 		}
 		let requestObject = {
 			method:"POST",
-			location:`users/send-message/${sendMessageObject.id}`,
+			location:`api/send-message/${sendMessageObject.id}`,
 			body : {
 				content : sendMessageObject.content
 			}
@@ -122,7 +122,7 @@ export class ApiService {
 
 	public resetMessageNotifications(){
 		let requestObj = {
-			location :`users/reset-message-notifications`,
+			location :`api/reset-message-notifications`,
 			method :"POST"
 		}
 

@@ -69,7 +69,7 @@ export class PageProfileComponent implements OnInit {
 					this.canSendMessage = true;
 
 					let requestObject = {
-						location: "users/get-user-data/" + params.userID,
+						location: "api/get-user-data/" + params.userID,
 						method: "GET"
 					}
 					this.api.makeRequest(requestObject).then((val: any) => {
@@ -180,7 +180,7 @@ export class PageProfileComponent implements OnInit {
 		}
 
 		let requestObject = {
-			location : `users/bestie-enemy-toggle/${this.userID}?toggle=${toggle}`,
+			location : `api/bestie-enemy-toggle/${this.userID}?toggle=${toggle}`,
 			method : "POST"
 		}
 
