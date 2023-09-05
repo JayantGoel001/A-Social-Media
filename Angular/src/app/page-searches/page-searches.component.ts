@@ -49,7 +49,7 @@ export class PageSearchesComponent implements OnInit {
 
 		let requestObject = {
 			method:"GET",
-			location:`users/search-results?query=${this.searchQuery}`
+			location:`api/search-results?query=${this.searchQuery}`
 		}
 
 		this.api.makeRequest(requestObject).then((results:any)=>{

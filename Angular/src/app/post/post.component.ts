@@ -74,7 +74,7 @@ export class PostComponent implements OnInit {
 
 	public likeButtonClicked(id:string){
 		let requestObject = {
-			location : `users/like-unlike/${this.post.ownerID}/${id}`,
+			location : `api/like-unlike/${this.post.ownerID}/${id}`,
 			method : "POST"
 		}
 
@@ -97,7 +97,7 @@ export class PostComponent implements OnInit {
 		}
 
 		let requestObject = {
-			location : `users/post-comment/${this.post.ownerID}/${this.post._id}`,
+			location : `api/post-comment/${this.post.ownerID}/${this.post._id}`,
 			method : "POST",
 			body : {
 				content : this.comment

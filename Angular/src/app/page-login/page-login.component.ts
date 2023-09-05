@@ -51,7 +51,7 @@ export class PageLoginComponent implements OnInit {
 	private logIn(){
 		let requestObject = {
 			method:"POST",
-			location : "users/login",
+			location : "api/login",
 			body : this.credentials
 		}
 		this.api.makeRequest(requestObject).then((val:any)=>{

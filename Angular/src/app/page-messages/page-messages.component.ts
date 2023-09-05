@@ -133,7 +133,7 @@ export class PageMessagesComponent implements OnInit {
 	}
 	public deleteMessage(id:string){
 		let requestObject = {
-			location : `users/delete-messages/${id}`,
+			location : `api/delete-messages/${id}`,
 			method : "POST"
 		}
 
