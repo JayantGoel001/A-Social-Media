@@ -18,6 +18,7 @@ Angular/.c9/
 Angular/*.launch
 Angular/.settings/
 Angular/*.sublime-workspace
+Angular/.angular
 
 .vscode/*
 !.vscode/settings.json

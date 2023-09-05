@@ -11,7 +11,7 @@ let usersRouter = require('./mvc/routes/users');
 let app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname,'mvc','views'));
+app.set('views', path.join(__dirname, 'mvc', 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
@@ -20,8 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(req,res,next) {
-    res.statusJson = function(statusCode,data) {
+app.use(function (req, res, next) {
+    res.statusJson = function (statusCode, data) {
         let obj = {
             ...data,
             statusCode: statusCode
@@ -33,28 +33,28 @@ app.use(function(req,res,next) {
 
 app.use(passport.initialize());
 
-app.use('/',(req,res,next)=>{
+app.use('/', (req, res, next) => {
     let url;
-    if(process.env.NODE_ENV==="PRODUCTION"){
+    if (process.env.NODE_ENV === "PRODUCTION") {
         url = "https://jayantgoel001.github.io";
-    }else {
+    } else {
         url = "http://localhost:4200";
     }
-    res.header('Access-Control-Allow-Origin',url);
-    res.header('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept,Authorization');
+    res.header('Access-Control-Allow-Origin', url);
+    res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
     next();
 })
 
 app.use('/api', usersRouter);
-app.get("*",function (req, res) {
+app.get("*", function (req, res) {
     res.redirect("https://jayantgoel001.github.io/A-Social-Media/");
 })
 
-app.use(function(req, res) {
+app.use(function (req, res) {
     res.redirect("https://jayantgoel001.github.io/A-Social-Media/");
 });
 
-app.use(function(err, req, res) {
+app.use(function (err, req, res) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
